@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Churn Dashboard | Cozzini Bros</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --cozzini-navy: #1a2744;
+    --cozzini-blue: #2c5282;
+    --cozzini-red: #c53030;
+    --cozzini-gold: #d69e2e;
+    --cozzini-green: #2f855a;
+    --bg: #f7fafc;
+    --card-bg: #ffffff;
+    --text: #2d3748;
+    --text-muted: #718096;
+    --border: #e2e8f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); }
+
+  .header {
+    background: linear-gradient(135deg, var(--cozzini-navy) 0%, var(--cozzini-blue) 100%);
+    color: white; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+  .header .subtitle { font-size: 14px; opacity: 0.8; margin-top: 4px; }
+  .header .date-badge {
+    background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+  }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px 40px 60px; }
+
+  /* KPI Cards */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px; }
+  .kpi-card {
+    background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .kpi-card .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; }
+  .kpi-card .value { font-size: 36px; font-weight: 800; margin: 8px 0 4px; color: var(--cozzini-navy); }
+  .kpi-card .detail { font-size: 13px; color: var(--text-muted); }
+  .kpi-card.alert .value { color: var(--cozzini-red); }
+  .kpi-card.warn .value { color: var(--cozzini-gold); }
+
+  /* Chart grid */
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+  .chart-card {
+    background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .chart-card.full { grid-column: 1 / -1; }
+  .chart-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: var(--cozzini-navy); }
+  .chart-wrap { position: relative; height: 300px; }
+
+  /* Feedback table */
+  .feedback-section { background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .feedback-section h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: var(--cozzini-navy); }
+  .feedback-section .sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .feedback-filters { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+    background: white; font-size: 12px; cursor: pointer; font-weight: 500; transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--cozzini-blue); color: var(--cozzini-blue); }
+  .filter-btn.active { background: var(--cozzini-navy); color: white; border-color: var(--cozzini-navy); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border);
+    font-weight: 600; color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  tbody td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:hover { background: #f7fafc; }
+  .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;
+  }
+  .tag-fp { background: #ebf8ff; color: #2b6cb0; }
+  .tag-sl { background: #fefcbf; color: #975a16; }
+  .tag-co { background: #f0fff4; color: #276749; }
+  .tag-ss { background: #fed7e2; color: #97266d; }
+  .tag-other { background: #edf2f7; color: #4a5568; }
+  .sentiment-positive { color: var(--cozzini-green); font-weight: 600; }
+  .sentiment-negative { color: var(--cozzini-red); font-weight: 600; }
+  .sentiment-neutral { color: var(--text-muted); font-weight: 600; }
+  .sentiment-actionable { color: #c05621; font-weight: 600; }
+
+  .footer { text-align: center; padding: 32px; color: var(--text-muted); font-size: 12px; }
+
+  @media (max-width: 900px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid { grid-template-columns: 1fr; }
+    .container { padding: 16px; }
+    .header { padding: 20px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Product Churn Dashboard</h1>
+    <div class="subtitle">Customer cancellation analysis &mdash; Cozzini Bros</div>
+  </div>
+  <div class="date-badge">Reporting Period: Mar 10 &ndash; Apr 07, 2026</div>
+</div>
+
+<div class="container">
+
+  <!-- KPI Cards -->
+  <div class="kpi-row">
+    <div class="kpi-card alert">
+      <div class="label">Total Cancellations</div>
+      <div class="value">30</div>
+      <div class="detail">Across 9 sharpening centers</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Avg. Days Active Before Cancel</div>
+      <div class="value">418</div>
+      <div class="detail">Median: 164 days</div>
+    </div>
+    <div class="kpi-card warn">
+      <div class="label">New Customer Churn (&lt;90 days)</div>
+      <div class="value">10</div>
+      <div class="detail">33% of all cancellations</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Top Churn Reason</div>
+      <div class="value" style="font-size:22px; margin-top:14px;">Other / Misc</div>
+      <div class="detail">13 responses &mdash; review verbatims below</div>
+    </div>
+  </div>
+
+  <!-- Charts Row 1 -->
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>Cancellation Reasons</h3>
+      <div class="chart-wrap"><canvas id="reasonChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>By Sharpening Center</h3>
+      <div class="chart-wrap"><canvas id="centerChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Charts Row 2 -->
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>By Product Type</h3>
+      <div class="chart-wrap"><canvas id="productChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Customer Tenure at Cancellation</h3>
+      <div class="chart-wrap"><canvas id="tenureChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Feedback Table -->
+  <div class="feedback-section">
+    <h3>Customer Verbatim Feedback</h3>
+    <div class="sub">Open-ended responses to "Is there anything we could have done differently?"</div>
+    <div class="feedback-filters">
+      <button class="filter-btn active" onclick="filterFeedback('all')">All (23)</button>
+      <button class="filter-btn" onclick="filterFeedback('actionable')">Actionable</button>
+      <button class="filter-btn" onclick="filterFeedback('positive')">Positive</button>
+      <button class="filter-btn" onclick="filterFeedback('negative')">Negative</button>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Company</th><th>Product</th><th>Center</th><th>Sentiment</th><th>Feedback</th></tr>
+      </thead>
+      <tbody id="feedbackBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  Generated from Product_Churn_040726.xlsx &mdash; Dashboard built Apr 2026
+</div>
+
+<script>
+// === CHART COLORS ===
+const COLORS = {
+  navy: '#1a2744', blue: '#2c5282', red: '#c53030', gold: '#d69e2e',
+  green: '#2f855a', teal: '#2c7a7b', purple: '#6b46c1', orange: '#c05621',
+  pink: '#b83280'
+};
+const PALETTE = ['#2c5282','#c53030','#d69e2e','#2f855a','#6b46c1','#c05621','#2c7a7b','#b83280','#718096'];
+
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.plugins.legend.display = false;
+
+// === CHURN REASONS ===
+new Chart(document.getElementById('reasonChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Other','No longer\nneeded','Never agreed\nto start','Price /\nbudget','Menu /\nequip. changes','Switched\nvendor','Product\nperformance'],
+    datasets: [{
+      data: [13, 12, 5, 4, 1, 0, 0],
+      backgroundColor: ['#718096','#2c5282','#c53030','#d69e2e','#2f855a','#6b46c1','#c05621'],
+      borderRadius: 6, barPercentage: 0.7
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    scales: {
+      x: { grid: { color: '#edf2f7' }, ticks: { stepSize: 2 } },
+      y: { grid: { display: false } }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: { label: ctx => `${ctx.raw} cancellations` }
+      }
+    }
+  }
+});
+
+// === BY CENTER ===
+new Chart(document.getElementById('centerChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Boardman, OH','Elk Grove, IL','Houston, TX','Orlando, FL','Hopewell Jct, NY','Pineville, NC','Tukwila, WA','Cerritos, CA','Stockton, CA'],
+    datasets: [{
+      data: [6, 5, 5, 4, 3, 3, 2, 1, 1],
+      backgroundColor: PALETTE, borderRadius: 6, barPercentage: 0.7
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { grid: { color: '#edf2f7' }, ticks: { stepSize: 1 }, beginAtZero: true },
+      x: { grid: { display: false }, ticks: { maxRotation: 45 } }
+    },
+    plugins: {
+      tooltip: { callbacks: { label: ctx => `${ctx.raw} cancellations` } }
+    }
+  }
+});
+
+// === BY PRODUCT ===
+new Chart(document.getElementById('productChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Slicer Blade','Food Processor Blade','Can Opener','Sharpening Steel','Other'],
+    datasets: [{
+      data: [13, 9, 6, 1, 1],
+      backgroundColor: ['#2c5282','#d69e2e','#2f855a','#b83280','#718096'],
+      borderWidth: 2, borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '55%',
+    plugins: {
+      legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } },
+      tooltip: {
+        callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/30*100)}%)` }
+      }
+    }
+  }
+});
+
+// === TENURE DISTRIBUTION ===
+new Chart(document.getElementById('tenureChart'), {
+  type: 'bar',
+  data: {
+    labels: ['0-30 days','31-90 days','91-180 days','181-365 days','1-2 years','2+ years'],
+    datasets: [{
+      data: [7, 3, 5, 4, 5, 6],
+      backgroundColor: ['#c53030','#c05621','#d69e2e','#2f855a','#2c5282','#1a2744'],
+      borderRadius: 6, barPercentage: 0.7
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { grid: { color: '#edf2f7' }, ticks: { stepSize: 1 }, beginAtZero: true },
+      x: { grid: { display: false } }
+    },
+    plugins: {
+      tooltip: { callbacks: { label: ctx => `${ctx.raw} customers` } }
+    }
+  }
+});
+
+// === FEEDBACK TABLE ===
+const feedback = [
+  {company:"GRACE INSPIRED LIVING", product:"Food Processor Blade", center:"Hopewell Junction, NY", feedback:"The blade was not available for our robot coupe unit even though we were told it would be with our service, so we purchased a blade for the R4N", sentiment:"actionable"},
+  {company:"WARHORSE CASINO OMAHA", product:"Food Processor Blade", center:"Elk Grove, IL", feedback:"I will just buy new blades if needed. I need the sales rep to see me about new restaurants in Lincoln", sentiment:"actionable"},
+  {company:"THE COOKED GOOSE", product:"Slicer Blade", center:"Hopewell Junction, NY", feedback:"Your knife service is great", sentiment:"positive"},
+  {company:"NEXT LEVEL HOSPITALITY / ARAMARK", product:"Food Processor Blade", center:"Orlando, FL", feedback:"Follow through with agreement made", sentiment:"actionable"},
+  {company:"COMPASS / PRATT & WHITNEY", product:"Can Opener", center:"Houston, TX", feedback:"No", sentiment:"neutral"},
+  {company:"CARGILL CAFE", product:"Slicer Blade", center:"Elk Grove, IL", feedback:"We will return use at the end of the year", sentiment:"positive"},
+  {company:"HUCKLEBERRY'S", product:"Slicer Blade", center:"Houston, TX", feedback:"Stop texting me 3 times already this morning", sentiment:"negative"},
+  {company:"WEDGEWOOD CHEESE BAR", product:"Slicer Blade", center:"Pineville, NC", feedback:"Properly equip technicians to remove blades", sentiment:"actionable"},
+  {company:"PARKHURST / COVESTRO", product:"Food Processor Blade", center:"Boardman, OH", feedback:"Still want the service", sentiment:"actionable"},
+  {company:"DREAM KABOB", product:"Other", center:"Cerritos, CA", feedback:"We never ordered the blade but have been getting charged for it! We asked the sales rep to fix it, she never did.", sentiment:"negative"},
+  {company:"IL BOTTEGONE", product:"Slicer Blade", center:"Pineville, NC", feedback:"You have done a very good job, but we do not use the Globe slicer at this time", sentiment:"positive"},
+  {company:"SANTA CLARA POST-ACUTE", product:"Food Processor Blade", center:"Stockton, CA", feedback:"Your services are excellent and we are very pleased", sentiment:"positive"},
+  {company:"MILLIE'S", product:"Food Processor Blade", center:"Boardman, OH", feedback:"It was a simple mistranslation through our initial signup and the delivery process", sentiment:"actionable"},
+  {company:"CORCAFE", product:"Can Opener", center:"Boardman, OH", feedback:"I only open 3 cans a week", sentiment:"neutral"},
+  {company:"COMPASS / HOMEWOOD AT MARTINSBURG", product:"Slicer Blade", center:"Boardman, OH", feedback:"Have correct slicer blade for our slicer", sentiment:"actionable"},
+  {company:"ENO POINTE ASSISTED LIVING", product:"Can Opener", center:"Pineville, NC", feedback:"Should have explained BEFORE bringing and charging us. This is LEASE only and should have discussed pricing. We wanted purchase NOT lease.", sentiment:"negative"},
+  {company:"COMPASS / ST JOSEPH ST AUGUSTINE", product:"Slicer Blade", center:"Orlando, FL", feedback:"Allison Dusak is awesome!", sentiment:"positive"},
+  {company:"FOCUS BRANDS / MCALISTER'S DELI", product:"Slicer Blade", center:"Houston, TX", feedback:"Just don't need slicer blade service. Only what you're currently doing now.", sentiment:"neutral"},
+  {company:"JASON'S DELI - IRVING", product:"Food Processor Blade", center:"Houston, TX", feedback:"Don't offer a service you can't do well. Screws left unsecured/missing, cross-threaded, causing unit replacements. Costs many times over.", sentiment:"negative"},
+  {company:"MIDTOWN ATHLETIC CLUB", product:"Slicer Blade", center:"Orlando, FL", feedback:"N/A", sentiment:"neutral"},
+  {company:"CRANKY PAT'S", product:"Slicer Blade", center:"Elk Grove, IL", feedback:"No", sentiment:"neutral"},
+  {company:"K2 ON THE KORNER", product:"Food Processor Blade", center:"Boardman, OH", feedback:"No", sentiment:"neutral"},
+  {company:"TC4 / TONY C'S PIZZA", product:"Slicer Blade", center:"Houston, TX", feedback:"No", sentiment:"neutral"},
+];
+
+function getProductTag(product) {
+  const map = {
+    'Food Processor Blade': ['tag-fp','FP Blade'],
+    'Slicer Blade': ['tag-sl','Slicer'],
+    'Can Opener': ['tag-co','Can Opener'],
+    'Sharpening Steel': ['tag-ss','Steel'],
+    'Other': ['tag-other','Other']
+  };
+  const [cls, label] = map[product] || ['tag-other', product];
+  return `<span class="tag ${cls}">${label}</span>`;
+}
+
+function renderFeedback(filter) {
+  const tbody = document.getElementById('feedbackBody');
+  const filtered = filter === 'all' ? feedback : feedback.filter(f => f.sentiment === filter);
+  tbody.innerHTML = filtered.map(f => `
+    <tr>
+      <td style="font-weight:600; max-width:200px;">${f.company}</td>
+      <td>${getProductTag(f.product)}</td>
+      <td style="font-size:12px;">${f.center}</td>
+      <td><span class="sentiment-${f.sentiment}">${f.sentiment.charAt(0).toUpperCase() + f.sentiment.slice(1)}</span></td>
+      <td style="max-width:400px;">${f.feedback}</td>
+    </tr>
+  `).join('');
+}
+
+function filterFeedback(filter) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderFeedback(filter);
+}
+
+renderFeedback('all');
+</script>
+</body>
+</html>
