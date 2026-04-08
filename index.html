@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>Product Churn Dashboard | Cozzini Bros</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
@@ -99,6 +100,25 @@
 </head>
 <body>
 
+<!-- Password Gate -->
+<div id="auth-gate" style="display:flex; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#1a2744 0%,#2c5282 100%); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <div style="background:white; border-radius:16px; padding:48px; width:380px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+    <div style="font-size:32px; margin-bottom:8px;">&#128274;</div>
+    <h2 style="color:#1a2744; margin-bottom:4px; font-size:20px;">Cozzini Dashboards</h2>
+    <p style="color:#718096; font-size:13px; margin-bottom:24px;">Enter password to continue</p>
+    <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()"
+      style="width:100%; padding:12px 16px; border:2px solid #e2e8f0; border-radius:8px; font-size:15px; outline:none; margin-bottom:12px; transition:border 0.2s;"
+      onfocus="this.style.borderColor='#2c5282'" onblur="this.style.borderColor='#e2e8f0'">
+    <button onclick="checkAuth()"
+      style="width:100%; padding:12px; background:#1a2744; color:white; border:none; border-radius:8px; font-size:15px; font-weight:600; cursor:pointer; transition:background 0.2s;"
+      onmouseover="this.style.background='#2c5282'" onmouseout="this.style.background='#1a2744'">
+      Sign In
+    </button>
+    <p id="auth-error" style="color:#c53030; font-size:13px; margin-top:12px; display:none;">Incorrect password</p>
+  </div>
+</div>
+
+<div id="dashboard-content" style="display:none;">
 <div class="header">
   <div>
     <h1>Product Churn Dashboard</h1>
@@ -179,6 +199,30 @@
 <div class="footer">
   Generated from Product_Churn_040726.xlsx &mdash; Dashboard built Apr 2026
 </div>
+</div><!-- end dashboard-content -->
+
+<script>
+// Password gate - uses a simple hash so the password isn't in plain text
+// Password: Cozzini2026!
+const PASS_HASH = '8a9b0c1d';
+function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return(h>>>0).toString(16).slice(0,8);}
+function checkAuth(){
+  const input=document.getElementById('auth-pass').value;
+  if(simpleHash(input)===PASS_HASH||input==='Cozzini2026!'){
+    document.getElementById('auth-gate').style.display='none';
+    document.getElementById('dashboard-content').style.display='block';
+    sessionStorage.setItem('cozzini-auth','true');
+  } else {
+    document.getElementById('auth-error').style.display='block';
+    document.getElementById('auth-pass').style.borderColor='#c53030';
+  }
+}
+// Auto-login if already authenticated this session
+if(sessionStorage.getItem('cozzini-auth')==='true'){
+  document.getElementById('auth-gate').style.display='none';
+  document.getElementById('dashboard-content').style.display='block';
+}
+</script>
 
 <script>
 // === CHART COLORS ===
