@@ -6,87 +6,79 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Cozzini Bros Dashboards</title>
 <style>
-  :root {
-    --cozzini-navy: #1a2744;
-    --cozzini-blue: #2c5282;
-    --cozzini-red: #c53030;
-    --cozzini-gold: #d69e2e;
-    --cozzini-green: #2f855a;
-    --bg: #f7fafc;
-    --card-bg: #ffffff;
-    --text: #2d3748;
-    --text-muted: #718096;
-    --border: #e2e8f0;
-  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #0a0a0a; min-height: 100vh; display: flex; flex-direction: column; }
 
   /* Password Gate */
   #auth-gate {
     display: flex; align-items: center; justify-content: center; min-height: 100vh;
-    background: linear-gradient(135deg, var(--cozzini-navy) 0%, var(--cozzini-blue) 100%);
+    background: #1a2744;
   }
   .auth-box {
-    background: white; border-radius: 16px; padding: 48px; width: 380px;
-    text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    background: white; border-radius: 12px; padding: 48px; width: 380px;
+    text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
   }
-  .auth-box h2 { color: var(--cozzini-navy); margin-bottom: 4px; font-size: 20px; }
-  .auth-box p { color: var(--text-muted); font-size: 13px; margin-bottom: 24px; }
+  .auth-box h2 { color: #1a2744; margin-bottom: 4px; font-size: 20px; }
+  .auth-box p { color: #555; font-size: 13px; margin-bottom: 24px; }
   .auth-box input {
-    width: 100%; padding: 12px 16px; border: 2px solid var(--border); border-radius: 8px;
+    width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 6px;
     font-size: 15px; outline: none; margin-bottom: 12px; transition: border 0.2s;
   }
-  .auth-box input:focus { border-color: var(--cozzini-blue); }
+  .auth-box input:focus { border-color: #7bafd4; }
   .auth-box button {
-    width: 100%; padding: 12px; background: var(--cozzini-navy); color: white; border: none;
-    border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+    width: 100%; padding: 12px; background: #1a2744; color: white; border: none;
+    border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;
   }
-  .auth-box button:hover { background: var(--cozzini-blue); }
-  #auth-error { color: var(--cozzini-red); font-size: 13px; margin-top: 12px; display: none; }
+  .auth-box button:hover { background: #2a3d5c; }
+  #auth-error { color: #d4918b; font-size: 13px; margin-top: 12px; display: none; }
 
   /* Hub content */
-  #hub-content { display: none; flex: 1; }
+  #hub-content { display: none; flex-direction: column; flex: 1; }
 
-  .header {
-    background: linear-gradient(135deg, var(--cozzini-navy) 0%, var(--cozzini-blue) 100%);
-    color: white; padding: 40px; text-align: center;
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px; border-bottom: 1px solid #e5e5e5;
   }
-  .header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
-  .header .subtitle { font-size: 15px; opacity: 0.75; }
+  .topbar img { height: 28px; width: auto; }
+  .topbar span { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #999; font-weight: 500; }
 
-  .container { max-width: 900px; margin: 0 auto; padding: 40px; flex: 1; }
+  .page-title {
+    padding: 48px 40px 12px;
+    max-width: 900px;
+  }
+  .page-title h1 { font-size: 28px; font-weight: 700; color: #1a2744; letter-spacing: -0.5px; }
+  .page-title p { color: #555; font-size: 14px; margin-top: 6px; }
 
-  .dash-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+  .container { max-width: 900px; padding: 24px 40px 60px; flex: 1; }
 
-  .dash-card {
-    background: var(--card-bg); border-radius: 14px; padding: 28px;
-    border: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    text-decoration: none; color: var(--text); transition: all 0.2s;
-    display: flex; flex-direction: column; gap: 12px;
+  .dash-list { display: flex; flex-direction: column; gap: 1px; background: #e5e5e5; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; }
+
+  .dash-item {
+    display: flex; align-items: center; gap: 20px; padding: 20px 24px;
+    background: #fff; text-decoration: none; color: #0a0a0a; transition: background 0.15s;
   }
-  .dash-card:hover {
-    transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    border-color: var(--cozzini-blue);
-  }
-  .dash-card .icon { font-size: 32px; }
-  .dash-card h3 { font-size: 17px; font-weight: 700; color: var(--cozzini-navy); }
-  .dash-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-  .dash-card .tag {
-    display: inline-block; padding: 3px 10px; border-radius: 12px;
-    font-size: 11px; font-weight: 600; align-self: flex-start;
-  }
-  .tag-live { background: #f0fff4; color: var(--cozzini-green); }
-  .tag-soon { background: #fefcbf; color: #975a16; }
+  .dash-item:hover { background: #f7f7f7; }
+
+  .dash-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  .dash-item h3 { font-size: 15px; font-weight: 600; color: #1a2744; }
+  .dash-item p { font-size: 13px; color: #555; line-height: 1.4; margin-top: 2px; }
+
+  .dash-arrow { margin-left: auto; color: #ccc; font-size: 18px; flex-shrink: 0; }
 
   .footer {
-    text-align: center; padding: 24px; color: var(--text-muted); font-size: 12px;
-    border-top: 1px solid var(--border); margin-top: auto;
+    background: #111; padding: 24px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: auto;
   }
+  .footer img { height: 22px; width: auto; opacity: 0.7; }
+  .footer span { color: rgba(255,255,255,0.4); font-size: 11px; }
 
-  @media (max-width: 600px) {
-    .container { padding: 20px; }
-    .header { padding: 28px 20px; }
-    .header h1 { font-size: 22px; }
+  @media (max-width: 700px) {
+    .topbar { padding: 12px 20px; }
+    .page-title { padding: 32px 20px 8px; }
+    .container { padding: 16px 20px 40px; }
+    .footer { padding: 20px; flex-direction: column; gap: 8px; }
   }
 </style>
 </head>
@@ -95,7 +87,7 @@
 <!-- Password Gate -->
 <div id="auth-gate">
   <div class="auth-box">
-    <div style="font-size:32px; margin-bottom:8px;">&#128274;</div>
+    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros" style="height:40px;width:auto;margin-bottom:16px;">
     <h2>Cozzini Dashboards</h2>
     <p>Enter password to continue</p>
     <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()">
@@ -106,33 +98,70 @@
 
 <!-- Hub Content -->
 <div id="hub-content">
-  <div class="header">
-    <h1>Cozzini Bros Dashboards</h1>
-    <div class="subtitle">Internal analytics and tools</div>
+  <div class="topbar">
+    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros">
+    <span>Internal Dashboards</span>
+  </div>
+
+  <div class="page-title">
+    <h1>Dashboards</h1>
+    <p>Analytics and reporting tools for the Cozzini team.</p>
   </div>
 
   <div class="container">
-    <div class="dash-grid">
+    <div class="dash-list">
 
-      <a href="productchurn.html" class="dash-card">
-        <div class="icon">&#128200;</div>
-        <h3>Product Churn</h3>
-        <p>Customer cancellation analysis &mdash; churn reasons, tenure, sharpening center breakdown, and verbatim feedback.</p>
-        <span class="tag tag-live">Live</span>
+      <a href="productchurn.html" class="dash-item">
+        <div class="dash-dot" style="background:#7bafd4;"></div>
+        <div>
+          <h3>Product Churn</h3>
+          <p>Product cancellation reasons, subscription duration, and verbatim feedback.</p>
+        </div>
+        <span class="dash-arrow">&rsaquo;</span>
       </a>
 
-      <a href="sdorg.html" class="dash-card">
-        <div class="icon">&#127758;</div>
-        <h3>S&D Organization</h3>
-        <p>Interactive map of Sales &amp; Distribution regions, DSDs, Area Managers, and Operations Managers.</p>
-        <span class="tag tag-live">Live</span>
+      <a href="customerchurn.html" class="dash-item">
+        <div class="dash-dot" style="background:#d4918b;"></div>
+        <div>
+          <h3>Customer Churn</h3>
+          <p>Satisfaction scores, support experience, and what customers switched to.</p>
+        </div>
+        <span class="dash-arrow">&rsaquo;</span>
+      </a>
+
+      <a href="nps.html" class="dash-item">
+        <div class="dash-dot" style="background:#8ebf7b;"></div>
+        <div>
+          <h3>Net Promoter Score</h3>
+          <p>NPS by sharpening center and DSD, with score distribution and drilldown.</p>
+        </div>
+        <span class="dash-arrow">&rsaquo;</span>
+      </a>
+
+      <a href="ces.html" class="dash-item">
+        <div class="dash-dot" style="background:#a99bc4;"></div>
+        <div>
+          <h3>Customer Effort Score</h3>
+          <p>Survey results for pricing, onboarding, knife sharpness, driver service, and invoicing.</p>
+        </div>
+        <span class="dash-arrow">&rsaquo;</span>
+      </a>
+
+      <a href="sdorg.html" class="dash-item">
+        <div class="dash-dot" style="background:#d4a45e;"></div>
+        <div>
+          <h3>S&amp;D Organization</h3>
+          <p>Sales &amp; Distribution regions, DSDs, Area Managers, and Ops Managers.</p>
+        </div>
+        <span class="dash-arrow">&rsaquo;</span>
       </a>
 
     </div>
   </div>
 
   <div class="footer">
-    Cozzini Bros &mdash; Internal Use Only
+    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros">
+    <span>&copy; 2026 Cozzini Bros &middot; Internal Use Only</span>
   </div>
 </div>
 
@@ -147,7 +176,7 @@ function checkAuth(){
     sessionStorage.setItem('cozzini-auth','true');
   } else {
     document.getElementById('auth-error').style.display='block';
-    document.getElementById('auth-pass').style.borderColor='#c53030';
+    document.getElementById('auth-pass').style.borderColor='#d4918b';
   }
 }
 if(sessionStorage.getItem('cozzini-auth')==='true'){

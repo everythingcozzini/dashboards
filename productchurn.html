@@ -8,22 +8,22 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --cozzini-navy: #1b3a4b;
-    --cozzini-blue: #3d7c98;
-    --cozzini-red: #b44d2d;
-    --cozzini-gold: #c78c3a;
-    --cozzini-green: #4a7c59;
-    --bg: #f7fafc;
+    --cozzini-navy: #1a2744;
+    --cozzini-blue: #7bafd4;
+    --cozzini-red: #d4918b;
+    --cozzini-gold: #d4a45e;
+    --cozzini-green: #8ebf7b;
+    --bg: #ffffff;
     --card-bg: #ffffff;
-    --text: #2d3748;
-    --text-muted: #718096;
-    --border: #e2e8f0;
+    --text: #0a0a0a;
+    --text-muted: #555555;
+    --border: #e5e5e5;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); }
 
   .header {
-    background: linear-gradient(135deg, var(--cozzini-navy) 0%, var(--cozzini-blue) 100%);
+    background: var(--cozzini-navy);
     color: white; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center;
   }
   .header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
@@ -72,20 +72,20 @@
     font-weight: 600; color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
   }
   tbody td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
-  tbody tr:hover { background: #f7fafc; }
+  tbody tr:hover { background: #ffffff; }
   .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
   .tag-fp { background: #ebf8ff; color: #2b6cb0; }
   .tag-sl { background: #fefcbf; color: #975a16; }
   .tag-co { background: #f0fff4; color: #276749; }
   .tag-ss { background: #fed7e2; color: #97266d; }
-  .tag-other { background: #edf2f7; color: #4a5568; }
+  .tag-other { background: #f5f5f5; color: #4a5568; }
   .sentiment-positive { color: var(--cozzini-green); font-weight: 600; }
   .sentiment-negative { color: var(--cozzini-red); font-weight: 600; }
   .sentiment-neutral { color: var(--text-muted); font-weight: 600; }
-  .sentiment-actionable { color: #c07840; font-weight: 600; }
+  .sentiment-actionable { color: #d4cb7b; font-weight: 600; }
 
   .footer {
-    background: var(--cozzini-navy); padding: 28px 40px;
+    background: #111; padding: 28px 40px;
     display: flex; align-items: center; justify-content: center; gap: 16px;
   }
 
@@ -100,14 +100,14 @@
 </head>
 <body>
 
-<div id="auth-gate" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1b3a4b 0%,#3d7c98 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<div id="auth-gate" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a2744;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <div style="background:white;border-radius:16px;padding:48px;width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
     <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros" style="height:40px;width:auto;margin-bottom:16px;">
-    <h2 style="color:#1b3a4b;margin-bottom:4px;font-size:20px;">Cozzini Dashboards</h2>
-    <p style="color:#718096;font-size:13px;margin-bottom:24px;">Enter password to continue</p>
-    <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()" style="width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:8px;font-size:15px;outline:none;margin-bottom:12px;transition:border 0.2s;" onfocus="this.style.borderColor='#3d7c98'" onblur="this.style.borderColor='#e2e8f0'">
-    <button onclick="checkAuth()" style="width:100%;padding:12px;background:#1b3a4b;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#3d7c98'" onmouseout="this.style.background='#1b3a4b'">Sign In</button>
-    <p id="auth-error" style="color:#b44d2d;font-size:13px;margin-top:12px;display:none;">Incorrect password</p>
+    <h2 style="color:#1a2744;margin-bottom:4px;font-size:20px;">Cozzini Dashboards</h2>
+    <p style="color:#555555;font-size:13px;margin-bottom:24px;">Enter password to continue</p>
+    <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()" style="width:100%;padding:12px 16px;border:2px solid #e5e5e5;border-radius:8px;font-size:15px;outline:none;margin-bottom:12px;transition:border 0.2s;" onfocus="this.style.borderColor='#7bafd4'" onblur="this.style.borderColor='#e5e5e5'">
+    <button onclick="checkAuth()" style="width:100%;padding:12px;background:#1a2744;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#7bafd4'" onmouseout="this.style.background='#1a2744'">Sign In</button>
+    <p id="auth-error" style="color:#d4918b;font-size:13px;margin-top:12px;display:none;">Incorrect password</p>
   </div>
 </div>
 <div id="page-content" style="display:none;">
@@ -121,7 +121,7 @@
       <div class="subtitle">Product cancellation analysis &mdash; Cozzini Bros</div>
     </div>
   </div>
-  <div class="date-badge">Reporting Period: Mar 10 &ndash; Apr 07, 2026</div>
+  <div class="date-badge">Survey Period: Mar 10 &ndash; Apr 09, 2026</div>
 </div>
 
 <div class="container">
@@ -129,18 +129,18 @@
   <div class="kpi-row">
     <div class="kpi-card alert">
       <div class="label">Total Cancellations</div>
-      <div class="value">30</div>
+      <div class="value">31</div>
       <div class="detail">Across 9 sharpening centers</div>
     </div>
     <div class="kpi-card">
       <div class="label">Avg. Product Subscription Duration</div>
-      <div class="value">418</div>
-      <div class="detail">Median: 164 days before cancellation</div>
+      <div class="value">441</div>
+      <div class="detail">Median: 182 days before cancellation</div>
     </div>
     <div class="kpi-card warn">
       <div class="label">Early Product Cancellations<br>(&lt;90 days)</div>
       <div class="value">10</div>
-      <div class="detail">33% of all product cancellations</div>
+      <div class="detail">32% of all product cancellations</div>
     </div>
     <div class="kpi-card">
       <div class="label">Top Churn Reason</div>
@@ -152,10 +152,12 @@
   <div class="chart-grid">
     <div class="chart-card">
       <h3>Cancellation Reasons</h3>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:-12px;margin-bottom:16px;">Standard reasons only &mdash; priority logic applied</div>
       <div class="chart-wrap"><canvas id="reasonChart"></canvas></div>
     </div>
     <div class="chart-card">
       <h3>By Sharpening Center</h3>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:-12px;margin-bottom:16px;">Cancellations per location</div>
       <div class="chart-wrap"><canvas id="centerChart"></canvas></div>
     </div>
   </div>
@@ -163,10 +165,12 @@
   <div class="chart-grid">
     <div class="chart-card">
       <h3>By Product Type</h3>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:-12px;margin-bottom:16px;">Distribution across product categories</div>
       <div class="chart-wrap"><canvas id="productChart"></canvas></div>
     </div>
     <div class="chart-card">
       <h3>Product Subscription Duration at Cancellation</h3>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:-12px;margin-bottom:16px;">How long products were active before cancellation</div>
       <div class="chart-wrap"><canvas id="tenureChart"></canvas></div>
     </div>
   </div>
@@ -175,23 +179,25 @@
     <h3>Customer Verbatim Feedback</h3>
     <div class="sub">Open-ended responses to "Is there anything we could have done differently?"</div>
     <div class="feedback-filters">
-      <button class="filter-btn active" onclick="filterFeedback('all')">All (23)</button>
+      <button class="filter-btn active" onclick="filterFeedback('all')">All (26)</button>
       <button class="filter-btn" onclick="filterFeedback('actionable')">Actionable</button>
       <button class="filter-btn" onclick="filterFeedback('positive')">Positive</button>
       <button class="filter-btn" onclick="filterFeedback('negative')">Negative</button>
     </div>
+    <div style="overflow-x:auto;">
     <table>
       <thead>
-        <tr><th>Company</th><th>Product</th><th>Center</th><th>Sentiment</th><th>Feedback</th></tr>
+        <tr><th>Company</th><th>Product</th><th>Sharpening Center</th><th>Sentiment</th><th>Feedback</th></tr>
       </thead>
       <tbody id="feedbackBody"></tbody>
     </table>
+    </div>
   </div>
 </div>
 
 <div class="footer">
   <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros" style="height:32px; width:auto;">
-  <span style="color:rgba(255,255,255,0.6); font-size:12px;">Generated from Product_Churn_040726.xlsx &mdash; Dashboard built Apr 2026</span>
+  <span style="color:rgba(255,255,255,0.6); font-size:12px;">Generated from product churn survey data &mdash; Dashboard built Apr 2026</span>
 </div>
 </div><!-- end page-content -->
 
@@ -206,7 +212,7 @@ function checkAuth(){
     sessionStorage.setItem('cozzini-auth','true');
   } else {
     document.getElementById('auth-error').style.display='block';
-    document.getElementById('auth-pass').style.borderColor='#c53030';
+    document.getElementById('auth-pass').style.borderColor='#d4918b';
   }
 }
 if(sessionStorage.getItem('cozzini-auth')==='true'){
@@ -216,7 +222,7 @@ if(sessionStorage.getItem('cozzini-auth')==='true'){
 </script>
 
 <script>
-const PALETTE = ['#3d7c98','#b44d2d','#c78c3a','#4a7c59','#7b6ba1','#c07840','#2c7a7b','#9b5c7a','#6b8a94'];
+const PALETTE = ['#7bafd4','#d4918b','#d4a45e','#8ebf7b','#a99bc4','#d4cb7b','#5a90b5','#b87872','#6da362'];
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 Chart.defaults.font.size = 12;
 Chart.defaults.plugins.legend.display = false;
@@ -224,67 +230,70 @@ Chart.defaults.plugins.legend.display = false;
 new Chart(document.getElementById('reasonChart'), {
   type: 'bar',
   data: {
-    labels: ['No longer\nneeded','Other\n(exclusive)','Never agreed\nto start','Price /\nbudget','Menu /\nequip. changes','Switched\nvendor','Product\nperformance'],
-    datasets: [{ data: [12, 10, 5, 4, 1, 0, 0], backgroundColor: ['#3d7c98','#6b8a94','#b44d2d','#c78c3a','#4a7c59','#7b6ba1','#c07840'], borderRadius: 6, barPercentage: 0.7 }]
+    labels: ['No longer\nneeded','Never agreed\nto start','Price /\nbudget','Product\nperformance','Menu /\nequip. changes','Switched\nvendor'],
+    datasets: [{ data: [12, 5, 4, 1, 1, 0], backgroundColor: ['#7bafd4','#d4918b','#d4a45e','#8ebf7b','#a99bc4','#d4cb7b'], borderRadius: 6, barPercentage: 0.7 }]
   },
-  options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { grid: { color: '#edf2f7' }, ticks: { stepSize: 2 } }, y: { grid: { display: false } } }, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} cancellations` } } } }
+  options: { responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false }, indexAxis: 'y', scales: { x: { grid: { color: '#f5f5f5' }, ticks: { stepSize: 2 } }, y: { grid: { display: false } } }, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} cancellations` } } } }
 });
 
 new Chart(document.getElementById('centerChart'), {
   type: 'bar',
   data: {
-    labels: ['Boardman, OH','Elk Grove, IL','Houston, TX','Orlando, FL','Hopewell Jct, NY','Pineville, NC','Tukwila, WA','Cerritos, CA','Stockton, CA'],
-    datasets: [{ data: [6, 5, 5, 4, 3, 3, 2, 1, 1], backgroundColor: PALETTE, borderRadius: 6, barPercentage: 0.7 }]
+    labels: ['Houston, TX','Boardman, OH','Elk Grove, IL','Orlando, FL','Pineville, NC','Stockton, CA','Tukwila, WA','Hopewell Jct, NY','Cerritos, CA'],
+    datasets: [{ data: [7, 6, 4, 3, 3, 3, 2, 2, 1], backgroundColor: PALETTE, borderRadius: 6, barPercentage: 0.7 }]
   },
-  options: { responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: '#edf2f7' }, ticks: { stepSize: 1 }, beginAtZero: true }, x: { grid: { display: false }, ticks: { maxRotation: 45 } } }, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} cancellations` } } } }
+  options: { responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false }, scales: { y: { grid: { color: '#f5f5f5' }, ticks: { stepSize: 1 }, beginAtZero: true }, x: { grid: { display: false }, ticks: { maxRotation: 45 } } }, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} cancellations` } } } }
 });
 
 new Chart(document.getElementById('productChart'), {
   type: 'doughnut',
   data: {
-    labels: ['Slicer Blade','Food Processor Blade','Can Opener','Sharpening Steel','Other'],
-    datasets: [{ data: [13, 9, 6, 1, 1], backgroundColor: ['#3d7c98','#c78c3a','#4a7c59','#9b5c7a','#6b8a94'], borderWidth: 2, borderColor: '#fff' }]
+    labels: ['Slicer Blade','Food Processor Blade','Can Opener','Sharpening Steel','Grinder Plate'],
+    datasets: [{ data: [13, 9, 5, 1, 1], backgroundColor: ['#7bafd4','#d4a45e','#8ebf7b','#b87872','#6da362'], borderWidth: 2, borderColor: '#fff' }]
   },
-  options: { responsive: true, maintainAspectRatio: false, cutout: '55%', plugins: { legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } }, tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/30*100)}%)` } } } }
+  options: { responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, cutout: '55%', plugins: { legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } }, tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/31*100)}%)` } } } }
 });
 
 new Chart(document.getElementById('tenureChart'), {
   type: 'bar',
   data: {
     labels: ['0-30 days','31-90 days','91-180 days','181-365 days','1-2 years','2+ years'],
-    datasets: [{ data: [7, 3, 5, 4, 5, 6], backgroundColor: ['#b44d2d','#c07840','#c78c3a','#4a7c59','#3d7c98','#1b3a4b'], borderRadius: 6, barPercentage: 0.7 }]
+    datasets: [{ data: [7, 3, 5, 4, 5, 7], backgroundColor: ['#d4918b','#d4cb7b','#d4a45e','#8ebf7b','#7bafd4','#1a2744'], borderRadius: 6, barPercentage: 0.7 }]
   },
-  options: { responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: '#edf2f7' }, ticks: { stepSize: 1 }, beginAtZero: true }, x: { grid: { display: false } } }, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} product cancellations` } } } }
+  options: { responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false }, scales: { y: { grid: { color: '#f5f5f5' }, ticks: { stepSize: 1 }, beginAtZero: true }, x: { grid: { display: false } } }, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} product cancellations` } } } }
 });
 
 const feedback = [
-  {company:"GRACE INSPIRED LIVING", product:"Food Processor Blade", center:"Hopewell Junction, NY", feedback:"The blade was not available for our robot coupe unit even though we were told it would be with our service, so we purchased a blade for the R4N", sentiment:"actionable"},
-  {company:"WARHORSE CASINO OMAHA", product:"Food Processor Blade", center:"Elk Grove, IL", feedback:"I will just buy new blades if needed. I need the sales rep to see me about new restaurants in Lincoln", sentiment:"actionable"},
-  {company:"THE COOKED GOOSE", product:"Slicer Blade", center:"Hopewell Junction, NY", feedback:"Your knife service is great", sentiment:"positive"},
-  {company:"NEXT LEVEL HOSPITALITY / ARAMARK", product:"Food Processor Blade", center:"Orlando, FL", feedback:"Follow through with agreement made", sentiment:"actionable"},
-  {company:"COMPASS / PRATT & WHITNEY", product:"Can Opener", center:"Houston, TX", feedback:"No", sentiment:"neutral"},
-  {company:"CARGILL CAFE", product:"Slicer Blade", center:"Elk Grove, IL", feedback:"We will return use at the end of the year", sentiment:"positive"},
-  {company:"HUCKLEBERRY'S", product:"Slicer Blade", center:"Houston, TX", feedback:"Stop texting me 3 times already this morning", sentiment:"negative"},
-  {company:"WEDGEWOOD CHEESE BAR", product:"Slicer Blade", center:"Pineville, NC", feedback:"Properly equip technicians to remove blades", sentiment:"actionable"},
-  {company:"PARKHURST / COVESTRO", product:"Food Processor Blade", center:"Boardman, OH", feedback:"Still want the service", sentiment:"actionable"},
-  {company:"DREAM KABOB", product:"Other", center:"Cerritos, CA", feedback:"We never ordered the blade but have been getting charged for it! We asked the sales rep to fix it, she never did.", sentiment:"negative"},
-  {company:"IL BOTTEGONE", product:"Slicer Blade", center:"Pineville, NC", feedback:"You have done a very good job, but we do not use the Globe slicer at this time", sentiment:"positive"},
-  {company:"SANTA CLARA POST-ACUTE", product:"Food Processor Blade", center:"Stockton, CA", feedback:"Your services are excellent and we are very pleased", sentiment:"positive"},
-  {company:"MILLIE'S", product:"Food Processor Blade", center:"Boardman, OH", feedback:"It was a simple mistranslation through our initial signup and the delivery process", sentiment:"actionable"},
-  {company:"CORCAFE", product:"Can Opener", center:"Boardman, OH", feedback:"I only open 3 cans a week", sentiment:"neutral"},
-  {company:"COMPASS / HOMEWOOD AT MARTINSBURG", product:"Slicer Blade", center:"Boardman, OH", feedback:"Have correct slicer blade for our slicer", sentiment:"actionable"},
-  {company:"ENO POINTE ASSISTED LIVING", product:"Can Opener", center:"Pineville, NC", feedback:"Should have explained BEFORE bringing and charging us. This is LEASE only and should have discussed pricing. We wanted purchase NOT lease.", sentiment:"negative"},
-  {company:"COMPASS / ST JOSEPH ST AUGUSTINE", product:"Slicer Blade", center:"Orlando, FL", feedback:"Allison Dusak is awesome!", sentiment:"positive"},
+  {company:"GRACE", product:"Food Processor Blade", center:"Houston, TX", feedback:"The blade was not available for our Robot Coupe unit even though we were told it would be with our service, so we purchased a blade for the R4N.", sentiment:"actionable"},
+  {company:"WARHORSE CASINO OMAHA", product:"Food Processor Blade", center:"Elk Grove, IL", feedback:"I will just buy new blades if needed. I need the sales rep to see me about new restaurants in Lincoln.", sentiment:"actionable"},
+  {company:"CRANKY PAT'S", product:"Slicer Blade", center:"Elk Grove, IL", feedback:"No.", sentiment:"neutral"},
+  {company:"THE COOKED GOOSE", product:"Slicer Blade", center:"Hopewell Junction, NY", feedback:"Your knife service is great.", sentiment:"positive"},
+  {company:"NEXT LEVEL HOSPITALITY / ARAMARK", product:"Food Processor Blade", center:"Orlando, FL", feedback:"Follow through with agreement made. Discussed swapping out blades on 2 separate occasions — never received the service as requested.", sentiment:"actionable"},
+  {company:"COMPASS / REYNOLDS AND REYNOLDS", product:"Can Opener", center:"Houston, TX", feedback:"We purchased a safety can opener to comply with company policy.", sentiment:"neutral"},
+  {company:"COMPASS / LAMBETH HOUSE", product:"Slicer Blade", center:"Houston, TX", feedback:"We will return use at the end of the year. Do not need during temp food service.", sentiment:"neutral"},
+  {company:"CO RESTAURANT", product:"Slicer Blade", center:"Pineville, NC", feedback:"Stop texting me 3 times already this morning.", sentiment:"negative"},
+  {company:"WEDGEWOOD CHEESE BAR", product:"Slicer Blade", center:"Pineville, NC", feedback:"Properly equip technicians to remove blades. Can't remove the old blade.", sentiment:"actionable"},
+  {company:"PARKHURST / COVESTRO", product:"Food Processor Blade", center:"Boardman, OH", feedback:"Still want the service. They brought a blade that didn't fit. Waiting on the correct one.", sentiment:"actionable"},
+  {company:"DREAM KABOB", product:"Grinder Plate", center:"Cerritos, CA", feedback:"We never ordered the blade but have been getting charged for it! We asked the sales rep to fix it, she never did.", sentiment:"actionable"},
+  {company:"B", product:"Slicer Blade", center:"Stockton, CA", feedback:"You have done a very good job, but we do not use the Globe slicer at this time.", sentiment:"positive"},
+  {company:"SANTA CLARA POST-ACUTE", product:"Food Processor Blade", center:"Stockton, CA", feedback:"Your services are excellent and we are very pleased. I don't want the service cancelled — I want to continue with it.", sentiment:"positive"},
+  {company:"K2 ON THE KORNER", product:"Food Processor Blade", center:"Boardman, OH", feedback:"No.", sentiment:"neutral"},
+  {company:"TOWN", product:"Slicer Blade", center:"Stockton, CA", feedback:"N/A.", sentiment:"neutral"},
+  {company:"Charterhouse School", product:"Slicer Blade", center:"Hopewell Junction, NY", feedback:"We do not start service until after April 20, 2026.", sentiment:"neutral"},
   {company:"FOCUS BRANDS / MCALISTER'S DELI", product:"Slicer Blade", center:"Houston, TX", feedback:"Just don't need slicer blade service. Only what you're currently doing now.", sentiment:"neutral"},
+  {company:"TC4 / TONY C'S PIZZA", product:"Slicer Blade", center:"Houston, TX", feedback:"No.", sentiment:"neutral"},
+  {company:"ENO POINTE ASSISTED LIVING", product:"Can Opener", center:"Pineville, NC", feedback:"Should have explained BEFORE bringing and charging us. This is LEASE only — we wanted purchase NOT lease.", sentiment:"actionable"},
+  {company:"MILLIE'S", product:"Food Processor Blade", center:"Boardman, OH", feedback:"Simple mistranslation through initial signup. Service was on hold but system sent blades on first delivery. Driver Dave handled it professionally.", sentiment:"actionable"},
+  {company:"CORCAFE", product:"Can Opener", center:"Boardman, OH", feedback:"I only open 3 cans a week.", sentiment:"neutral"},
+  {company:"COMPASS / HOMEWOOD AT MARTINSBURG", product:"Slicer Blade", center:"Boardman, OH", feedback:"You never have the slicer blade for our slicer. We didn't stop the service — you have never performed it.", sentiment:"actionable"},
+  {company:"COMPASS / ST JOSEPH ST AUGUSTINE", product:"Slicer Blade", center:"Orlando, FL", feedback:"Allison Dusak is awesome! Issue on our end — maintenance could not remove our old slicer blade.", sentiment:"positive"},
   {company:"JASON'S DELI - IRVING", product:"Food Processor Blade", center:"Houston, TX", feedback:"Don't offer a service you can't do well. Screws left unsecured/missing, cross-threaded, causing unit replacements. Costs many times over.", sentiment:"negative"},
-  {company:"MIDTOWN ATHLETIC CLUB", product:"Slicer Blade", center:"Orlando, FL", feedback:"N/A", sentiment:"neutral"},
-  {company:"CRANKY PAT'S", product:"Slicer Blade", center:"Elk Grove, IL", feedback:"No", sentiment:"neutral"},
-  {company:"K2 ON THE KORNER", product:"Food Processor Blade", center:"Boardman, OH", feedback:"No", sentiment:"neutral"},
-  {company:"TC4 / TONY C'S PIZZA", product:"Slicer Blade", center:"Houston, TX", feedback:"No", sentiment:"neutral"},
+  {company:"COMPASS / REYNOLDS AND REYNOLDS", product:"Slicer Blade", center:"Houston, TX", feedback:"The slicer blades provided were for a different model slicer and never fit our machine correctly. After multiple occurrences we were told we should cancel.", sentiment:"actionable"},
+  {company:"CRANKY PAT'S", product:"Slicer Blade", center:"Elk Grove, IL", feedback:"No.", sentiment:"neutral"},
 ];
 
 function getProductTag(product) {
-  const map = { 'Food Processor Blade': ['tag-fp','FP Blade'], 'Slicer Blade': ['tag-sl','Slicer'], 'Can Opener': ['tag-co','Can Opener'], 'Sharpening Steel': ['tag-ss','Steel'], 'Other': ['tag-other','Other'] };
+  const map = { 'Food Processor Blade': ['tag-fp','FP Blade'], 'Slicer Blade': ['tag-sl','Slicer'], 'Can Opener': ['tag-co','Can Opener'], 'Sharpening Steel': ['tag-ss','Steel'], 'Grinder Plate': ['tag-other','Grinder'] };
   const [cls, label] = map[product] || ['tag-other', product];
   return `<span class="tag ${cls}">${label}</span>`;
 }
