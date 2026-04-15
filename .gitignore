@@ -1,7 +1,8 @@
-# Watcher internals
-watcher.py
+# Watcher internals (root copies — setup/ copies ARE tracked)
+/watcher.py
 watcher.log
 .processed_files.json
+__pycache__/
 
 # Data files (not for GitHub Pages)
 *.xlsx
