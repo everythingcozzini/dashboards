@@ -152,7 +152,7 @@
       <div class="subtitle">Customer loyalty &amp; recommendation analysis &mdash; Cozzini Bros</div>
     </div>
   </div>
-  <div class="date-badge">Survey Period: Jan 21 &ndash; 26, 2026</div>
+  <div class="date-badge">Survey Period: Jan 21, 2026 &ndash; Jan 26, 2026</div>
 </div>
 
 <div class="container">
@@ -320,7 +320,7 @@ new Chart(document.getElementById('distChart'), {
   type: 'bar',
   data: {
     labels: ['1','2','3','4','5','6','7','8','9','10'],
-    datasets: [{ data: [21,12,12,4,12,9,13,15,25,126], backgroundColor: distColors, borderRadius: 4, barPercentage: 0.8 }]
+    datasets: [{ data: [21, 12, 12, 4, 12, 9, 13, 14, 25, 120], backgroundColor: distColors, borderRadius: 4, barPercentage: 0.8 }]
   },
   options: {
     responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false },
@@ -343,29 +343,19 @@ new Chart(document.getElementById('splitChart'), {
   type: 'doughnut',
   data: {
     labels: ['Promoters (9-10)','Passives (7-8)','Detractors (1-6)'],
-    datasets: [{ data: [151, 28, 70], backgroundColor: ['#8ebf7b','#d4a45e','#d4918b'], borderWidth: 3, borderColor: '#fff' }]
+    datasets: [{ data: [145, 27, 70], backgroundColor: ['#8ebf7b','#d4a45e','#d4918b'], borderWidth: 3, borderColor: '#fff' }]
   },
   options: {
     responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, cutout: '55%',
     plugins: {
       legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } },
-      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} (${(ctx.raw/249*100).toFixed(1)}%)` } }
+      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} (${(ctx.raw/242*100).toFixed(1)}%)` } }
     }
   }
 });
 
 /* --- NPS by Sharpening Center (horizontal bar) --- */
-const centerData = [
-  { name: 'Orlando, FL', nps: 69.2, n: 13 },
-  { name: 'Boardman, OH', nps: 59.1, n: 22 },
-  { name: 'Pineville, NC', nps: 48.3, n: 29 },
-  { name: 'Houston, TX', nps: 41.5, n: 41 },
-  { name: 'Cerritos, CA', nps: 36.8, n: 19 },
-  { name: 'Tukwila, WA', nps: 36.4, n: 11 },
-  { name: 'Elk Grove, IL', nps: 34.7, n: 49 },
-  { name: 'Hopewell Junction, NY', nps: -10.4, n: 48 },
-  { name: 'Stockton, CA', nps: -10.0, n: 10 }
-];
+const centerData = [{name: "Orlando, FL", nps: 69.2, n: 13}, {name: "Boardman, OH", nps: 59.1, n: 22}, {name: "Pineville, NC", nps: 48.3, n: 29}, {name: "Houston, TX", nps: 41.5, n: 41}, {name: "Cerritos, CA", nps: 36.8, n: 19}, {name: "Tukwila, WA", nps: 36.4, n: 11}, {name: "Elk Grove, IL", nps: 34.7, n: 49}, {name: "Stockton, CA", nps: -10.0, n: 10}, {name: "Hopewell Junction, NY", nps: -10.4, n: 48}];
 function npsColor(v) {
   if (v < 0) return '#d4918b';
   if (v <= 20) return '#d4cb7b';
@@ -410,47 +400,11 @@ new Chart(document.getElementById('volumeChart'), {
 });
 
 /* --- Drilldown Tables --- */
-const drillCenter = [
-  { center:'Orlando, FL', det:2, pas:0, pro:11, n:13, proP:'84.6', detP:'15.4', nps:'69.2', avg:'9.00' },
-  { center:'Boardman, OH', det:3, pas:3, pro:16, n:22, proP:'72.7', detP:'13.6', nps:'59.1', avg:'8.73' },
-  { center:'Pineville, NC', det:6, pas:3, pro:20, n:29, proP:'69.0', detP:'20.7', nps:'48.3', avg:'8.00' },
-  { center:'Houston, TX', det:11, pas:2, pro:28, n:41, proP:'68.3', detP:'26.8', nps:'41.5', avg:'8.07' },
-  { center:'Cerritos, CA', det:3, pas:6, pro:10, n:19, proP:'52.6', detP:'15.8', nps:'36.8', avg:'8.11' },
-  { center:'Tukwila, WA', det:3, pas:1, pro:7, n:11, proP:'63.6', detP:'27.3', nps:'36.4', avg:'7.18' },
-  { center:'Elk Grove, IL', det:13, pas:6, pro:30, n:49, proP:'61.2', detP:'26.5', nps:'34.7', avg:'7.61' },
-  { center:'Hopewell Junction, NY', det:24, pas:5, pro:19, n:48, proP:'39.6', detP:'50.0', nps:'-10.4', avg:'6.19' },
-  { center:'Stockton, CA', det:5, pas:1, pro:4, n:10, proP:'40.0', detP:'50.0', nps:'-10.0', avg:'6.40' }
-];
+const drillCenter = [{center: "Orlando, FL", det: 2, pas: 0, pro: 11, n: 13, proP: "84.6", detP: "15.4", nps: "69.2", avg: "9.00"}, {center: "Boardman, OH", det: 3, pas: 3, pro: 16, n: 22, proP: "72.7", detP: "13.6", nps: "59.1", avg: "8.73"}, {center: "Pineville, NC", det: 6, pas: 3, pro: 20, n: 29, proP: "69.0", detP: "20.7", nps: "48.3", avg: "8.00"}, {center: "Houston, TX", det: 11, pas: 2, pro: 28, n: 41, proP: "68.3", detP: "26.8", nps: "41.5", avg: "8.07"}, {center: "Cerritos, CA", det: 3, pas: 6, pro: 10, n: 19, proP: "52.6", detP: "15.8", nps: "36.8", avg: "8.11"}, {center: "Tukwila, WA", det: 3, pas: 1, pro: 7, n: 11, proP: "63.6", detP: "27.3", nps: "36.4", avg: "7.18"}, {center: "Elk Grove, IL", det: 13, pas: 6, pro: 30, n: 49, proP: "61.2", detP: "26.5", nps: "34.7", avg: "7.61"}, {center: "Stockton, CA", det: 5, pas: 1, pro: 4, n: 10, proP: "40.0", detP: "50.0", nps: "-10.0", avg: "6.40"}, {center: "Hopewell Junction, NY", det: 24, pas: 5, pro: 19, n: 48, proP: "39.6", detP: "50.0", nps: "-10.4", avg: "6.19"}];
 
-const drillDSD = [
-  { center:'Boardman, OH', dsd:'Lugo, Servey', det:0, pas:0, pro:3, n:3, nps:'100.0', avg:'10.00' },
-  { center:'Cerritos, CA', dsd:'Jakobs, Oliver', det:0, pas:1, pro:6, n:7, nps:'85.7', avg:'9.71' },
-  { center:'Orlando, FL', dsd:'Mintmire, Mark', det:2, pas:0, pro:11, n:13, nps:'69.2', avg:'9.00' },
-  { center:'Houston, TX', dsd:'Lugo, Servey', det:3, pas:1, pro:14, n:18, nps:'61.1', avg:'8.89' },
-  { center:'Boardman, OH', dsd:'Holt, Wesley', det:3, pas:3, pro:13, n:19, nps:'52.6', avg:'8.53' },
-  { center:'Elk Grove, IL', dsd:'Lugo, Servey', det:2, pas:1, pro:7, n:10, nps:'50.0', avg:'8.40' },
-  { center:'Elk Grove, IL', dsd:'Cutler, Jake', det:11, pas:5, pro:21, n:37, nps:'27.0', avg:'7.30' },
-  { center:'Houston, TX', dsd:'Jakobs, Oliver', det:8, pas:1, pro:13, n:22, nps:'22.7', avg:'7.32' },
-  { center:'Cerritos, CA', dsd:'Lugo, Servey', det:3, pas:5, pro:4, n:12, nps:'8.3', avg:'7.17' },
-  { center:'Hopewell Junction, NY', dsd:'Holt, Wesley', det:10, pas:3, pro:8, n:21, nps:'-9.5', avg:'6.00' },
-  { center:'Hopewell Junction, NY', dsd:'Mulvey, Kevin', det:14, pas:2, pro:11, n:27, nps:'-11.1', avg:'6.33' }
-];
+const drillDSD = [{center: "Boardman, OH", dsd: "Lugo, Servey", det: 0, pas: 0, pro: 3, n: 3, nps: "100.0", avg: "10.00"}, {center: "Elk Grove, IL", dsd: "Jakobs, Oliver", det: 0, pas: 0, pro: 2, n: 2, nps: "100.0", avg: "9.50"}, {center: "Houston, TX", dsd: "", det: 0, pas: 0, pro: 1, n: 1, nps: "100.0", avg: "10.00"}, {center: "Cerritos, CA", dsd: "Jakobs, Oliver", det: 0, pas: 1, pro: 6, n: 7, nps: "85.7", avg: "9.71"}, {center: "Orlando, FL", dsd: "Mintmire, Mark", det: 2, pas: 0, pro: 11, n: 13, nps: "69.2", avg: "9.00"}, {center: "Houston, TX", dsd: "Lugo, Servey", det: 3, pas: 1, pro: 14, n: 18, nps: "61.1", avg: "8.89"}, {center: "Pineville, NC", dsd: "Lugo, Servey", det: 2, pas: 1, pro: 8, n: 11, nps: "54.5", avg: "8.45"}, {center: "Boardman, OH", dsd: "Holt, Wesley", det: 3, pas: 3, pro: 13, n: 19, nps: "52.6", avg: "8.53"}, {center: "Elk Grove, IL", dsd: "Lugo, Servey", det: 2, pas: 1, pro: 7, n: 10, nps: "50.0", avg: "8.40"}, {center: "Pineville, NC", dsd: "Mintmire, Mark", det: 4, pas: 2, pro: 12, n: 18, nps: "44.4", avg: "7.72"}, {center: "Tukwila, WA", dsd: "Jakobs, Oliver", det: 3, pas: 1, pro: 7, n: 11, nps: "36.4", avg: "7.18"}, {center: "Elk Grove, IL", dsd: "Cutler, Jake", det: 11, pas: 5, pro: 21, n: 37, nps: "27.0", avg: "7.30"}, {center: "Houston, TX", dsd: "Jakobs, Oliver", det: 8, pas: 1, pro: 13, n: 22, nps: "22.7", avg: "7.32"}, {center: "Cerritos, CA", dsd: "Lugo, Servey", det: 3, pas: 5, pro: 4, n: 12, nps: "8.3", avg: "7.17"}, {center: "Hopewell Junction, NY", dsd: "Holt, Wesley", det: 10, pas: 3, pro: 8, n: 21, nps: "-9.5", avg: "6.00"}, {center: "Stockton, CA", dsd: "Jakobs, Oliver", det: 5, pas: 1, pro: 4, n: 10, nps: "-10.0", avg: "6.40"}, {center: "Hopewell Junction, NY", dsd: "Mulvey, Kevin", det: 14, pas: 2, pro: 11, n: 27, nps: "-11.1", avg: "6.33"}];
 
-const drillAM = [
-  { center:'Boardman, OH', dsd:'Lugo, Servey', am:'Witmer, Michael', det:0, pas:0, pro:2, n:2, nps:'100.0', avg:'10.00' },
-  { center:'Boardman, OH', dsd:'Lugo, Servey', am:'Breniser, Justin', det:0, pas:0, pro:1, n:1, nps:'100.0', avg:'10.00' },
-  { center:'Boardman, OH', dsd:'Holt, Wesley', am:'Wright, Kenneth', det:0, pas:0, pro:2, n:2, nps:'100.0', avg:'10.00' },
-  { center:'Cerritos, CA', dsd:'Jakobs, Oliver', am:'Turino, John', det:0, pas:1, pro:6, n:7, nps:'85.7', avg:'9.71' },
-  { center:'Boardman, OH', dsd:'Holt, Wesley', am:'Buchowski, Jeff', det:0, pas:1, pro:5, n:6, nps:'83.3', avg:'9.50' },
-  { center:'Elk Grove, IL', dsd:'Cutler, Jake', am:'Fielder, John', det:1, pas:1, pro:4, n:6, nps:'50.0', avg:'8.17' },
-  { center:'Boardman, OH', dsd:'Holt, Wesley', am:'Britton, Dave', det:0, pas:1, pro:1, n:2, nps:'50.0', avg:'9.00' },
-  { center:'Elk Grove, IL', dsd:'Lugo, Servey', am:'Adams, Eric', det:2, pas:0, pro:4, n:6, nps:'33.3', avg:'7.83' },
-  { center:'Boardman, OH', dsd:'Holt, Wesley', am:'Manier, Titus', det:2, pas:0, pro:3, n:5, nps:'20.0', avg:'7.80' },
-  { center:'Elk Grove, IL', dsd:'Cutler, Jake', am:'Easterday, Elizabeth', det:5, pas:0, pro:7, n:12, nps:'16.7', avg:'6.83' },
-  { center:'Cerritos, CA', dsd:'Lugo, Servey', am:'Hampton, Alexander', det:2, pas:3, pro:3, n:8, nps:'12.5', avg:'7.38' },
-  { center:'Cerritos, CA', dsd:'Lugo, Servey', am:'Redaja, Frederick', det:1, pas:2, pro:1, n:4, nps:'0.0', avg:'6.75' },
-  { center:'Boardman, OH', dsd:'Holt, Wesley', am:'Wallace, Jeni', det:1, pas:1, pro:2, n:4, nps:'25.0', avg:'7.00' }
-];
+const drillAM = [{center: "Boardman, OH", dsd: "Holt, Wesley", am: "Wright, Kenneth", det: 0, pas: 0, pro: 2, n: 2, nps: "100.0", avg: "10.00"}, {center: "Boardman, OH", dsd: "Lugo, Servey", am: "Witmer, Michael", det: 0, pas: 0, pro: 2, n: 2, nps: "100.0", avg: "10.00"}, {center: "Boardman, OH", dsd: "Lugo, Servey", am: "Breniser, Justin", det: 0, pas: 0, pro: 1, n: 1, nps: "100.0", avg: "10.00"}, {center: "Elk Grove, IL", dsd: "Cutler, Jake", am: "Garcia, Alex", det: 0, pas: 0, pro: 2, n: 2, nps: "100.0", avg: "9.50"}, {center: "Elk Grove, IL", dsd: "Jakobs, Oliver", am: "Berner, Jim", det: 0, pas: 0, pro: 2, n: 2, nps: "100.0", avg: "9.50"}, {center: "Houston, TX", dsd: "Lugo, Servey", am: "Franklin, John", det: 0, pas: 0, pro: 4, n: 4, nps: "100.0", avg: "9.75"}, {center: "Houston, TX", dsd: "Jakobs, Oliver", am: "Medrano-Contreras, Alan", det: 0, pas: 0, pro: 1, n: 1, nps: "100.0", avg: "10.00"}, {center: "Houston, TX", dsd: "", am: "Medrano, Ruben", det: 0, pas: 0, pro: 1, n: 1, nps: "100.0", avg: "10.00"}, {center: "Orlando, FL", dsd: "Mintmire, Mark", am: "Morrow, Shaun", det: 0, pas: 0, pro: 4, n: 4, nps: "100.0", avg: "9.75"}, {center: "Orlando, FL", dsd: "Mintmire, Mark", am: "Abbruscato, Peter", det: 0, pas: 0, pro: 3, n: 3, nps: "100.0", avg: "10.00"}, {center: "Orlando, FL", dsd: "Mintmire, Mark", am: "Onni, Lesley", det: 0, pas: 0, pro: 1, n: 1, nps: "100.0", avg: "10.00"}, {center: "Pineville, NC", dsd: "Mintmire, Mark", am: "Brom, Walter", det: 0, pas: 0, pro: 4, n: 4, nps: "100.0", avg: "9.75"}, {center: "Cerritos, CA", dsd: "Jakobs, Oliver", am: "Turino, John", det: 0, pas: 1, pro: 6, n: 7, nps: "85.7", avg: "9.71"}, {center: "Boardman, OH", dsd: "Holt, Wesley", am: "Buchowski, Jeff", det: 0, pas: 1, pro: 5, n: 6, nps: "83.3", avg: "9.50"}, {center: "Elk Grove, IL", dsd: "Lugo, Servey", am: "Breniser, Justin", det: 0, pas: 1, pro: 3, n: 4, nps: "75.0", avg: "9.25"}, {center: "Pineville, NC", dsd: "Mintmire, Mark", am: "Cochran, Jr., Kenneth", det: 1, pas: 0, pro: 7, n: 8, nps: "75.0", avg: "8.75"}, {center: "Elk Grove, IL", dsd: "Cutler, Jake", am: "Cutler, Jake", det: 0, pas: 1, pro: 2, n: 3, nps: "66.7", avg: "8.67"}, {center: "Houston, TX", dsd: "Lugo, Servey", am: "Schroeder, Robert", det: 2, pas: 0, pro: 8, n: 10, nps: "60.0", avg: "8.90"}, {center: "Houston, TX", dsd: "Jakobs, Oliver", am: "Thoroughman, Robert", det: 1, pas: 0, pro: 4, n: 5, nps: "60.0", avg: "8.40"}, {center: "Pineville, NC", dsd: "Lugo, Servey", am: "McCrory, Matthew", det: 1, pas: 0, pro: 4, n: 5, nps: "60.0", avg: "8.20"}, {center: "Hopewell Junction, NY", dsd: "Mulvey, Kevin", am: "Cartright, Rommel", det: 2, pas: 0, pro: 7, n: 9, nps: "55.6", avg: "8.22"}, {center: "Boardman, OH", dsd: "Holt, Wesley", am: "Britton, Dave", det: 0, pas: 1, pro: 1, n: 2, nps: "50.0", avg: "9.00"}, {center: "Elk Grove, IL", dsd: "Cutler, Jake", am: "Fielder, John", det: 1, pas: 1, pro: 4, n: 6, nps: "50.0", avg: "8.17"}, {center: "Houston, TX", dsd: "Lugo, Servey", am: "McCrory, Matthew", det: 0, pas: 1, pro: 1, n: 2, nps: "50.0", avg: "9.00"}, {center: "Pineville, NC", dsd: "Lugo, Servey", am: "Macauley, Sean", det: 1, pas: 1, pro: 4, n: 6, nps: "50.0", avg: "8.67"}, {center: "Tukwila, WA", dsd: "Jakobs, Oliver", am: "Couey, James", det: 3, pas: 1, pro: 7, n: 11, nps: "36.4", avg: "7.18"}, {center: "Elk Grove, IL", dsd: "Lugo, Servey", am: "Adams, Eric", det: 2, pas: 0, pro: 4, n: 6, nps: "33.3", avg: "7.83"}, {center: "Boardman, OH", dsd: "Holt, Wesley", am: "Wallace, Jeni", det: 1, pas: 1, pro: 2, n: 4, nps: "25.0", avg: "7.00"}, {center: "Elk Grove, IL", dsd: "Cutler, Jake", am: "Johnson, Ashley", det: 0, pas: 3, pro: 1, n: 4, nps: "25.0", avg: "7.75"}, {center: "Houston, TX", dsd: "Jakobs, Oliver", am: "Medrano, Ruben", det: 3, pas: 0, pro: 5, n: 8, nps: "25.0", avg: "7.00"}, {center: "Boardman, OH", dsd: "Holt, Wesley", am: "Manier, Titus", det: 2, pas: 0, pro: 3, n: 5, nps: "20.0", avg: "7.80"}, {center: "Elk Grove, IL", dsd: "Cutler, Jake", am: "Gajda, James", det: 2, pas: 0, pro: 3, n: 5, nps: "20.0", avg: "7.80"}, {center: "Orlando, FL", dsd: "Mintmire, Mark", am: "Sword, Richard", det: 2, pas: 0, pro: 3, n: 5, nps: "20.0", avg: "7.60"}, {center: "Stockton, CA", dsd: "Jakobs, Oliver", am: "Figueroa, Alex", det: 2, pas: 0, pro: 3, n: 5, nps: "20.0", avg: "6.60"}, {center: "Elk Grove, IL", dsd: "Cutler, Jake", am: "Easterday, Elizabeth", det: 5, pas: 0, pro: 7, n: 12, nps: "16.7", avg: "6.83"}, {center: "Cerritos, CA", dsd: "Lugo, Servey", am: "Hampton, Alexander", det: 2, pas: 3, pro: 3, n: 8, nps: "12.5", avg: "7.38"}, {center: "Hopewell Junction, NY", dsd: "Holt, Wesley", am: "Buchowski, Jeff", det: 3, pas: 1, pro: 4, n: 8, nps: "12.5", avg: "6.88"}, {center: "Cerritos, CA", dsd: "Lugo, Servey", am: "Redaja, Frederick", det: 1, pas: 2, pro: 1, n: 4, nps: "0.0", avg: "6.75"}, {center: "Elk Grove, IL", dsd: "Cutler, Jake", am: "Brown, Lorenzo", det: 1, pas: 0, pro: 1, n: 2, nps: "0.0", avg: "6.00"}, {center: "Houston, TX", dsd: "Jakobs, Oliver", am: "Burris, Andrew", det: 2, pas: 0, pro: 2, n: 4, nps: "0.0", avg: "7.25"}, {center: "Houston, TX", dsd: "Lugo, Servey", am: "Rognstad, Dan", det: 1, pas: 0, pro: 1, n: 2, nps: "0.0", avg: "7.00"}, {center: "Hopewell Junction, NY", dsd: "Holt, Wesley", am: "Boyce, Jamey", det: 3, pas: 0, pro: 2, n: 5, nps: "-20.0", avg: "5.40"}, {center: "Hopewell Junction, NY", dsd: "Mulvey, Kevin", am: "Denly, James", det: 3, pas: 0, pro: 2, n: 5, nps: "-20.0", avg: "7.00"}, {center: "Hopewell Junction, NY", dsd: "Holt, Wesley", am: "McFadyen, Edward", det: 4, pas: 2, pro: 2, n: 8, nps: "-25.0", avg: "5.50"}, {center: "Houston, TX", dsd: "Jakobs, Oliver", am: "Cronk, Eric", det: 2, pas: 1, pro: 1, n: 4, nps: "-25.0", avg: "6.00"}, {center: "Stockton, CA", dsd: "Jakobs, Oliver", am: "Hampstead, Craig", det: 2, pas: 1, pro: 1, n: 4, nps: "-25.0", avg: "7.50"}, {center: "Elk Grove, IL", dsd: "Cutler, Jake", am: "Herrera, Gilbert", det: 2, pas: 0, pro: 1, n: 3, nps: "-33.3", avg: "4.00"}, {center: "Pineville, NC", dsd: "Mintmire, Mark", am: "Hammer, Billy", det: 3, pas: 2, pro: 1, n: 6, nps: "-33.3", avg: "5.00"}, {center: "Hopewell Junction, NY", dsd: "Mulvey, Kevin", am: "Herrera, Eladio", det: 6, pas: 1, pro: 2, n: 9, nps: "-44.4", avg: "5.44"}, {center: "Hopewell Junction, NY", dsd: "Mulvey, Kevin", am: "Maganzini, Christian", det: 1, pas: 1, pro: 0, n: 2, nps: "-50.0", avg: "4.00"}, {center: "Hopewell Junction, NY", dsd: "Mulvey, Kevin", am: "Jenkins, Todd", det: 2, pas: 0, pro: 0, n: 2, nps: "-100.0", avg: "2.50"}, {center: "Stockton, CA", dsd: "Jakobs, Oliver", am: "Mendoza, Glen", det: 1, pas: 0, pro: 0, n: 1, nps: "-100.0", avg: "1.00"}];
 
 function npsPill(val) {
   const n = parseFloat(val);
