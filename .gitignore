@@ -1,0 +1,18 @@
+# Watcher internals
+watcher.py
+watcher.log
+.processed_files.json
+
+# Data files (not for GitHub Pages)
+*.xlsx
+*.xls
+
+# System
+.DS_Store
+.claude/
+
+# Old drafts
+product-churn-dashboard.html
+dashboards.png
+dashboards2.png
+product_churn.xlsx
