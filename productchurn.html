@@ -83,6 +83,8 @@
   .sentiment-negative { color: var(--cozzini-red); font-weight: 600; }
   .sentiment-neutral { color: var(--text-muted); font-weight: 600; }
   .sentiment-actionable { color: #d4cb7b; font-weight: 600; }
+  .section-title { font-size: 18px; font-weight: 700; color: var(--cozzini-navy); margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  thead th.num, tbody td.num { text-align: right; }
 
   .footer {
     background: #111; padding: 28px 40px;
@@ -175,6 +177,22 @@
     </div>
   </div>
 
+  <!-- Org Drilldown -->
+  <div class="section-title">Cancellations by Organization</div>
+  <div class="feedback-section">
+    <div class="feedback-filters">
+      <button class="filter-btn active" onclick="showDrill('center',this)">By Sharpening Center</button>
+      <button class="filter-btn" onclick="showDrill('dsd',this)">By Sharpening Center + DSD</button>
+      <button class="filter-btn" onclick="showDrill('am',this)">By Sharpening Center + DSD + Area Manager</button>
+    </div>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead id="drillHead"></thead>
+      <tbody id="drillBody"></tbody>
+    </table>
+    </div>
+  </div>
+
   <div class="feedback-section">
     <h3>Customer Verbatim Feedback</h3>
     <div class="sub">Open-ended responses to "Is there anything we could have done differently?"</div>
@@ -263,6 +281,55 @@ new Chart(document.getElementById('tenureChart'), {
   options: { responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false }, scales: { y: { grid: { color: '#f5f5f5' }, ticks: { stepSize: 1 }, beginAtZero: true }, x: { grid: { display: false } } }, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} product cancellations` } } } }
 });
 
+/* --- Org Drilldown --- */
+const drillCenter = [
+  {center:"Houston, TX",n:7},{center:"Boardman, OH",n:6},{center:"Elk Grove, IL",n:4},
+  {center:"Orlando, FL",n:3},{center:"Pineville, NC",n:3},{center:"Stockton, CA",n:3},
+  {center:"Tukwila, WA",n:2},{center:"Hopewell Junction, NY",n:2},{center:"Cerritos, CA",n:1}
+];
+const drillDSD = [
+  {center:"Boardman, OH",dsd:"Holt, Wesley",n:5},{center:"Houston, TX",dsd:"Jakobs, Oliver",n:5},
+  {center:"Elk Grove, IL",dsd:"Cutler, Jake",n:3},{center:"Orlando, FL",dsd:"Mintmire, Mark",n:3},
+  {center:"Pineville, NC",dsd:"Mintmire, Mark",n:3},{center:"Stockton, CA",dsd:"Smith, John",n:3},
+  {center:"Houston, TX",dsd:"Lugo, Servey",n:2},{center:"Tukwila, WA",dsd:"Smith, John",n:2},
+  {center:"Boardman, OH",dsd:"Lugo, Servey",n:1},{center:"Cerritos, CA",dsd:"Smith, John",n:1},
+  {center:"Elk Grove, IL",dsd:"Jakobs, Oliver",n:1},{center:"Hopewell Junction, NY",dsd:"Mulvey, Kevin",n:1},
+  {center:"Hopewell Junction, NY",dsd:"Holt, Wesley",n:1}
+];
+const drillAM = [
+  {center:"Boardman, OH",dsd:"Holt, Wesley",ams:"Britton, Buchowski, Wright",n:5},
+  {center:"Houston, TX",dsd:"Jakobs, Oliver",ams:"Burris, Cochran Jr., Medrano, Schroeder, Thoroughman",n:5},
+  {center:"Elk Grove, IL",dsd:"Cutler, Jake",ams:"Fielder, Miller",n:3},
+  {center:"Orlando, FL",dsd:"Mintmire, Mark",ams:"Abbruscato, Davidson, Onni",n:3},
+  {center:"Pineville, NC",dsd:"Mintmire, Mark",ams:"Brom, Medrano-Contreras",n:3},
+  {center:"Stockton, CA",dsd:"Smith, John",ams:"Caballero, McCrory, Mendoza",n:3},
+  {center:"Houston, TX",dsd:"Lugo, Servey",ams:"Cutler, Jenkins",n:2},
+  {center:"Tukwila, WA",dsd:"Smith, John",ams:"Couey",n:2},
+  {center:"Boardman, OH",dsd:"Lugo, Servey",ams:"Breniser",n:1},
+  {center:"Cerritos, CA",dsd:"Smith, John",ams:"Hampton",n:1},
+  {center:"Elk Grove, IL",dsd:"Jakobs, Oliver",ams:"Berner",n:1},
+  {center:"Hopewell Junction, NY",dsd:"Mulvey, Kevin",ams:"Denly",n:1},
+  {center:"Hopewell Junction, NY",dsd:"Holt, Wesley",ams:"Boyce",n:1}
+];
+
+function showDrill(view, btn) {
+  document.querySelectorAll('.feedback-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const head = document.getElementById('drillHead');
+  const body = document.getElementById('drillBody');
+  if (view === 'center') {
+    head.innerHTML = '<tr><th>Sharpening Center</th><th class="num">Cancellations</th></tr>';
+    body.innerHTML = drillCenter.map(d => `<tr><td style="font-weight:600;">${d.center}</td><td class="num">${d.n}</td></tr>`).join('');
+  } else if (view === 'dsd') {
+    head.innerHTML = '<tr><th>Sharpening Center</th><th>DSD</th><th class="num">Cancellations</th></tr>';
+    body.innerHTML = drillDSD.map(d => `<tr><td style="font-weight:600;">${d.center}</td><td>${d.dsd}</td><td class="num">${d.n}</td></tr>`).join('');
+  } else {
+    head.innerHTML = '<tr><th>Sharpening Center</th><th>DSD</th><th>Area Managers</th><th class="num">Cancellations</th></tr>';
+    body.innerHTML = drillAM.map(d => `<tr><td style="font-weight:600;font-size:12px;">${d.center}</td><td style="font-size:12px;">${d.dsd}</td><td style="font-size:12px;">${d.ams}</td><td class="num">${d.n}</td></tr>`).join('');
+  }
+}
+showDrill('center', document.querySelector('.feedback-filters .filter-btn'));
+
 const feedback = [{company: "WARHORSE CASINO OMAHA : WARHORSE CASINO OMAHA/ NEBRASKA ALE HAUS", product: "food processor blade", center: "Elk Grove, IL", feedback: "No.  I will just buy new blades if needed.  I need the sales rep to see me about new restaurants in Lincoln", sentiment: "neutral"}, {company: "THE COOKED GOOSE", product: "slicer blade", center: "Hopewell Junction, NY", feedback: "No. Your knife service is great", sentiment: "positive"}, {company: "NEXT LEVEL HOSPITALITY SERVICES : ARAMARK/ DADE CITY HEALTH AND REHABILITATION CENTER", product: "food processor blade", center: "Orlando, FL", feedback: "Follow through with agreement made", sentiment: "actionable"}, {company: "COMPASS GROUP : COMPASS- LAMBETH HOUSE RETIREMENT COMMUNITY - INDEPENDENT & ASSISTED LIVING", product: "slicer blade", center: "Houston, TX", feedback: "We will return use at the end of the year", sentiment: "neutral"}, {company: "CO RESTAURANT", product: "slicer blade", center: "Pineville, NC", feedback: "Stop texting me 3 times already this morning", sentiment: "neutral"}, {company: "WEDGEWOOD CHEESE BAR", product: "slicer blade", center: "Pineville, NC", feedback: "Properly equip technicians to remove blades", sentiment: "actionable"}, {company: "PARKHURST DINING : PARKHURST / COVESTRO", product: "food processor blade", center: "Boardman, OH", feedback: "Still want the service", sentiment: "neutral"}, {company: "DREAM KABOB", product: "grinder plate", center: "Cerritos, CA", feedback: "We never ordered the blade but have been getting charged for it! We asked the sales rep to fix it, she never did.", sentiment: "actionable"}, {company: "B", product: "slicer blade", center: "Stockton, CA", feedback: "No, you have done a very good job, but we do not use the Globe slicer at this time.", sentiment: "positive"}, {company: "SANTA CLARA POST-ACUTE", product: "food processor blade", center: "Stockton, CA", feedback: "Your services are excellent and we are very pleased with it", sentiment: "positive"}, {company: "FOCUS BRANDS : MCALISTER'S DELI", product: "slicer blade", center: "Houston, TX", feedback: "Just don\u2019t need slicer blade service. Only what you\u2019re currently doing now.", sentiment: "neutral"}, {company: "ENO POINTE ASSISTED LIVING", product: "Cozzini stainless steel can opener", center: "Pineville, NC", feedback: "Explained BEFORE bringing and charging us the specifics, including that this is LEASE only and should have discussed the pricing with us PRIOR to dropping off can opener. We were interested in purchase NOT a lease. We had asked for a quote and instead got a drop off can opener.", sentiment: "actionable"}, {company: "Millie's", product: "food processor blade", center: "Boardman, OH", feedback: "No, it was a simple mistranslation through our initial signup and the delivery process.", sentiment: "actionable"}, {company: "CORCAFE", product: "CAN-SSCOP", center: "Boardman, OH", feedback: "No. I only open 3 cans a week", sentiment: "neutral"}, {company: "COMPASS GROUP : MORR/SDS-HOMEWOOD AT MARTINSBURG", product: "slicer blade", center: "Boardman, OH", feedback: "Have correct slicer blade for our slicer", sentiment: "neutral"}, {company: "COMPASS GROUP : CCL/SR ST JOSEPH ST AUGUSTINE", product: "SLCR-EDGE-4H", center: "Orlando, FL", feedback: "No  Allison Dusak is awesome!", sentiment: "positive"}, {company: "JASON'S DELI : JASON'S DELI-IRVING", product: "food processor blade", center: "Houston, TX", feedback: "Don't offer a service you can't do well (we stopped using your service for our Bizerba slicer a while back for same reason", sentiment: "actionable"}, {company: "COMPASS GROUP : COMP/EUREST REYNOLDS AND REYNOLDS COLLEGE STATION", product: "slicer blade", center: "Houston, TX", feedback: "The slicer blades provided were for a different model slicer and never fit our machine correctly. After multiple occurrences of this issue we were told we should cancel because issue would keep happening", sentiment: "actionable"}];
 
 function getProductTag(product) {
@@ -281,6 +348,17 @@ function filterFeedback(filter) {
   renderFeedback(filter);
 }
 renderFeedback('all');
+
+// Update survey period end date to today
+(function() {
+  const badge = document.querySelector('.date-badge');
+  if (badge) {
+    const today = new Date();
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const endDate = months[today.getMonth()] + ' ' + String(today.getDate()).padStart(2,'0') + ', ' + today.getFullYear();
+    badge.innerHTML = badge.innerHTML.replace(/&ndash;[^<]+/, '\u2013 ' + endDate);
+  }
+})();
 </script>
 </body>
 </html>

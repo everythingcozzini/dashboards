@@ -432,6 +432,17 @@ function filterFeedback(filter, btn) {
   renderFeedback(filter);
 }
 renderFeedback('all');
+
+// Update survey period end date to today
+(function() {
+  const badge = document.querySelector('.date-badge');
+  if (badge) {
+    const today = new Date();
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const endDate = months[today.getMonth()] + ' ' + String(today.getDate()).padStart(2,'0') + ', ' + today.getFullYear();
+    badge.innerHTML = badge.innerHTML.replace(/&ndash;[^<]+/, '\u2013 ' + endDate);
+  }
+})();
 </script>
 </body>
 </html>
