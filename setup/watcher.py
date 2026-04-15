@@ -1340,6 +1340,7 @@ def process_file(filepath):
                 "processed_at": timestamp,
                 "dashboard": "am_reference",
                 "files_updated": updated_files,
+                "signature": _file_signature(filepath),
             }
             save_processed(processed)
             if updated_files:
@@ -1350,12 +1351,13 @@ def process_file(filepath):
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
             git_push(updated_files, f"Auto-update {', '.join(updated_files)} from {filename} ({timestamp})")
 
-            # Log as processed
+            # Log as processed with a content signature so re-saved files re-trigger
             processed = load_processed()
             processed[filename] = {
                 "processed_at": timestamp,
                 "dashboard": dash_type,
                 "files_updated": updated_files,
+                "signature": _file_signature(filepath),
             }
             save_processed(processed)
 
@@ -1411,23 +1413,46 @@ class DashboardHandler(FileSystemEventHandler):
         # Wait for file to finish writing (OneDrive sync can be slow)
         time.sleep(3)
 
-        # Check if already processed (same file, same size)
-        processed = load_processed()
-        if filename in processed:
-            log.info(f"  Already processed: {filename} — skipping")
+        # Skip only if the EXACT same bytes were already processed.
+        # Use size+mtime signature so re-saved / replaced files trigger refresh.
+        if _already_processed(filepath, filename):
+            log.info(f"  Already processed (same content): {filename} — skipping")
             return
 
         process_file(filepath)
+
+
+def _file_signature(filepath):
+    """Return a stable signature for (size, mtime) so we detect file changes."""
+    try:
+        st = os.stat(filepath)
+        return f"{st.st_size}:{int(st.st_mtime)}"
+    except OSError:
+        return None
+
+
+def _already_processed(filepath, filename):
+    """True only if the file is logged AND its current signature matches."""
+    processed = load_processed()
+    entry = processed.get(filename)
+    if not entry:
+        return False
+    # Older entries (no signature field) → re-process once to attach a signature
+    prev_sig = entry.get("signature")
+    if not prev_sig:
+        return False
+    return _file_signature(filepath) == prev_sig
 
 
 def main():
     if "--once" in sys.argv:
         # Process all unprocessed Excel files and exit
         log.info("=== Running once — processing all pending files ===")
-        processed = load_processed()
         for f in sorted(DASH_DIR.glob("*.xlsx")):
-            if f.name not in processed:
+            if not _already_processed(str(f), f.name):
                 process_file(str(f))
+            else:
+                log.info(f"  Already processed (same content): {f.name} — skipping")
         log.info("=== Done ===")
         return
 
