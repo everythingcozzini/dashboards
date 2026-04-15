@@ -14,7 +14,10 @@ watcher.log
 # Watcher wrapper / log (launch agent)
 run-watcher.sh
 
-# Old drafts
+# Archive (old files)
+archive/
+
+# Old drafts (legacy entries)
 product-churn-dashboard.html
 dashboards.png
 dashboards2.png
