@@ -161,23 +161,23 @@
   <div class="kpi-row">
     <div class="kpi-card positive">
       <div class="label">NPS Score</div>
-      <div class="value">+31.0</div>
+      <div class="value">+32.5</div>
       <div class="detail">Strong (21&ndash;50 range)</div>
     </div>
     <div class="kpi-card">
       <div class="label">Total Responses</div>
-      <div class="value">242</div>
+      <div class="value">249</div>
       <div class="detail">Existing customers surveyed</div>
     </div>
     <div class="kpi-card positive">
       <div class="label">Promoters (9&ndash;10)</div>
-      <div class="value">59.9%</div>
-      <div class="detail">145 of 242 respondents</div>
+      <div class="value">60.6%</div>
+      <div class="detail">151 of 249 respondents</div>
     </div>
     <div class="kpi-card alert">
       <div class="label">Detractors (1&ndash;6)</div>
-      <div class="value">28.9%</div>
-      <div class="detail">70 of 242 respondents</div>
+      <div class="value">28.1%</div>
+      <div class="detail">70 of 249 respondents</div>
     </div>
   </div>
 
@@ -320,7 +320,7 @@ new Chart(document.getElementById('distChart'), {
   type: 'bar',
   data: {
     labels: ['1','2','3','4','5','6','7','8','9','10'],
-    datasets: [{ data: [21, 12, 12, 4, 12, 9, 13, 14, 25, 120], backgroundColor: distColors, borderRadius: 4, barPercentage: 0.8 }]
+    datasets: [{ data: [21, 12, 12, 4, 12, 9, 13, 15, 25, 126], backgroundColor: distColors, borderRadius: 4, barPercentage: 0.8 }]
   },
   options: {
     responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false },
@@ -343,13 +343,13 @@ new Chart(document.getElementById('splitChart'), {
   type: 'doughnut',
   data: {
     labels: ['Promoters (9-10)','Passives (7-8)','Detractors (1-6)'],
-    datasets: [{ data: [145, 27, 70], backgroundColor: ['#8ebf7b','#d4a45e','#d4918b'], borderWidth: 3, borderColor: '#fff' }]
+    datasets: [{ data: [151, 28, 70], backgroundColor: ['#8ebf7b','#d4a45e','#d4918b'], borderWidth: 3, borderColor: '#fff' }]
   },
   options: {
     responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, cutout: '55%',
     plugins: {
       legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } },
-      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} (${(ctx.raw/242*100).toFixed(1)}%)` } }
+      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} (${(ctx.raw/249*100).toFixed(1)}%)` } }
     }
   }
 });
