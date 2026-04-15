@@ -41,6 +41,7 @@ from watchdog.events import FileSystemEventHandler
 DASH_DIR = Path(__file__).resolve().parent
 LOG_FILE = DASH_DIR / "watcher.log"
 PROCESSED_LOG = DASH_DIR / ".processed_files.json"
+AM_CACHE = DASH_DIR / ".am_reference.json"  # DSD → [AM names] lookup for NPS drilldown
 
 logging.basicConfig(
     level=logging.INFO,
@@ -72,6 +73,10 @@ def classify_file(filename):
     if not fn.endswith((".xlsx", ".xls")):
         return None, None
 
+    # Area Manager reference file — caches DSD→AM mapping for NPS drilldown
+    if "dsd" in fn and "am" in fn:
+        return "am_reference", None
+
     if "nps" in fn and "existing" in fn:
         return "nps", None
     if "customer" in fn and "churn" in fn:
@@ -94,6 +99,53 @@ def classify_file(filename):
         if "invoice" in fn:
             return "ces", "invoice_payment"
     return None, None
+
+
+def parse_am_reference(filepath):
+    """Parse the DSD/AM reference spreadsheet and cache DSD→AM mapping to JSON.
+
+    Expected columns (row 1 headers):
+        DSD Name | Position | Location | Email | AM Name | Position | Location | Email
+
+    Source uses 'First Last' format; NPS data uses 'Last, First'. We normalize
+    DSD names to 'Last, First' so the NPS parser can look them up directly.
+    """
+    wb = openpyxl.load_workbook(filepath, data_only=True)
+    ws = wb.worksheets[0]
+
+    dsd_to_ams = defaultdict(list)
+    for r in range(2, ws.max_row + 1):
+        dsd_raw = ws.cell(r, 1).value
+        am_raw = ws.cell(r, 5).value
+        if not dsd_raw or not am_raw:
+            continue
+        dsd = str(dsd_raw).strip()
+        # Normalize "First Last" → "Last, First"
+        parts = dsd.rsplit(" ", 1)
+        dsd_norm = f"{parts[1]}, {parts[0]}" if len(parts) == 2 else dsd
+        am_name = str(am_raw).strip()
+        if am_name not in dsd_to_ams[dsd_norm]:
+            dsd_to_ams[dsd_norm].append(am_name)
+
+    cache = {
+        "updated": datetime.now().isoformat(timespec="seconds"),
+        "source_file": os.path.basename(filepath),
+        "dsd_to_ams": dict(dsd_to_ams),
+    }
+    AM_CACHE.write_text(json.dumps(cache, indent=2))
+    log.info(f"  Cached AM reference — {len(dsd_to_ams)} DSDs, {sum(len(v) for v in dsd_to_ams.values())} AM links")
+    return cache
+
+
+def load_am_reference():
+    """Return cached DSD→[AM names] dict, or empty dict if no cache exists."""
+    if not AM_CACHE.exists():
+        return {}
+    try:
+        return json.loads(AM_CACHE.read_text()).get("dsd_to_ams", {})
+    except Exception as e:
+        log.warning(f"Could not read AM cache: {e}")
+        return {}
 
 
 # ===========================================================================
@@ -232,7 +284,42 @@ def parse_nps(filepath):
             })
         drill_dsd.sort(key=lambda x: float(x["nps"]), reverse=True)
 
-        # AM drilldown: not in new format — return None to preserve existing HTML
+        # AM drilldown: build from cached DSD→AM reference if available.
+        # Since NPS data has no AM-level granularity, each row represents the
+        # DSD-level stats with the AM list (last names) rolled into one cell.
+        dsd_to_ams = load_am_reference()
+        drill_am = None
+        if dsd_to_ams:
+            drill_am = []
+            for (center, dsd), slist in by_dsd.items():
+                if not dsd:
+                    continue  # skip unassigned DSDs — no AMs to attach
+                n = len(slist)
+                pro = sum(1 for s in slist if s >= 9)
+                pas = sum(1 for s in slist if s in (7, 8))
+                det = sum(1 for s in slist if s <= 6)
+                d_nps = round((pro - det) / n * 100, 1)
+                d_avg = sum(slist) / n
+                ams_full = dsd_to_ams.get(dsd, [])
+                # Display as last names only, sorted, for readability.
+                # Strip suffixes (Jr., Sr., II, III, IV) and trailing commas so
+                # 'Kenneth Cochran, Jr.' → 'Cochran' not 'Jr.'
+                ams_last = set()
+                for a in ams_full:
+                    clean = a.replace(",", "").strip()
+                    tokens = [t for t in clean.split() if t.rstrip(".") not in ("Jr", "Sr", "II", "III", "IV")]
+                    if tokens:
+                        ams_last.add(tokens[-1])
+                ams_display = ", ".join(sorted(ams_last)) if ams_last else "(not mapped)"
+                drill_am.append({
+                    "center": center,
+                    "dsd": dsd,
+                    "am": ams_display,
+                    "det": det, "pas": pas, "pro": pro, "n": n,
+                    "nps": f"{d_nps:.1f}", "avg": f"{d_avg:.2f}",
+                })
+            drill_am.sort(key=lambda x: float(x["nps"]), reverse=True)
+
         return {
             "total": total,
             "nps": nps,
@@ -244,7 +331,7 @@ def parse_nps(filepath):
             "center_data": center_data,
             "drill_center": drill_center,
             "drill_dsd": drill_dsd,
-            "drill_am": None,  # signal: don't overwrite existing AM data
+            "drill_am": drill_am,  # None if no AM ref cache → preserve existing HTML
             "date_min": date_min,
             "date_max": date_max,
         }
@@ -1235,6 +1322,29 @@ def process_file(filepath):
                 ces_data[ces_sub] = new_data
                 update_ces_html(ces_data)
                 updated_files.append("ces.html")
+
+        elif dash_type == "am_reference":
+            # AM reference file — caches DSD→AM lookup; re-run NPS update if
+            # NPS source file exists so the dashboard picks up fresh AM data
+            parse_am_reference(filepath)
+            nps_src = DASH_DIR / "nps_existing_customers.xlsx"
+            if nps_src.exists():
+                log.info("  Re-running NPS parse to apply new AM mapping")
+                nps_data = parse_nps(str(nps_src))
+                if nps_data:
+                    update_nps_html(nps_data)
+                    updated_files.append("nps.html")
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+            processed = load_processed()
+            processed[filename] = {
+                "processed_at": timestamp,
+                "dashboard": "am_reference",
+                "files_updated": updated_files,
+            }
+            save_processed(processed)
+            if updated_files:
+                git_push(updated_files, f"Auto-update {', '.join(updated_files)} from AM reference refresh ({timestamp})")
+            return
 
         if updated_files:
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")

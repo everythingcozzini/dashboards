@@ -2,6 +2,7 @@
 /watcher.py
 watcher.log
 .processed_files.json
+.am_reference.json
 __pycache__/
 
 # Data files (not for GitHub Pages)
