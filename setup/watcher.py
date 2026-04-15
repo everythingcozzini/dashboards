@@ -104,10 +104,154 @@ def classify_file(filename):
 # NPS Parser
 # ---------------------------------------------------------------------------
 def parse_nps(filepath):
-    """Parse NPS Excel → dict with all data needed for nps.html."""
-    wb = openpyxl.load_workbook(filepath, data_only=True)
+    """Parse NPS Excel → dict with all data needed for nps.html.
 
-    # --- Raw response data ---
+    Supports two Excel formats:
+      - NEW format: single 'Responses' sheet with raw per-respondent rows
+        (Sharpening Center | ... | Date/Time | NPS score | ... | DSD | NPS)
+      - OLD format: multi-sheet ('NPS E How Likely', 'Chart', 'Drilldown')
+        pre-aggregated pivot export
+
+    Both produce the same return shape. AM drilldown is only populated from
+    the OLD format (new export does not include Area Manager).
+    """
+    wb = openpyxl.load_workbook(filepath, data_only=True)
+    sheetnames = wb.sheetnames
+
+    # ----------------------------------------------------------------------
+    # NEW FORMAT: single 'Responses' sheet
+    # ----------------------------------------------------------------------
+    if "Responses" in sheetnames and "NPS E How Likely" not in sheetnames:
+        ws = wb["Responses"]
+
+        # Auto-detect score column by header (in case columns shift)
+        headers = {str(c.value).strip(): c.column for c in ws[1] if c.value}
+        col_center = headers.get("Sharpening Center", 1)
+        col_date = headers.get("Date/Time", 6)
+        # Score column: prefer col with "recommend" question, fallback to 7
+        col_score = 7
+        for h, c in headers.items():
+            if "recommend" in h.lower() or h.strip() == "NPS":
+                # Take the first "recommend" match (raw score), not the "NPS" label column
+                if "recommend" in h.lower():
+                    col_score = c
+                    break
+        col_dsd = headers.get("DSD", 12)
+
+        rows = []
+        for r in range(2, ws.max_row + 1):
+            center = ws.cell(r, col_center).value
+            score = ws.cell(r, col_score).value
+            dsd = ws.cell(r, col_dsd).value
+            dt = ws.cell(r, col_date).value
+            if score is not None:
+                try:
+                    score_int = int(score)
+                except (ValueError, TypeError):
+                    continue
+                if 0 <= score_int <= 10:
+                    rows.append({
+                        "center": str(center).strip() if center else "Unassigned",
+                        "score": score_int,
+                        "dsd": str(dsd).strip() if dsd else "",
+                        "date": dt if dt else "",
+                    })
+
+        if not rows:
+            return None
+
+        total = len(rows)
+        scores = [r["score"] for r in rows]
+        avg_score = sum(scores) / total
+
+        detractors = sum(1 for s in scores if s <= 6)
+        passives = sum(1 for s in scores if s in (7, 8))
+        promoters = sum(1 for s in scores if s >= 9)
+        nps = round((promoters / total - detractors / total) * 100, 1)
+
+        # Score distribution 1-10 (matches old dashboard buckets)
+        dist = [sum(1 for s in scores if s == i) for i in range(1, 11)]
+
+        # Date range
+        dates = []
+        for r in rows:
+            d = r["date"]
+            if hasattr(d, "strftime"):
+                dates.append(d)
+            elif isinstance(d, str) and d:
+                for fmt in ["%m/%d/%Y %I:%M:%S %p", "%Y-%m-%d %H:%M:%S", "%m/%d/%Y"]:
+                    try:
+                        clean = d.split(" CST")[0].split(" CDT")[0].split(" EST")[0].split(" EDT")[0].strip()
+                        dates.append(datetime.strptime(clean, fmt))
+                        break
+                    except ValueError:
+                        continue
+        date_min = min(dates).strftime("%b %d, %Y") if dates else "N/A"
+        date_max = max(dates).strftime("%b %d, %Y") if dates else "N/A"
+
+        # Aggregate: NPS by center
+        by_center = {}
+        for r in rows:
+            by_center.setdefault(r["center"], []).append(r["score"])
+        center_data = []
+        drill_center = []
+        for name, slist in by_center.items():
+            n = len(slist)
+            pro = sum(1 for s in slist if s >= 9)
+            pas = sum(1 for s in slist if s in (7, 8))
+            det = sum(1 for s in slist if s <= 6)
+            c_nps = round((pro - det) / n * 100, 1)
+            c_avg = sum(slist) / n
+            center_data.append({"name": name, "nps": c_nps, "n": n})
+            drill_center.append({
+                "center": name,
+                "det": det, "pas": pas, "pro": pro, "n": n,
+                "proP": f"{pro/n*100:.1f}", "detP": f"{det/n*100:.1f}",
+                "nps": f"{c_nps:.1f}", "avg": f"{c_avg:.2f}",
+            })
+        center_data.sort(key=lambda x: x["nps"], reverse=True)
+        drill_center.sort(key=lambda x: float(x["nps"]), reverse=True)
+
+        # Aggregate: Center + DSD
+        by_dsd = {}
+        for r in rows:
+            key = (r["center"], r["dsd"])
+            by_dsd.setdefault(key, []).append(r["score"])
+        drill_dsd = []
+        for (center, dsd), slist in by_dsd.items():
+            n = len(slist)
+            pro = sum(1 for s in slist if s >= 9)
+            pas = sum(1 for s in slist if s in (7, 8))
+            det = sum(1 for s in slist if s <= 6)
+            d_nps = round((pro - det) / n * 100, 1)
+            d_avg = sum(slist) / n
+            drill_dsd.append({
+                "center": center, "dsd": dsd if dsd else "(unassigned)",
+                "det": det, "pas": pas, "pro": pro, "n": n,
+                "nps": f"{d_nps:.1f}", "avg": f"{d_avg:.2f}",
+            })
+        drill_dsd.sort(key=lambda x: float(x["nps"]), reverse=True)
+
+        # AM drilldown: not in new format — return None to preserve existing HTML
+        return {
+            "total": total,
+            "nps": nps,
+            "avg_score": round(avg_score, 2),
+            "promoters": promoters,
+            "passives": passives,
+            "detractors": detractors,
+            "dist": dist,
+            "center_data": center_data,
+            "drill_center": drill_center,
+            "drill_dsd": drill_dsd,
+            "drill_am": None,  # signal: don't overwrite existing AM data
+            "date_min": date_min,
+            "date_max": date_max,
+        }
+
+    # ----------------------------------------------------------------------
+    # OLD FORMAT: multi-sheet pre-aggregated export
+    # ----------------------------------------------------------------------
     ws = wb["NPS E How Likely"]
     rows = []
     for r in range(2, ws.max_row + 1):
@@ -231,10 +375,6 @@ def parse_nps(filepath):
             "nps": f"{float(nps_calc):.1f}", "avg": f"{float(avg_s):.2f}"
         })
     drill_am.sort(key=lambda x: float(x["nps"]), reverse=True)
-
-    # New customer section (check if NPS N sheet exists)
-    new_cust = None
-    # Not always present — skip if missing
 
     return {
         "total": total,
@@ -746,17 +886,21 @@ def update_nps_html(data):
         html, flags=re.DOTALL
     )
 
-    # Update drillAM
-    da_js = json.dumps(data["drill_am"])
-    da_js = re.sub(r'"(\w+)":', r'\1:', da_js)
-    html = re.sub(
-        r"const drillAM = \[.*?\];",
-        lambda m: f"const drillAM = {da_js};",
-        html, flags=re.DOTALL
-    )
+    # Update drillAM — only if parser provided it (new Excel format has no AM data → preserve existing HTML)
+    if data.get("drill_am") is not None:
+        da_js = json.dumps(data["drill_am"])
+        da_js = re.sub(r'"(\w+)":', r'\1:', da_js)
+        html = re.sub(
+            r"const drillAM = \[.*?\];",
+            lambda m: f"const drillAM = {da_js};",
+            html, flags=re.DOTALL
+        )
+        am_note = ""
+    else:
+        am_note = " (AM data preserved from HTML)"
 
     html_path.write_text(html)
-    log.info(f"  Updated nps.html — {data['total']} responses, NPS {data['nps']}")
+    log.info(f"  Updated nps.html — {data['total']} responses, NPS {data['nps']}{am_note}")
 
 
 def update_customer_churn_html(data):
