@@ -11,6 +11,9 @@ watcher.log
 .DS_Store
 .claude/
 
+# Watcher wrapper / log (launch agent)
+run-watcher.sh
+
 # Old drafts
 product-churn-dashboard.html
 dashboards.png

@@ -440,7 +440,7 @@ renderFeedback('all');
     const today = new Date();
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const endDate = months[today.getMonth()] + ' ' + String(today.getDate()).padStart(2,'0') + ', ' + today.getFullYear();
-    badge.innerHTML = badge.innerHTML.replace(/&ndash;[^<]+/, '\u2013 ' + endDate);
+    badge.textContent = badge.textContent.replace(/[\u2013\u2014–-]\s*[A-Z].*/, '\u2013 ' + endDate);
   }
 })();
 </script>
