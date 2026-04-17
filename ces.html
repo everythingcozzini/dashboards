@@ -152,23 +152,23 @@
   <div class="kpi-row">
     <div class="kpi-card">
       <div class="label">Total CES Responses</div>
-      <div class="value">78</div>
-      <div class="detail">Across 6 active surveys</div>
+      <div class="value">7</div>
+      <div class="detail">Across 2 active surveys</div>
     </div>
     <div class="kpi-card positive">
       <div class="label">Overall Mean CES</div>
-      <div class="value">5.31</div>
+      <div class="value">5.14</div>
       <div class="detail">On a 1&ndash;7 scale (7 = best)</div>
     </div>
     <div class="kpi-card positive">
       <div class="label">Top-Box Score (6 or 7)</div>
-      <div class="value">64%</div>
-      <div class="detail">50 of 78 rated 6 or 7</div>
+      <div class="value">71%</div>
+      <div class="detail">5 of 7 rated 6 or 7</div>
     </div>
     <div class="kpi-card alert">
       <div class="label">Lowest-Scoring Survey</div>
-      <div class="value" style="font-size:16px; margin-top:14px;">Pricing Satisfaction</div>
-      <div class="detail">Mean 4.61 &mdash; 36 responses</div>
+      <div class="value" style="font-size:16px; margin-top:14px;">Invoice Understanding</div>
+      <div class="detail">Mean 1.00 &mdash; 1 response</div>
     </div>
   </div>
 
@@ -179,77 +179,23 @@
     <div class="chart-wrap"><canvas id="overviewChart"></canvas></div>
   </div>
 
-  <div class="empty-note">&#9888; <strong>Driver: Last Service Visit</strong> survey has been configured but has no responses yet. It will appear here once data is collected.</div>
-
   <!-- Individual Survey Charts -->
   <div class="section-title">Individual Survey Breakdown</div>
 
   <div class="chart-grid">
-    <!-- 1. Pricing Satisfaction (36 responses) -->
-    <div class="chart-card">
-      <h3>Pricing Satisfaction</h3>
-      <div class="chart-sub">"How satisfied are you with the pricing of your Cozzini Bros. products and services?"</div>
-      <div class="chart-wrap"><canvas id="chart_price"></canvas></div>
-      <div class="chart-meta">
-        <span>Responses: <strong>36</strong></span>
-        <span>Mean: <strong>4.61</strong></span>
-        <span>Median: <strong>5.0</strong></span>
-      </div>
-    </div>
-
-    <!-- 2. Onboarding (21 responses) -->
+    <!-- 1. Onboarding (6 responses) -->
     <div class="chart-card">
       <h3>Onboarding Ease</h3>
       <div class="chart-sub">"How easy was it to get started with us?"</div>
       <div class="chart-wrap"><canvas id="chart_onboard"></canvas></div>
       <div class="chart-meta">
-        <span>Responses: <strong>21</strong></span>
-        <span>Mean: <strong>5.67</strong></span>
-        <span>Median: <strong>7.0</strong></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="chart-grid">
-    <!-- 3. Knife Sharpness (10 responses) -->
-    <div class="chart-card">
-      <h3>Knife Sharpness</h3>
-      <div class="chart-sub">"How satisfied were you with the sharpness of your Quantum knives during your last service cycle?"</div>
-      <div class="chart-wrap"><canvas id="chart_knife"></canvas></div>
-      <div class="chart-meta">
-        <span>Responses: <strong>10</strong></span>
-        <span>Mean: <strong>5.80</strong></span>
-        <span>Median: <strong>7.0</strong></span>
+        <span>Responses: <strong>6</strong></span>
+        <span>Mean: <strong>5.83</strong></span>
+        <span>Median: <strong>7</strong></span>
       </div>
     </div>
 
-    <!-- 4. Driver Service (7 responses) -->
-    <div class="chart-card">
-      <h3>Driver Service</h3>
-      <div class="chart-sub">"How pleased are you with the service provided by your Cozzini delivery driver?"</div>
-      <div class="chart-wrap"><canvas id="chart_driver"></canvas></div>
-      <div class="chart-meta">
-        <span>Responses: <strong>7</strong></span>
-        <span>Mean: <strong>7.00</strong></span>
-        <span>Median: <strong>7.0</strong></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="chart-grid">
-    <!-- 5. Invoice Payment (3 responses) -->
-    <div class="chart-card">
-      <h3>Invoice Payment Ease</h3>
-      <div class="chart-sub">"How easy is it to pay your Cozzini Bros. invoice?"</div>
-      <div class="chart-wrap"><canvas id="chart_invoice"></canvas></div>
-      <div class="chart-meta">
-        <span>Responses: <strong>3</strong></span>
-        <span>Mean: <strong>7.00</strong></span>
-        <span>Median: <strong>7.0</strong></span>
-      </div>
-    </div>
-
-    <!-- 6. Invoice Understanding (1 response) -->
+    <!-- 2. Invoice Understanding (1 response) -->
     <div class="chart-card">
       <h3>Invoice Understanding</h3>
       <div class="chart-sub">"How easy is it to understand your Cozzini Bros. invoice?"</div>
@@ -261,6 +207,8 @@
       </div>
     </div>
   </div>
+
+  <div class="empty-note">&#9888; <strong>Knife Sharpness, Pricing, Driver Service, Invoice Payment</strong> &mdash; surveys configured and awaiting responses. They will appear here automatically once data is collected.</div>
 
   <!-- CES by Sharpening Center -->
   <div class="section-title">CES by Sharpening Center</div>
@@ -330,7 +278,7 @@ const scoreColors = ['#d4918b','#d4cb7b','#d4a45e','#d4a45e','#8ebf7b','#8ebf7b'
 // 1=red, 2=copper, 3-4=gold, 5-6=green, 7=navy  (lower=worse, higher=better)
 
 /* --- Overview: Mean CES by Survey (horizontal bar) --- */
-const surveys = [{name: "Onboarding Ease", mean: 5.83, n: 6}, {name: "Invoice Understanding", mean: 1.0, n: 1}];
+const surveys = [{name: "Driver Service", mean: 7.0, n: 7}, {name: "Onboarding Ease", mean: 5.7, n: 27}, {name: "Pricing Satisfaction", mean: 4.61, n: 36}, {name: "Invoice Understanding", mean: 1.0, n: 2}];
 function cesColor(v) {
   if (v >= 6) return '#8ebf7b';
   if (v >= 5) return '#d4a45e';
@@ -377,14 +325,14 @@ function buildDistChart(canvasId, dist, color) {
 
 /* Score distributions: [1, 2, 3, 4, 5, 6, 7] */
 buildDistChart('chart_price',    [5, 2, 4, 4, 5, 8, 8]);
-buildDistChart('chart_onboard',    [1, 0, 0, 0, 0, 1, 4]);
+buildDistChart('chart_onboard',    [5, 0, 1, 0, 0, 1, 20]);
 buildDistChart('chart_knife',    [1, 0, 0, 0, 0, 0, 3]);
 buildDistChart('chart_driver',    [0, 0, 0, 0, 0, 0, 7]);
 buildDistChart('chart_invoice',    [0, 0, 0, 0, 0, 0, 3]);
-buildDistChart('chart_understand',    [1, 0, 0, 0, 0, 0, 0]);
+buildDistChart('chart_understand',    [2, 0, 0, 0, 0, 0, 0]);
 
 /* --- CES by Sharpening Center --- */
-const centers = [{name: "Boardman, OH", avg: 7.0, n: 1}, {name: "Elk Grove, IL", avg: 6.5, n: 2}, {name: "Hopewell Junction, NY", avg: 5.0, n: 3}, {name: "Cerritos, CA", avg: 1.0, n: 1}];
+const centers = [{name: "Boardman, OH", avg: 7.0, n: 3}, {name: "Orlando, FL", avg: 6.75, n: 4}, {name: "Elk Grove, IL", avg: 5.85, n: 13}, {name: "Houston, TX", avg: 5.38, n: 13}, {name: "Tukwila, WA", avg: 5.0, n: 3}, {name: "Cerritos, CA", avg: 4.6, n: 10}, {name: "Stockton, CA", avg: 4.56, n: 9}, {name: "Pineville, NC", avg: 4.5, n: 6}, {name: "Hopewell Junction, NY", avg: 3.5, n: 8}];
 new Chart(document.getElementById('centerChart'), {
   type: 'bar',
   data: {
@@ -405,7 +353,7 @@ new Chart(document.getElementById('centerChart'), {
 });
 
 /* --- CES by DSD --- */
-const dsds = [{name: "Cutler, Jake", avg: 6.5, n: 2}, {name: "Holt, Wesley", avg: 5.5, n: 4}, {name: "Smith, John", avg: 1.0, n: 1}];
+const dsds = [{name: "Cutler, Jake", avg: 6.4, n: 10}, {name: "Mintmire, Mark", avg: 5.75, n: 8}, {name: "Lugo, Servey", avg: 5.31, n: 13}, {name: "Jakobs, Oliver", avg: 4.79, n: 14}, {name: "Smith, John", avg: 4.67, n: 15}, {name: "Holt, Wesley", avg: 4.6, n: 5}, {name: "Mulvey, Kevin", avg: 3.0, n: 4}];
 new Chart(document.getElementById('dsdChart'), {
   type: 'bar',
   data: {
