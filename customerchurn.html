@@ -100,7 +100,10 @@
     .chart-grid { grid-template-columns: 1fr; }
     .container { padding: 16px; }
     .header { padding: 20px; flex-direction: column; gap: 12px; text-align: center; }
+    .header > div:first-child { flex-direction: column !important; gap: 10px !important; }
     .header img { height: 32px; }
+    .drilldown-section table { font-size: 12px; }
+    .drilldown-section th, .drilldown-section td { padding: 8px 6px; }
   }
 </style>
 </head>
@@ -309,7 +312,7 @@ new Chart(document.getElementById('solutionChart'), {
   options: {
     responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, cutout: '55%',
     plugins: {
-      legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } },
+      legend: { display: true, position: 'bottom', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } },
       tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/47*100)}%)` } }
     }
   }
