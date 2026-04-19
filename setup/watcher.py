@@ -79,6 +79,8 @@ def classify_file(filename):
 
     if "nps" in fn and "existing" in fn:
         return "nps", None
+    if "nps" in fn and "new" in fn:
+        return "nps_new", None
     if "customer" in fn and "churn" in fn:
         return "customer_churn", None
     if "product" in fn and "churn" in fn:
@@ -477,6 +479,88 @@ def parse_nps(filepath):
         "drill_am": drill_am,
         "date_min": date_min,
         "date_max": date_max,
+    }
+
+
+# ---------------------------------------------------------------------------
+# NPS New Customers Parser  (updates the bottom section of nps.html only)
+# ---------------------------------------------------------------------------
+def parse_nps_new_customers(filepath):
+    """Parse nps_new_customers.xlsx → dict for the 'New Customer NPS' section of nps.html.
+
+    Expected columns (row 1 headers):
+        col 1  Sharpening Center
+        col 7  Score (1-10)
+        col 11 Company Name
+        col 12 DSD (format 'Last, First')
+    """
+    wb = openpyxl.load_workbook(filepath, data_only=True)
+    ws = wb.worksheets[0]
+
+    respondents = []
+    dist = [0] * 10           # index 0 = score 1, ..., index 9 = score 10
+    center_counts = defaultdict(int)
+
+    for r in range(2, ws.max_row + 1):
+        score_raw = ws.cell(r, 7).value
+        if score_raw is None or score_raw == "":
+            continue
+        try:
+            score = int(score_raw)
+        except (ValueError, TypeError):
+            continue
+        if not 1 <= score <= 10:
+            continue
+
+        center = ws.cell(r, 1).value
+        company = ws.cell(r, 11).value
+        dsd = ws.cell(r, 12).value
+
+        center_s = str(center).strip() if center else "Unassigned"
+        company_s = str(company).strip() if company else "—"
+        dsd_s = str(dsd).strip() if dsd else "—"
+
+        # Normalize whitespace-only cells (Excel sometimes uses \xa0)
+        if center_s.replace("\xa0", "").strip() == "":
+            center_s = "Unassigned"
+        if dsd_s.replace("\xa0", "").strip() == "":
+            dsd_s = "—"
+
+        respondents.append({
+            "company": company_s,
+            "center": center_s,
+            "dsd": dsd_s,
+            "score": score,
+        })
+        dist[score - 1] += 1
+        center_counts[center_s] += 1
+
+    total = len(respondents)
+    if total == 0:
+        return None
+
+    promoters = sum(1 for r in respondents if r["score"] >= 9)
+    detractors = sum(1 for r in respondents if r["score"] <= 6)
+    passives = total - promoters - detractors
+    nps_score = round((promoters / total - detractors / total) * 100, 1)
+    pro_pct = round(promoters / total * 100, 1)
+    det_pct = round(detractors / total * 100, 1)
+
+    # Sort centers by count desc
+    by_center = sorted(center_counts.items(), key=lambda kv: (-kv[1], kv[0]))
+
+    return {
+        "total": total,
+        "nps_score": nps_score,
+        "pro_pct": pro_pct,
+        "det_pct": det_pct,
+        "promoters": promoters,
+        "passives": passives,
+        "detractors": detractors,
+        "dist": dist,
+        "center_labels": [c for c, _ in by_center],
+        "center_counts": [n for _, n in by_center],
+        "respondents": respondents,
     }
 
 
@@ -990,6 +1074,85 @@ def update_nps_html(data):
     log.info(f"  Updated nps.html — {data['total']} responses, NPS {data['nps']}{am_note}")
 
 
+def update_nps_new_customers_section(data):
+    """Update the 'New Customer NPS' section at the bottom of nps.html.
+
+    Touches only the new-customer stat values, the two new-customer charts, and
+    the respondent table. The top/existing-customer portion of nps.html is not
+    modified by this function.
+    """
+    html_path = DASH_DIR / "nps.html"
+    html = html_path.read_text()
+
+    nps_str = f"+{data['nps_score']}" if data['nps_score'] >= 0 else f"{data['nps_score']}"
+    nps_color = "var(--cozzini-green)" if data['nps_score'] >= 0 else "var(--cozzini-red)"
+
+    # --- KPI stats: replace only the inner contents of <div class="new-cust-row"> ---
+    # Anchor the end of the match on the next section (<div class="new-chart-pair">)
+    # so we consume the row + card closings but preserve them verbatim.
+    stats_inner = (
+        "\n"
+        f'      <div class="new-cust-stat">\n'
+        f'        <div class="val" style="color:{nps_color};">{nps_str}</div>\n'
+        f'        <div class="lbl">NPS Score</div>\n'
+        f'      </div>\n'
+        f'      <div class="new-cust-stat">\n'
+        f'        <div class="val">{data["total"]}</div>\n'
+        f'        <div class="lbl">Responses</div>\n'
+        f'      </div>\n'
+        f'      <div class="new-cust-stat">\n'
+        f'        <div class="val">{data["pro_pct"]}%</div>\n'
+        f'        <div class="lbl">Promoters (9&ndash;10)</div>\n'
+        f'      </div>\n'
+        f'      <div class="new-cust-stat">\n'
+        f'        <div class="val" style="color:var(--cozzini-red);">{data["det_pct"]}%</div>\n'
+        f'        <div class="lbl">Detractors (1&ndash;6)</div>\n'
+        f'      </div>\n'
+        f'    '
+    )
+    html = re.sub(
+        r'(<div class="new-cust-row">)(.*?)(</div>\s*</div>\s*\n\s*<div class="new-chart-pair")',
+        lambda m: m.group(1) + stats_inner + m.group(3),
+        html, count=1, flags=re.DOTALL
+    )
+
+    # --- Score distribution chart (newCustDistChart) ---
+    dist_js = json.dumps(data["dist"])
+    html = re.sub(
+        r"(datasets: \[\{ data: )\[[^\]]*\](, backgroundColor: newCustDistColors)",
+        lambda m: f"{m.group(1)}{dist_js}{m.group(2)}",
+        html
+    )
+
+    # --- By-center chart (newCustCenterChart) ---
+    center_labels_js = json.dumps(data["center_labels"])
+    center_counts_js = json.dumps(data["center_counts"])
+    # Find the newCustCenterChart block and swap labels + data arrays
+    def _replace_center_chart(match):
+        block = match.group(0)
+        block = re.sub(r"labels: \[[^\]]*\]", f"labels: {center_labels_js}", block, count=1)
+        block = re.sub(r"(datasets: \[\{ data: )\[[^\]]*\]", lambda m: f"{m.group(1)}{center_counts_js}", block, count=1)
+        return block
+    html = re.sub(
+        r"new Chart\(document\.getElementById\('newCustCenterChart'\),\s*\{.*?\}\);",
+        _replace_center_chart,
+        html, count=1, flags=re.DOTALL
+    )
+
+    # --- Respondent table data (newCustData array) ---
+    resp_js = json.dumps(data["respondents"], ensure_ascii=False)
+    # Strip quotes around keys to match the existing JS-object style
+    resp_js = re.sub(r'"(company|center|dsd|score)":', r'\1:', resp_js)
+    html = re.sub(
+        r"const newCustData = \[.*?\];",
+        lambda m: f"const newCustData = {resp_js};",
+        html, count=1, flags=re.DOTALL
+    )
+
+    html_path.write_text(html)
+    log.info(f"  Updated nps.html new-customer section — {data['total']} responses, NPS {nps_str}")
+
+
 def update_customer_churn_html(data):
     """Update customerchurn.html with parsed customer churn data."""
     html_path = DASH_DIR / "customerchurn.html"
@@ -1300,6 +1463,12 @@ def process_file(filepath):
             data = parse_nps(filepath)
             if data:
                 update_nps_html(data)
+                updated_files.append("nps.html")
+
+        elif dash_type == "nps_new":
+            data = parse_nps_new_customers(filepath)
+            if data:
+                update_nps_new_customers_section(data)
                 updated_files.append("nps.html")
 
         elif dash_type == "customer_churn":
