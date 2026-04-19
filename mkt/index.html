@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Marketing | Cozzini Bros</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --cozzini-navy: #1a2744;
+    --mkt-primary: #b44d2d;
+    --mkt-accent: #d4a45e;
+    --text: #0a0a0a;
+    --text-muted: #555;
+    --border: #e5e5e5;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* Password Gate */
+  #auth-gate {
+    display: flex; align-items: center; justify-content: center; min-height: 100vh;
+    background: linear-gradient(135deg, #8a2d1f 0%, #b44d2d 60%, #d4a45e 100%);
+  }
+  .auth-box {
+    background: white; border-radius: 12px; padding: 48px; width: 380px;
+    text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  }
+  .auth-box h2 { color: var(--cozzini-navy); margin-bottom: 4px; font-size: 20px; }
+  .auth-box .kicker { color: var(--mkt-primary); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px; }
+  .auth-box p { color: #555; font-size: 13px; margin-bottom: 24px; }
+  .auth-box input {
+    width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 6px;
+    font-size: 15px; outline: none; margin-bottom: 12px; transition: border 0.2s;
+  }
+  .auth-box input:focus { border-color: var(--mkt-primary); }
+  .auth-box button {
+    width: 100%; padding: 12px; background: var(--mkt-primary); color: white; border: none;
+    border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+  }
+  .auth-box button:hover { background: #8a2d1f; }
+  #auth-error { color: #d4918b; font-size: 13px; margin-top: 12px; display: none; }
+
+  /* Hub content */
+  #hub-content { display: none; flex-direction: column; flex: 1; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px; border-bottom: 1px solid var(--border);
+  }
+  .topbar img { height: 28px; width: auto; }
+  .topbar .right { display: flex; align-items: center; gap: 16px; }
+  .topbar .back-link { font-size: 13px; color: #555; text-decoration: none; }
+  .topbar .back-link:hover { color: var(--mkt-primary); }
+  .topbar span.kicker { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--mkt-primary); font-weight: 600; }
+
+  .page-title {
+    padding: 48px 40px 12px;
+    max-width: 1000px;
+  }
+  .page-title .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--mkt-primary); font-weight: 700; margin-bottom: 8px; }
+  .page-title h1 { font-size: 28px; font-weight: 700; color: var(--cozzini-navy); letter-spacing: -0.5px; }
+  .page-title p { color: #555; font-size: 14px; margin-top: 6px; }
+
+  .container { max-width: 1000px; padding: 24px 40px 60px; flex: 1; }
+
+  .year-label {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-muted); font-weight: 600; margin: 8px 0 16px;
+  }
+
+  .quarter-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+
+  .quarter-tile {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    padding: 28px 24px; text-decoration: none; color: var(--text);
+    transition: all 0.15s; position: relative;
+    min-height: 160px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .quarter-tile:hover {
+    transform: translateY(-2px);
+    border-color: var(--mkt-primary);
+    box-shadow: 0 6px 20px rgba(180,77,45,0.12);
+  }
+
+  .quarter-tile.locked {
+    background: #fafafa; cursor: default;
+    pointer-events: auto;
+  }
+  .quarter-tile.locked:hover {
+    transform: none; box-shadow: none; border-color: var(--border);
+  }
+
+  .quarter-label {
+    font-size: 32px; font-weight: 800; color: var(--cozzini-navy);
+    letter-spacing: -0.5px;
+  }
+  .quarter-range { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .quarter-status {
+    display: inline-block;
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+    padding: 4px 10px; border-radius: 20px;
+    margin-top: 16px; align-self: flex-start;
+  }
+  .quarter-status.live { background: #f0fff4; color: #8ebf7b; }
+  .quarter-status.coming { background: #f7f7f7; color: #999; }
+
+  .footer {
+    background: #111; padding: 24px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: auto;
+  }
+  .footer img { height: 22px; width: auto; opacity: 0.7; }
+  .footer span { color: rgba(255,255,255,0.4); font-size: 11px; }
+
+  @media (max-width: 780px) {
+    .topbar { padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
+    .page-title { padding: 32px 20px 8px; }
+    .container { padding: 16px 20px 40px; }
+    .quarter-grid { grid-template-columns: repeat(2, 1fr); }
+    .quarter-label { font-size: 26px; }
+    .footer { padding: 20px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div id="auth-gate">
+  <div class="auth-box">
+    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros" style="height:40px;width:auto;margin-bottom:16px;">
+    <div class="kicker">Marketing</div>
+    <h2>Cozzini Dashboards</h2>
+    <p>Enter password to continue</p>
+    <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()">
+    <button onclick="checkAuth()">Sign In</button>
+    <p id="auth-error">Incorrect password</p>
+  </div>
+</div>
+
+<!-- Hub Content -->
+<div id="hub-content">
+  <div class="topbar">
+    <a href="../"><img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros"></a>
+    <div class="right">
+      <a href="../" class="back-link">&larr; All sections</a>
+      <span class="kicker">Marketing</span>
+    </div>
+  </div>
+
+  <div class="page-title">
+    <div class="eyebrow">Marketing</div>
+    <h1>Quarterly Dashboards</h1>
+    <p>Social media performance, budget, and lead conversion by quarter.</p>
+  </div>
+
+  <div class="container">
+    <div class="year-label">Fiscal Year 2026</div>
+
+    <div class="quarter-grid">
+
+      <a href="q1.html" class="quarter-tile">
+        <div>
+          <div class="quarter-label">Q1</div>
+          <div class="quarter-range">Jan &ndash; Mar 2026</div>
+        </div>
+        <span class="quarter-status live">Live</span>
+      </a>
+
+      <div class="quarter-tile locked">
+        <div>
+          <div class="quarter-label" style="color:#aaa;">Q2</div>
+          <div class="quarter-range">Apr &ndash; Jun 2026</div>
+        </div>
+        <span class="quarter-status coming">Coming soon</span>
+      </div>
+
+      <div class="quarter-tile locked">
+        <div>
+          <div class="quarter-label" style="color:#aaa;">Q3</div>
+          <div class="quarter-range">Jul &ndash; Sep 2026</div>
+        </div>
+        <span class="quarter-status coming">Coming soon</span>
+      </div>
+
+      <div class="quarter-tile locked">
+        <div>
+          <div class="quarter-label" style="color:#aaa;">Q4</div>
+          <div class="quarter-range">Oct &ndash; Dec 2026</div>
+        </div>
+        <span class="quarter-status coming">Coming soon</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros">
+    <span>&copy; 2026 Cozzini Bros &middot; Internal Use Only</span>
+  </div>
+</div>
+
+<script>
+const PASS_HASH = '90ec951c';
+function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return(h>>>0).toString(16).slice(0,8);}
+function checkAuth(){
+  const input=document.getElementById('auth-pass').value;
+  if(simpleHash(input)===PASS_HASH||input==='Marketing2026$'){
+    document.getElementById('auth-gate').style.display='none';
+    document.getElementById('hub-content').style.display='flex';
+    sessionStorage.setItem('mkt-auth','true');
+  } else {
+    document.getElementById('auth-error').style.display='block';
+    document.getElementById('auth-pass').style.borderColor='#d4918b';
+  }
+}
+if(sessionStorage.getItem('mkt-auth')==='true'){
+  document.getElementById('auth-gate').style.display='none';
+  document.getElementById('hub-content').style.display='flex';
+}
+</script>
+</body>
+</html>

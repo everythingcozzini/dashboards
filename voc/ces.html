@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>CES Dashboard | Cozzini Bros</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --cozzini-navy: #1a2744;
+    --cozzini-blue: #7bafd4;
+    --cozzini-red: #d4918b;
+    --cozzini-gold: #d4a45e;
+    --cozzini-green: #8ebf7b;
+    --bg: #ffffff;
+    --card-bg: #ffffff;
+    --text: #0a0a0a;
+    --text-muted: #555555;
+    --border: #e5e5e5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); }
+
+  .header {
+    background: var(--cozzini-navy);
+    color: white; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+  .header .subtitle { font-size: 14px; opacity: 0.8; margin-top: 4px; }
+  .header .date-badge {
+    background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+  }
+  .back-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; margin-bottom: 4px; display: inline-block; }
+  .back-link:hover { color: white; }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px 40px 60px; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px; }
+  .kpi-card {
+    background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .kpi-card .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; }
+  .kpi-card .value { font-size: 36px; font-weight: 800; margin: 8px 0 4px; color: var(--cozzini-navy); }
+  .kpi-card .detail { font-size: 13px; color: var(--text-muted); }
+  .kpi-card.positive .value { color: var(--cozzini-green); }
+  .kpi-card.alert .value { color: var(--cozzini-red); }
+  .kpi-card.warn .value { color: var(--cozzini-gold); }
+
+  .overview-chart {
+    background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 28px;
+  }
+  .overview-chart h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: var(--cozzini-navy); }
+  .overview-chart .sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .overview-chart .chart-wrap { position: relative; height: 320px; }
+
+  .section-title {
+    font-size: 18px; font-weight: 700; color: var(--cozzini-navy); margin: 36px 0 20px;
+    padding-bottom: 10px; border-bottom: 2px solid var(--border);
+  }
+  .feedback-section {
+    background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 28px;
+  }
+  .feedback-filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border);
+    background: white; font-size: 12px; cursor: pointer; font-weight: 500; transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--cozzini-blue); color: var(--cozzini-blue); }
+  .filter-btn.active { background: var(--cozzini-navy); color: white; border-color: var(--cozzini-navy); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border);
+    font-weight: 600; color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  thead th.num { text-align: right; }
+  tbody td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:hover { background: #fafafa; }
+
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+  .chart-card {
+    background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .chart-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: var(--cozzini-navy); }
+  .chart-card .chart-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+  .chart-card .chart-wrap { position: relative; height: 260px; }
+  .chart-card .chart-meta { display: flex; gap: 20px; margin-top: 12px; font-size: 12px; color: var(--text-muted); }
+  .chart-card .chart-meta strong { color: var(--text); }
+
+  .center-chart {
+    background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 28px;
+  }
+  .center-chart h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: var(--cozzini-navy); }
+  .center-chart .sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .center-chart .chart-wrap { position: relative; height: 340px; }
+
+  .empty-note {
+    background: #fefcbf; color: #975a16; font-size: 13px; padding: 12px 18px; border-radius: 8px;
+    margin-bottom: 28px;
+  }
+
+  .footer {
+    background: #111; padding: 28px 40px;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+  }
+
+  @media (max-width: 900px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid { grid-template-columns: 1fr; }
+    .container { padding: 16px; }
+    .header { padding: 20px; flex-direction: column; gap: 12px; text-align: center; }
+    .header > div:first-child { flex-direction: column !important; gap: 10px !important; }
+    .header img { height: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="auth-gate" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a2744;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <div style="background:white;border-radius:16px;padding:48px;width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros" style="height:40px;width:auto;margin-bottom:16px;">
+    <h2 style="color:#1a2744;margin-bottom:4px;font-size:20px;">Cozzini Dashboards</h2>
+    <p style="color:#555555;font-size:13px;margin-bottom:24px;">Enter password to continue</p>
+    <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()" style="width:100%;padding:12px 16px;border:2px solid #e5e5e5;border-radius:8px;font-size:15px;outline:none;margin-bottom:12px;transition:border 0.2s;" onfocus="this.style.borderColor='#7bafd4'" onblur="this.style.borderColor='#e5e5e5'">
+    <button onclick="checkAuth()" style="width:100%;padding:12px;background:#1a2744;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#7bafd4'" onmouseout="this.style.background='#1a2744'">Sign In</button>
+    <p id="auth-error" style="color:#d4918b;font-size:13px;margin-top:12px;display:none;">Incorrect password</p>
+  </div>
+</div>
+<div id="page-content" style="display:none;">
+
+<div class="header">
+  <div style="display:flex; align-items:center; gap:20px;">
+    <a href="./"><img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros" style="height:44px; width:auto;"></a>
+    <div>
+      <a href="./" class="back-link">&larr; Back to Dashboards</a>
+      <h1>Customer Effort Score Dashboard</h1>
+      <div class="subtitle">Service quality &amp; satisfaction surveys &mdash; Cozzini Bros</div>
+    </div>
+  </div>
+  <div class="date-badge">Survey Period: Jan 6 &ndash; Apr 7, 2026</div>
+</div>
+
+<div class="container">
+
+  <!-- KPI Row -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="label">Total CES Responses</div>
+      <div class="value">82</div>
+      <div class="detail">Across 5 active surveys</div>
+    </div>
+    <div class="kpi-card positive">
+      <div class="label">Overall Mean CES</div>
+      <div class="value">5.23</div>
+      <div class="detail">On a 1&ndash;7 scale (7 = best)</div>
+    </div>
+    <div class="kpi-card positive">
+      <div class="label">Top-Box Score (6 or 7)</div>
+      <div class="value">63%</div>
+      <div class="detail">52 of 82 rated 6 or 7</div>
+    </div>
+    <div class="kpi-card alert">
+      <div class="label">Lowest-Scoring Survey</div>
+      <div class="value" style="font-size:16px; margin-top:14px;">Invoice Understanding</div>
+      <div class="detail">Mean 1.00 &mdash; 2 responses</div>
+    </div>
+  </div>
+
+  <!-- Overview: Mean CES by Survey -->
+  <div class="overview-chart">
+    <h3>Mean CES by Survey Question</h3>
+    <div class="sub">Average score (1&ndash;7) for each active survey. Higher is better.</div>
+    <div class="chart-wrap"><canvas id="overviewChart"></canvas></div>
+  </div>
+
+  <!-- Individual Survey Charts -->
+  <div class="section-title">Individual Survey Breakdown</div>
+
+  <div class="chart-grid">
+    <!-- 1. Pricing Satisfaction (36 responses) -->
+    <div class="chart-card">
+      <h3>Pricing Satisfaction</h3>
+      <div class="chart-sub">"How satisfied are you with the pricing of your Cozzini Bros. products and services?"</div>
+      <div class="chart-wrap"><canvas id="chart_price"></canvas></div>
+      <div class="chart-meta">
+        <span>Responses: <strong>36</strong></span>
+        <span>Mean: <strong>4.61</strong></span>
+        <span>Median: <strong>5</strong></span>
+      </div>
+    </div>
+
+    <!-- 2. Onboarding Ease (27 responses) -->
+    <div class="chart-card">
+      <h3>Onboarding Ease</h3>
+      <div class="chart-sub">"How easy was it to get started with us?"</div>
+      <div class="chart-wrap"><canvas id="chart_onboard"></canvas></div>
+      <div class="chart-meta">
+        <span>Responses: <strong>27</strong></span>
+        <span>Mean: <strong>5.70</strong></span>
+        <span>Median: <strong>7</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <!-- 3. Knife Sharpness (10 responses) -->
+    <div class="chart-card">
+      <h3>Knife Sharpness</h3>
+      <div class="chart-sub">"How satisfied were you with the sharpness of your Quantum knives during your last service cycle?"</div>
+      <div class="chart-wrap"><canvas id="chart_knife"></canvas></div>
+      <div class="chart-meta">
+        <span>Responses: <strong>10</strong></span>
+        <span>Mean: <strong>5.80</strong></span>
+        <span>Median: <strong>7</strong></span>
+      </div>
+    </div>
+
+    <!-- 4. Driver Service (7 responses) -->
+    <div class="chart-card">
+      <h3>Driver Service</h3>
+      <div class="chart-sub">"How pleased are you with the service provided by your Cozzini delivery driver?"</div>
+      <div class="chart-wrap"><canvas id="chart_driver"></canvas></div>
+      <div class="chart-meta">
+        <span>Responses: <strong>7</strong></span>
+        <span>Mean: <strong>7.00</strong></span>
+        <span>Median: <strong>7</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <!-- 5. Invoice Understanding (2 responses) -->
+    <div class="chart-card">
+      <h3>Invoice Understanding</h3>
+      <div class="chart-sub">"How easy is it to understand your Cozzini Bros. invoice?"</div>
+      <div class="chart-wrap"><canvas id="chart_understand"></canvas></div>
+      <div class="chart-meta">
+        <span>Responses: <strong>2</strong></span>
+        <span>Mean: <strong>1.00</strong></span>
+      </div>
+    </div>
+
+    <!-- 6. Invoice Payment (placeholder — no file yet) -->
+    <div class="chart-card" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px;">
+      <div style="text-align:center;">
+        <h3 style="font-size:15px;font-weight:700;color:var(--cozzini-navy);margin-bottom:8px;">Invoice Payment Ease</h3>
+        <div>Awaiting responses</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CES by Sharpening Center -->
+  <div class="section-title">CES by Sharpening Center</div>
+  <div class="center-chart">
+    <h3>Average CES Across All Surveys by Location</h3>
+    <div class="sub">Aggregated mean score per sharpening center (weighted by response count)</div>
+    <div class="chart-wrap"><canvas id="centerChart"></canvas></div>
+  </div>
+
+  <!-- CES by DSD -->
+  <div class="center-chart">
+    <h3>Average CES by DSD</h3>
+    <div class="sub">Aggregated mean score per driver/service delivery representative</div>
+    <div class="chart-wrap"><canvas id="dsdChart"></canvas></div>
+  </div>
+
+  <!-- CES Drilldown Table -->
+  <div class="section-title">CES by Organization</div>
+  <div class="feedback-section">
+    <div class="feedback-filters">
+      <button class="filter-btn active" onclick="showDrill('center',this)">By Sharpening Center</button>
+      <button class="filter-btn" onclick="showDrill('dsd',this)">By Sharpening Center + DSD</button>
+    </div>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead id="drillHead"></thead>
+      <tbody id="drillBody"></tbody>
+    </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros" style="height:32px; width:auto;">
+  <span style="color:rgba(255,255,255,0.6); font-size:12px;">Generated from CES survey data &mdash; Dashboard built Apr 2026</span>
+</div>
+</div><!-- end page-content -->
+
+<script>
+const PASS_HASH='8a9b0c1d';
+function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return(h>>>0).toString(16).slice(0,8);}
+function checkAuth(){
+  const input=document.getElementById('auth-pass').value;
+  if(simpleHash(input)===PASS_HASH||input==='Cozzini2026!'){
+    document.getElementById('auth-gate').style.display='none';
+    document.getElementById('page-content').style.display='block';
+    sessionStorage.setItem('cozzini-auth','true');
+  } else {
+    document.getElementById('auth-error').style.display='block';
+    document.getElementById('auth-pass').style.borderColor='#d4918b';
+  }
+}
+if(sessionStorage.getItem('cozzini-auth')==='true'){
+  document.getElementById('auth-gate').style.display='none';
+  document.getElementById('page-content').style.display='block';
+}
+</script>
+
+<script>
+const PALETTE = ['#7bafd4','#d4918b','#d4a45e','#8ebf7b','#a99bc4','#d4cb7b','#5a90b5','#b87872','#6da362'];
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.plugins.legend.display = false;
+
+const scoreColors = ['#d4918b','#d4cb7b','#d4a45e','#d4a45e','#8ebf7b','#8ebf7b','#1a2744'];
+// 1=red, 2=copper, 3-4=gold, 5-6=green, 7=navy  (lower=worse, higher=better)
+
+/* --- Overview: Mean CES by Survey (horizontal bar) --- */
+const surveys = [{name: "Driver Service", mean: 7.0, n: 7}, {name: "Knife Sharpness", mean: 5.8, n: 10}, {name: "Onboarding Ease", mean: 5.75, n: 28}, {name: "Pricing Satisfaction", mean: 4.61, n: 36}, {name: "Invoice Understanding", mean: 1.0, n: 2}];
+function cesColor(v) {
+  if (v >= 6) return '#8ebf7b';
+  if (v >= 5) return '#d4a45e';
+  if (v >= 4) return '#d4cb7b';
+  return '#d4918b';
+}
+new Chart(document.getElementById('overviewChart'), {
+  type: 'bar',
+  data: {
+    labels: surveys.map(s => s.name),
+    datasets: [{ data: surveys.map(s => s.mean), backgroundColor: surveys.map(s => cesColor(s.mean)), borderRadius: 6, barPercentage: 0.7 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false }, indexAxis: 'y',
+    scales: {
+      x: { min: 0, max: 7, grid: { color: '#f5f5f5' }, title: { display: true, text: 'Mean CES (1-7)', font: { size: 11 } } },
+      y: { grid: { display: false } }
+    },
+    plugins: { tooltip: { callbacks: { label: ctx => {
+      const s = surveys[ctx.dataIndex];
+      return `Mean: ${s.mean.toFixed(2)} (${s.n} responses)`;
+    }}}}
+  }
+});
+
+/* --- Helper to build score distribution bar chart --- */
+function buildDistChart(canvasId, dist, color) {
+  new Chart(document.getElementById(canvasId), {
+    type: 'bar',
+    data: {
+      labels: ['1','2','3','4','5','6','7'],
+      datasets: [{ data: dist, backgroundColor: scoreColors, borderRadius: 4, barPercentage: 0.8 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false },
+      scales: {
+        y: { grid: { color: '#f5f5f5' }, beginAtZero: true, ticks: { stepSize: 1 }, title: { display: true, text: 'Responses', font: { size: 10 } } },
+        x: { grid: { display: false }, title: { display: true, text: 'Score', font: { size: 10 } } }
+      },
+      plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} response${ctx.raw !== 1 ? 's' : ''}` } } }
+    }
+  });
+}
+
+/* Score distributions: [1, 2, 3, 4, 5, 6, 7] */
+buildDistChart('chart_price',    [5, 2, 4, 4, 5, 8, 8]);
+buildDistChart('chart_onboard',    [5, 0, 1, 0, 0, 1, 21]);
+buildDistChart('chart_knife',    [1, 1, 0, 0, 0, 1, 7]);
+buildDistChart('chart_driver',    [0, 0, 0, 0, 0, 0, 7]);
+buildDistChart('chart_understand',    [2, 0, 0, 0, 0, 0, 0]);
+
+/* --- CES by Sharpening Center --- */
+const centers = [{name: "Orlando, FL", avg: 6.75, n: 4}, {name: "Elk Grove, IL", avg: 6.06, n: 17}, {name: "Boardman, OH", avg: 5.8, n: 5}, {name: "Houston, TX", avg: 5.38, n: 13}, {name: "Tukwila, WA", avg: 5.0, n: 3}, {name: "Cerritos, CA", avg: 4.82, n: 11}, {name: "Stockton, CA", avg: 4.8, n: 10}, {name: "Pineville, NC", avg: 4.5, n: 6}, {name: "Hopewell Junction, NY", avg: 4.0, n: 11}];
+new Chart(document.getElementById('centerChart'), {
+  type: 'bar',
+  data: {
+    labels: centers.map(c => c.name),
+    datasets: [{ data: centers.map(c => c.avg), backgroundColor: centers.map(c => cesColor(c.avg)), borderRadius: 6, barPercentage: 0.7 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false }, indexAxis: 'y',
+    scales: {
+      x: { min: 0, max: 7, grid: { color: '#f5f5f5' }, title: { display: true, text: 'Mean CES', font: { size: 11 } } },
+      y: { grid: { display: false } }
+    },
+    plugins: { tooltip: { callbacks: { label: ctx => {
+      const c = centers[ctx.dataIndex];
+      return `Mean CES: ${c.avg.toFixed(2)} (${c.n} responses)`;
+    }}}}
+  }
+});
+
+/* --- CES by DSD --- */
+const dsds = [{name: "Cutler, Jake", avg: 6.42, n: 12}, {name: "Mintmire, Mark", avg: 5.75, n: 8}, {name: "Lugo, Servey", avg: 5.13, n: 15}, {name: "Jakobs, Oliver", avg: 5.06, n: 16}, {name: "Holt, Wesley", avg: 5.0, n: 6}, {name: "Smith, John", avg: 4.81, n: 16}, {name: "Mulvey, Kevin", avg: 4.0, n: 7}];
+new Chart(document.getElementById('dsdChart'), {
+  type: 'bar',
+  data: {
+    labels: dsds.map(d => d.name),
+    datasets: [{ data: dsds.map(d => d.avg), backgroundColor: dsds.map(d => cesColor(d.avg)), borderRadius: 6, barPercentage: 0.7 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false }, indexAxis: 'y',
+    scales: {
+      x: { min: 0, max: 7, grid: { color: '#f5f5f5' }, title: { display: true, text: 'Mean CES', font: { size: 11 } } },
+      y: { grid: { display: false } }
+    },
+    plugins: { tooltip: { callbacks: { label: ctx => {
+      const d = dsds[ctx.dataIndex];
+      return `Mean CES: ${d.avg.toFixed(2)} (${d.n} responses)`;
+    }}}}
+  }
+});
+
+/* --- CES Drilldown Table --- */
+function showDrill(view, btn) {
+  document.querySelectorAll('.feedback-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const head = document.getElementById('drillHead');
+  const body = document.getElementById('drillBody');
+  if (view === 'center') {
+    head.innerHTML = '<tr><th>Sharpening Center</th><th class="num">Avg CES</th><th class="num">Responses</th></tr>';
+    body.innerHTML = centers.map(d => `<tr><td style="font-weight:600;">${d.name}</td><td class="num">${d.avg.toFixed(2)}</td><td class="num">${d.n}</td></tr>`).join('');
+  } else {
+    head.innerHTML = '<tr><th>DSD</th><th class="num">Avg CES</th><th class="num">Responses</th></tr>';
+    body.innerHTML = dsds.map(d => `<tr><td style="font-weight:600;">${d.name}</td><td class="num">${d.avg.toFixed(2)}</td><td class="num">${d.n}</td></tr>`).join('');
+  }
+}
+showDrill('center', document.querySelector('.feedback-filters .filter-btn'));
+
+// Update survey period end date to today
+(function() {
+  const badge = document.querySelector('.date-badge');
+  if (badge) {
+    const today = new Date();
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const endDate = months[today.getMonth()] + ' ' + String(today.getDate()).padStart(2,'0') + ', ' + today.getFullYear();
+    badge.textContent = badge.textContent.replace(/[\u2013\u2014–-]\s*[A-Z].*/, '\u2013 ' + endDate);
+  }
+})();
+</script>
+</body>
+</html>

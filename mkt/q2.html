@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Q2 Marketing | Cozzini Bros</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #fff; color: #0a0a0a; min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+
+  #auth-gate { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #8a2d1f 0%, #b44d2d 60%, #d4a45e 100%); }
+  .auth-box { background: white; border-radius: 12px; padding: 48px; width: 380px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+  .auth-box .kicker { color: #b44d2d; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px; }
+  .auth-box h2 { color: #1a2744; margin-bottom: 4px; font-size: 20px; }
+  .auth-box p { color: #555; font-size: 13px; margin-bottom: 24px; }
+  .auth-box input { width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 6px; font-size: 15px; outline: none; margin-bottom: 12px; }
+  .auth-box button { width: 100%; padding: 12px; background: #b44d2d; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  #auth-error { color: #d4918b; font-size: 13px; margin-top: 12px; display: none; }
+
+  #page-content { display: none; flex-direction: column; flex: 1; }
+
+  .header {
+    background: #1a2744; color: white; padding: 28px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+  .header .subtitle { font-size: 14px; opacity: 0.8; margin-top: 4px; }
+  .header .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #d4a45e; font-weight: 700; margin-top: 4px; }
+  .back-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; margin-bottom: 4px; display: inline-block; }
+
+  .empty-state {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 80px 40px; text-align: center;
+  }
+  .empty-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: #fef9e7; display: flex; align-items: center; justify-content: center;
+    font-size: 32px; margin-bottom: 24px;
+  }
+  .empty-state h2 { font-size: 24px; color: #1a2744; font-weight: 700; margin-bottom: 8px; }
+  .empty-state p { font-size: 14px; color: #555; max-width: 420px; line-height: 1.5; }
+  .empty-state .badge {
+    display: inline-block; font-size: 11px; font-weight: 700; padding: 6px 14px;
+    border-radius: 20px; background: #f7f7f7; color: #999; letter-spacing: 1px;
+    text-transform: uppercase; margin-top: 20px;
+  }
+
+  .footer {
+    background: #111; padding: 24px 40px;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-top: auto;
+  }
+  .footer img { height: 22px; opacity: 0.7; }
+  .footer span { color: rgba(255,255,255,0.4); font-size: 11px; }
+
+  @media (max-width: 780px) {
+    .header { padding: 20px; flex-direction: column; gap: 12px; text-align: center; }
+    .header > div:first-child { flex-direction: column !important; gap: 10px !important; }
+    .header img { height: 32px; }
+    .empty-state { padding: 48px 24px; }
+    .footer { padding: 20px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="auth-gate">
+  <div class="auth-box">
+    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros" style="height:40px;width:auto;margin-bottom:16px;">
+    <div class="kicker">Marketing</div>
+    <h2>Cozzini Dashboards</h2>
+    <p>Enter password to continue</p>
+    <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()">
+    <button onclick="checkAuth()">Sign In</button>
+    <p id="auth-error">Incorrect password</p>
+  </div>
+</div>
+
+<div id="page-content">
+
+<div class="header">
+  <div style="display:flex; align-items:center; gap:20px;">
+    <a href="../"><img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros" style="height:44px; width:auto;"></a>
+    <div>
+      <a href="./" class="back-link">&larr; Back to Marketing</a>
+      <h1>Q2 2026 Marketing</h1>
+      <div class="subtitle">Apr &ndash; Jun 2026 &mdash; dashboard opens at quarter close</div>
+      <div class="eyebrow">Marketing</div>
+    </div>
+  </div>
+</div>
+
+<div class="empty-state">
+  <div class="empty-icon">&#x23F3;</div>
+  <h2>Q2 2026 is still in-flight</h2>
+  <p>The Q2 marketing dashboard will populate at quarter close with social media performance, budget status, and lead conversion for April through June.</p>
+  <span class="badge">Coming soon</span>
+</div>
+
+<div class="footer">
+  <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros">
+  <span>Q2 2026 Marketing Dashboard</span>
+</div>
+
+</div>
+
+<script>
+const PASS_HASH='90ec951c';
+function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return(h>>>0).toString(16).slice(0,8);}
+function checkAuth(){
+  const input=document.getElementById('auth-pass').value;
+  if(simpleHash(input)===PASS_HASH||input==='Marketing2026$'){
+    document.getElementById('auth-gate').style.display='none';
+    document.getElementById('page-content').style.display='flex';
+    sessionStorage.setItem('mkt-auth','true');
+  } else {
+    document.getElementById('auth-error').style.display='block';
+    document.getElementById('auth-pass').style.borderColor='#d4918b';
+  }
+}
+if(sessionStorage.getItem('mkt-auth')==='true'){
+  document.getElementById('auth-gate').style.display='none';
+  document.getElementById('page-content').style.display='flex';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Voice of Customer | Cozzini Bros</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #0a0a0a; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* Password Gate */
+  #auth-gate {
+    display: flex; align-items: center; justify-content: center; min-height: 100vh;
+    background: #1a2744;
+  }
+  .auth-box {
+    background: white; border-radius: 12px; padding: 48px; width: 380px;
+    text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  }
+  .auth-box h2 { color: #1a2744; margin-bottom: 4px; font-size: 20px; }
+  .auth-box .kicker { color: #b44d2d; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px; }
+  .auth-box p { color: #555; font-size: 13px; margin-bottom: 24px; }
+  .auth-box input {
+    width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 6px;
+    font-size: 15px; outline: none; margin-bottom: 12px; transition: border 0.2s;
+  }
+  .auth-box input:focus { border-color: #7bafd4; }
+  .auth-box button {
+    width: 100%; padding: 12px; background: #1a2744; color: white; border: none;
+    border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+  }
+  .auth-box button:hover { background: #2a3d5c; }
+  #auth-error { color: #d4918b; font-size: 13px; margin-top: 12px; display: none; }
+
+  /* Hub content */
+  #hub-content { display: none; flex-direction: column; flex: 1; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px; border-bottom: 1px solid #e5e5e5;
+  }
+  .topbar img { height: 28px; width: auto; }
+  .topbar .right { display: flex; align-items: center; gap: 16px; }
+  .topbar .back-link { font-size: 13px; color: #555; text-decoration: none; }
+  .topbar .back-link:hover { color: #1a2744; }
+  .topbar span.kicker { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #999; font-weight: 500; }
+
+  .page-title {
+    padding: 48px 40px 12px;
+    max-width: 900px;
+  }
+  .page-title .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #7bafd4; font-weight: 700; margin-bottom: 8px; }
+  .page-title h1 { font-size: 28px; font-weight: 700; color: #1a2744; letter-spacing: -0.5px; }
+  .page-title p { color: #555; font-size: 14px; margin-top: 6px; }
+
+  .container { max-width: 900px; padding: 24px 40px 60px; flex: 1; }
+
+  .dash-list { display: flex; flex-direction: column; gap: 1px; background: #e5e5e5; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; }
+
+  .dash-item {
+    display: flex; align-items: center; gap: 20px; padding: 20px 24px;
+    background: #fff; text-decoration: none; color: #0a0a0a; transition: background 0.15s;
+  }
+  .dash-item:hover { background: #f7f7f7; }
+
+  .dash-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  .dash-item h3 { font-size: 15px; font-weight: 600; color: #1a2744; }
+  .dash-item p { font-size: 13px; color: #555; line-height: 1.4; margin-top: 2px; }
+
+  .dash-arrow { margin-left: auto; color: #ccc; font-size: 18px; flex-shrink: 0; }
+
+  .footer {
+    background: #111; padding: 24px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: auto;
+  }
+  .footer img { height: 22px; width: auto; opacity: 0.7; }
+  .footer span { color: rgba(255,255,255,0.4); font-size: 11px; }
+
+  @media (max-width: 700px) {
+    .topbar { padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
+    .page-title { padding: 32px 20px 8px; }
+    .container { padding: 16px 20px 40px; }
+    .footer { padding: 20px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div id="auth-gate">
+  <div class="auth-box">
+    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros" style="height:40px;width:auto;margin-bottom:16px;">
+    <div class="kicker">Voice of Customer</div>
+    <h2>Cozzini Dashboards</h2>
+    <p>Enter password to continue</p>
+    <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()">
+    <button onclick="checkAuth()">Sign In</button>
+    <p id="auth-error">Incorrect password</p>
+  </div>
+</div>
+
+<!-- Hub Content -->
+<div id="hub-content">
+  <div class="topbar">
+    <a href="../"><img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros"></a>
+    <div class="right">
+      <a href="../" class="back-link">&larr; All sections</a>
+      <span class="kicker">Voice of Customer</span>
+    </div>
+  </div>
+
+  <div class="page-title">
+    <div class="eyebrow">Voice of Customer</div>
+    <h1>Dashboards</h1>
+    <p>Analytics and reporting tools for the Cozzini team.</p>
+  </div>
+
+  <div class="container">
+    <div class="dash-list">
+
+      <a href="productchurn.html" class="dash-item">
+        <div class="dash-dot" style="background:#7bafd4;"></div>
+        <div>
+          <h3>Product Churn</h3>
+          <p>Product cancellation reasons, subscription duration, and verbatim feedback.</p>
+        </div>
+        <span class="dash-arrow">&rsaquo;</span>
+      </a>
+
+      <a href="customerchurn.html" class="dash-item">
+        <div class="dash-dot" style="background:#d4918b;"></div>
+        <div>
+          <h3>Customer Churn</h3>
+          <p>Satisfaction scores, support experience, and what customers switched to.</p>
+        </div>
+        <span class="dash-arrow">&rsaquo;</span>
+      </a>
+
+      <a href="nps.html" class="dash-item">
+        <div class="dash-dot" style="background:#8ebf7b;"></div>
+        <div>
+          <h3>Net Promoter Score</h3>
+          <p>NPS by sharpening center and DSD, with score distribution and drilldown.</p>
+        </div>
+        <span class="dash-arrow">&rsaquo;</span>
+      </a>
+
+      <a href="ces.html" class="dash-item">
+        <div class="dash-dot" style="background:#a99bc4;"></div>
+        <div>
+          <h3>Customer Effort Score</h3>
+          <p>Survey results for pricing, onboarding, knife sharpness, driver service, and invoicing.</p>
+        </div>
+        <span class="dash-arrow">&rsaquo;</span>
+      </a>
+
+      <a href="sdorg.html" class="dash-item">
+        <div class="dash-dot" style="background:#d4a45e;"></div>
+        <div>
+          <h3>S&amp;D Organization</h3>
+          <p>Sales &amp; Distribution regions, DSDs, Area Managers, and Ops Managers.</p>
+        </div>
+        <span class="dash-arrow">&rsaquo;</span>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros">
+    <span>&copy; 2026 Cozzini Bros &middot; Internal Use Only</span>
+  </div>
+</div>
+
+<script>
+const PASS_HASH = '8a9b0c1d';
+function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return(h>>>0).toString(16).slice(0,8);}
+function checkAuth(){
+  const input=document.getElementById('auth-pass').value;
+  if(simpleHash(input)===PASS_HASH||input==='Cozzini2026!'){
+    document.getElementById('auth-gate').style.display='none';
+    document.getElementById('hub-content').style.display='flex';
+    sessionStorage.setItem('cozzini-auth','true');
+  } else {
+    document.getElementById('auth-error').style.display='block';
+    document.getElementById('auth-pass').style.borderColor='#d4918b';
+  }
+}
+if(sessionStorage.getItem('cozzini-auth')==='true'){
+  document.getElementById('auth-gate').style.display='none';
+  document.getElementById('hub-content').style.display='flex';
+}
+</script>
+</body>
+</html>

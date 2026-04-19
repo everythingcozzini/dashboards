@@ -7,182 +7,145 @@
 <title>Cozzini Bros Dashboards</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #0a0a0a; min-height: 100vh; display: flex; flex-direction: column; }
-
-  /* Password Gate */
-  #auth-gate {
-    display: flex; align-items: center; justify-content: center; min-height: 100vh;
-    background: #1a2744;
+  :root {
+    --cozzini-navy: #1a2744;
+    --cozzini-blue: #7bafd4;
+    --cozzini-red: #d4918b;
+    --cozzini-gold: #d4a45e;
+    --text: #0a0a0a;
+    --text-muted: #555;
+    --border: #e5e5e5;
   }
-  .auth-box {
-    background: white; border-radius: 12px; padding: 48px; width: 380px;
-    text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #fff; color: var(--text); min-height: 100vh;
+    display: flex; flex-direction: column;
   }
-  .auth-box h2 { color: #1a2744; margin-bottom: 4px; font-size: 20px; }
-  .auth-box p { color: #555; font-size: 13px; margin-bottom: 24px; }
-  .auth-box input {
-    width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 6px;
-    font-size: 15px; outline: none; margin-bottom: 12px; transition: border 0.2s;
-  }
-  .auth-box input:focus { border-color: #7bafd4; }
-  .auth-box button {
-    width: 100%; padding: 12px; background: #1a2744; color: white; border: none;
-    border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;
-  }
-  .auth-box button:hover { background: #2a3d5c; }
-  #auth-error { color: #d4918b; font-size: 13px; margin-top: 12px; display: none; }
-
-  /* Hub content */
-  #hub-content { display: none; flex-direction: column; flex: 1; }
 
   .topbar {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 40px; border-bottom: 1px solid #e5e5e5;
+    padding: 18px 40px; border-bottom: 1px solid var(--border);
   }
   .topbar img { height: 28px; width: auto; }
   .topbar span { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #999; font-weight: 500; }
 
-  .page-title {
-    padding: 48px 40px 12px;
-    max-width: 900px;
+  .hero {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 40px 40px;
+    text-align: center;
   }
-  .page-title h1 { font-size: 28px; font-weight: 700; color: #1a2744; letter-spacing: -0.5px; }
-  .page-title p { color: #555; font-size: 14px; margin-top: 6px; }
-
-  .container { max-width: 900px; padding: 24px 40px 60px; flex: 1; }
-
-  .dash-list { display: flex; flex-direction: column; gap: 1px; background: #e5e5e5; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; }
-
-  .dash-item {
-    display: flex; align-items: center; gap: 20px; padding: 20px 24px;
-    background: #fff; text-decoration: none; color: #0a0a0a; transition: background 0.15s;
+  .hero h1 {
+    font-size: 40px; font-weight: 800; letter-spacing: -1px; color: var(--cozzini-navy);
+    margin-bottom: 12px;
   }
-  .dash-item:hover { background: #f7f7f7; }
+  .hero p { font-size: 16px; color: var(--text-muted); margin-bottom: 48px; max-width: 520px; }
 
-  .dash-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .tiles {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    max-width: 960px; width: 100%;
+  }
 
-  .dash-item h3 { font-size: 15px; font-weight: 600; color: #1a2744; }
-  .dash-item p { font-size: 13px; color: #555; line-height: 1.4; margin-top: 2px; }
+  .tile {
+    position: relative;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 40px 36px; border-radius: 16px;
+    text-decoration: none; color: white;
+    min-height: 280px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+  .tile:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.18); }
 
-  .dash-arrow { margin-left: auto; color: #ccc; font-size: 18px; flex-shrink: 0; }
+  .tile.voc {
+    background: linear-gradient(135deg, #1a2744 0%, #2a3d5c 60%, #3d5679 100%);
+  }
+  .tile.mkt {
+    background: linear-gradient(135deg, #8a2d1f 0%, #b44d2d 60%, #d4a45e 100%);
+  }
+
+  .tile-kicker {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
+    color: rgba(255,255,255,0.75); font-weight: 600; margin-bottom: 10px;
+  }
+  .tile h2 {
+    font-size: 32px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .tile .desc {
+    font-size: 14px; line-height: 1.5; color: rgba(255,255,255,0.88);
+    margin-bottom: 28px; max-width: 340px;
+  }
+  .tile .cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 600;
+    padding: 10px 20px; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.35); border-radius: 30px;
+    align-self: flex-start;
+    transition: background 0.2s;
+  }
+  .tile:hover .cta { background: rgba(255,255,255,0.25); }
+  .tile .cta::after { content: '→'; font-size: 16px; }
 
   .footer {
-    background: #111; padding: 24px 40px;
+    background: #111; padding: 22px 40px;
     display: flex; align-items: center; justify-content: space-between;
-    margin-top: auto;
   }
   .footer img { height: 22px; width: auto; opacity: 0.7; }
   .footer span { color: rgba(255,255,255,0.4); font-size: 11px; }
 
-  @media (max-width: 700px) {
-    .topbar { padding: 12px 20px; }
-    .page-title { padding: 32px 20px 8px; }
-    .container { padding: 16px 20px 40px; }
-    .footer { padding: 20px; flex-direction: column; gap: 8px; }
+  @media (max-width: 780px) {
+    .topbar { padding: 14px 20px; }
+    .hero { padding: 32px 20px 24px; }
+    .hero h1 { font-size: 28px; }
+    .hero p { font-size: 14px; margin-bottom: 28px; }
+    .tiles { grid-template-columns: 1fr; gap: 16px; }
+    .tile { padding: 28px 24px; min-height: 220px; }
+    .tile h2 { font-size: 26px; }
+    .tile .desc { font-size: 13px; margin-bottom: 20px; }
+    .footer { padding: 18px 20px; flex-direction: column; gap: 8px; }
   }
 </style>
 </head>
 <body>
 
-<!-- Password Gate -->
-<div id="auth-gate">
-  <div class="auth-box">
-    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros" style="height:40px;width:auto;margin-bottom:16px;">
-    <h2>Cozzini Dashboards</h2>
-    <p>Enter password to continue</p>
-    <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()">
-    <button onclick="checkAuth()">Sign In</button>
-    <p id="auth-error">Incorrect password</p>
+<div class="topbar">
+  <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros">
+  <span>Internal Dashboards</span>
+</div>
+
+<div class="hero">
+  <h1>Cozzini Dashboards</h1>
+  <p>Two gated areas for the internal Cozzini team. Pick a section to continue.</p>
+
+  <div class="tiles">
+
+    <a href="voc/" class="tile voc">
+      <div>
+        <div class="tile-kicker">Insights &amp; Surveys</div>
+        <h2>Voice of Customer</h2>
+        <div class="desc">Product &amp; customer churn, NPS, CES surveys, and S&amp;D organization &mdash; everything you need to hear what customers are telling us.</div>
+      </div>
+      <span class="cta">Enter</span>
+    </a>
+
+    <a href="mkt/" class="tile mkt">
+      <div>
+        <div class="tile-kicker">Campaigns &amp; Growth</div>
+        <h2>Marketing</h2>
+        <div class="desc">Quarterly marketing dashboards covering social, budget, and lead conversion &mdash; live from Q1 2026 forward.</div>
+      </div>
+      <span class="cta">Enter</span>
+    </a>
+
   </div>
 </div>
 
-<!-- Hub Content -->
-<div id="hub-content">
-  <div class="topbar">
-    <a href="./"><img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros"></a>
-    <span>Internal Dashboards</span>
-  </div>
-
-  <div class="page-title">
-    <h1>Dashboards</h1>
-    <p>Analytics and reporting tools for the Cozzini team.</p>
-  </div>
-
-  <div class="container">
-    <div class="dash-list">
-
-      <a href="productchurn.html" class="dash-item">
-        <div class="dash-dot" style="background:#7bafd4;"></div>
-        <div>
-          <h3>Product Churn</h3>
-          <p>Product cancellation reasons, subscription duration, and verbatim feedback.</p>
-        </div>
-        <span class="dash-arrow">&rsaquo;</span>
-      </a>
-
-      <a href="customerchurn.html" class="dash-item">
-        <div class="dash-dot" style="background:#d4918b;"></div>
-        <div>
-          <h3>Customer Churn</h3>
-          <p>Satisfaction scores, support experience, and what customers switched to.</p>
-        </div>
-        <span class="dash-arrow">&rsaquo;</span>
-      </a>
-
-      <a href="nps.html" class="dash-item">
-        <div class="dash-dot" style="background:#8ebf7b;"></div>
-        <div>
-          <h3>Net Promoter Score</h3>
-          <p>NPS by sharpening center and DSD, with score distribution and drilldown.</p>
-        </div>
-        <span class="dash-arrow">&rsaquo;</span>
-      </a>
-
-      <a href="ces.html" class="dash-item">
-        <div class="dash-dot" style="background:#a99bc4;"></div>
-        <div>
-          <h3>Customer Effort Score</h3>
-          <p>Survey results for pricing, onboarding, knife sharpness, driver service, and invoicing.</p>
-        </div>
-        <span class="dash-arrow">&rsaquo;</span>
-      </a>
-
-      <a href="sdorg.html" class="dash-item">
-        <div class="dash-dot" style="background:#d4a45e;"></div>
-        <div>
-          <h3>S&amp;D Organization</h3>
-          <p>Sales &amp; Distribution regions, DSDs, Area Managers, and Ops Managers.</p>
-        </div>
-        <span class="dash-arrow">&rsaquo;</span>
-      </a>
-
-    </div>
-  </div>
-
-  <div class="footer">
-    <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros">
-    <span>&copy; 2026 Cozzini Bros &middot; Internal Use Only</span>
-  </div>
+<div class="footer">
+  <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros">
+  <span>&copy; 2026 Cozzini Bros &middot; Internal Use Only</span>
 </div>
 
-<script>
-const PASS_HASH = '8a9b0c1d';
-function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return(h>>>0).toString(16).slice(0,8);}
-function checkAuth(){
-  const input=document.getElementById('auth-pass').value;
-  if(simpleHash(input)===PASS_HASH||input==='Cozzini2026!'){
-    document.getElementById('auth-gate').style.display='none';
-    document.getElementById('hub-content').style.display='flex';
-    sessionStorage.setItem('cozzini-auth','true');
-  } else {
-    document.getElementById('auth-error').style.display='block';
-    document.getElementById('auth-pass').style.borderColor='#d4918b';
-  }
-}
-if(sessionStorage.getItem('cozzini-auth')==='true'){
-  document.getElementById('auth-gate').style.display='none';
-  document.getElementById('hub-content').style.display='flex';
-}
-</script>
 </body>
 </html>

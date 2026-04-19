@@ -39,6 +39,7 @@ from watchdog.events import FileSystemEventHandler
 # Config
 # ---------------------------------------------------------------------------
 DASH_DIR = Path(__file__).resolve().parent
+VOC_DIR = DASH_DIR / "voc"   # Post-restructure: dashboard HTMLs live under voc/
 LOG_FILE = DASH_DIR / "watcher.log"
 PROCESSED_LOG = DASH_DIR / ".processed_files.json"
 AM_CACHE = DASH_DIR / ".am_reference.json"  # DSD → [AM names] lookup for NPS drilldown
@@ -962,8 +963,8 @@ def classify_sentiment(text):
 # ===========================================================================
 
 def update_nps_html(data):
-    """Update nps.html with parsed NPS data."""
-    html_path = DASH_DIR / "nps.html"
+    """Update voc/nps.html with parsed NPS data."""
+    html_path = VOC_DIR / "nps.html"
     html = html_path.read_text()
 
     # Update date badge
@@ -1081,7 +1082,7 @@ def update_nps_new_customers_section(data):
     the respondent table. The top/existing-customer portion of nps.html is not
     modified by this function.
     """
-    html_path = DASH_DIR / "nps.html"
+    html_path = VOC_DIR / "nps.html"
     html = html_path.read_text()
 
     nps_str = f"+{data['nps_score']}" if data['nps_score'] >= 0 else f"{data['nps_score']}"
@@ -1154,8 +1155,8 @@ def update_nps_new_customers_section(data):
 
 
 def update_customer_churn_html(data):
-    """Update customerchurn.html with parsed customer churn data."""
-    html_path = DASH_DIR / "customerchurn.html"
+    """Update voc/customerchurn.html with parsed customer churn data."""
+    html_path = VOC_DIR / "customerchurn.html"
     html = html_path.read_text()
 
     # Date badge
@@ -1252,8 +1253,8 @@ def update_customer_churn_html(data):
 
 
 def update_product_churn_html(data):
-    """Update productchurn.html with parsed product churn data."""
-    html_path = DASH_DIR / "productchurn.html"
+    """Update voc/productchurn.html with parsed product churn data."""
+    html_path = VOC_DIR / "productchurn.html"
     html = html_path.read_text()
 
     # Date badge
@@ -1337,8 +1338,8 @@ def update_product_churn_html(data):
 
 
 def update_ces_html(all_ces_data):
-    """Update ces.html with all CES survey data."""
-    html_path = DASH_DIR / "ces.html"
+    """Update voc/ces.html with all CES survey data."""
+    html_path = VOC_DIR / "ces.html"
     html = html_path.read_text()
 
     type_map = {
