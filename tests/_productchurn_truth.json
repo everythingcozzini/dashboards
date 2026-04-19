@@ -1,0 +1,67 @@
+{
+  "total": 38,
+  "n_centers": 9,
+  "avg_days": 433,
+  "median_days": 190,
+  "early_cancel": 10,
+  "early_pct": 29,
+  "top_reason": "Other (exclusive)",
+  "top_reason_count": 14,
+  "reason_counts": {
+    "Price / budget": 7,
+    "Product performance": 3,
+    "No longer needed": 13,
+    "Never agreed to start the service": 6,
+    "Other (exclusive)": 14,
+    "Menu or equipment changes": 2
+  },
+  "center_labels": [
+    "Houston, TX",
+    "Elk Grove, IL",
+    "Boardman, OH",
+    "Hopewell Junction, NY",
+    "Stockton, CA",
+    "Pineville, NC",
+    "Tukwila, WA",
+    "Orlando, FL",
+    "Cerritos, CA"
+  ],
+  "center_counts": [
+    8,
+    6,
+    5,
+    5,
+    5,
+    4,
+    3,
+    1,
+    1
+  ],
+  "product_labels": [
+    "Slicer Blade",
+    "Food Processor Blade",
+    "Can Opener",
+    "Other",
+    "Sharpening Steel",
+    "Grinder Plate"
+  ],
+  "product_counts": [
+    17,
+    11,
+    5,
+    3,
+    1,
+    1
+  ],
+  "tenure_buckets": [
+    5,
+    5,
+    6,
+    5,
+    7,
+    7
+  ],
+  "feedback_count": 22,
+  "date_min": "Mar 10",
+  "date_max": "Apr 16, 2026"
+}

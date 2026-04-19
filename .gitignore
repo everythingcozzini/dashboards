@@ -27,3 +27,6 @@ product_churn.xlsx
 
 # Local transcript exports
 claude_code_thread.txt
+
+# Reference screenshots (large PNGs — local-only)
+layout/
