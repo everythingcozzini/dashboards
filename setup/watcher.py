@@ -1592,10 +1592,15 @@ class DashboardHandler(FileSystemEventHandler):
 
 
 def _file_signature(filepath):
-    """Return a stable signature for (size, mtime) so we detect file changes."""
+    """Return a stable signature for (size, mtime) so we detect file changes.
+
+    Uses full-precision mtime — truncating to integer seconds caused re-saves
+    with identical byte size (common for XLSX after removing a blank/minor row)
+    to be misclassified as 'already processed'.
+    """
     try:
         st = os.stat(filepath)
-        return f"{st.st_size}:{int(st.st_mtime)}"
+        return f"{st.st_size}:{st.st_mtime}"
     except OSError:
         return None
 
