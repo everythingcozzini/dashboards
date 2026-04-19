@@ -1287,8 +1287,11 @@ def update_product_churn_html(data):
         html
     )
     # KPI 4: Top Reason
+    # NOTE: HTML label is "Top Churn Reason" (not "Top Cancellation Reason")
+    # and the value div has inline style (font-size:20px; margin-top:14px).
+    # Previous regex mismatched both, so KPI 4 silently failed every run.
     html = re.sub(
-        r'(<div class="label">Top Cancellation Reason</div>\s*<div class="value">)[^<]+(</div>\s*<div class="detail">)[^<]+(</div>)',
+        r'(<div class="label">Top Churn Reason</div>\s*<div class="value"[^>]*>)[^<]+(</div>\s*<div class="detail">)[^<]+(</div>)',
         lambda m: f'{m.group(1)}{data["top_reason"]}{m.group(2)}{data["top_reason_count"]} responses &mdash; review verbatim feedback below{m.group(3)}',
         html
     )
