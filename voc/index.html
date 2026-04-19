@@ -19,7 +19,7 @@
     text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
   }
   .auth-box h2 { color: #1a2744; margin-bottom: 4px; font-size: 20px; }
-  .auth-box .kicker { color: #b44d2d; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px; }
+  .auth-box .kicker { color: #1a2744; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px; }
   .auth-box p { color: #555; font-size: 13px; margin-bottom: 24px; }
   .auth-box input {
     width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 6px;
@@ -176,7 +176,7 @@
 </div>
 
 <script>
-const PASS_HASH = '8a9b0c1d';
+const PASS_HASH = 'b2917ac7';
 function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return(h>>>0).toString(16).slice(0,8);}
 function checkAuth(){
   const input=document.getElementById('auth-pass').value;

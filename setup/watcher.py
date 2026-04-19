@@ -1271,14 +1271,18 @@ def update_product_churn_html(data):
         html
     )
     # KPI 2: Avg Subscription Duration
+    # NOTE: previous regex required " days" suffix in the value div; the
+    # template has the unit only in the detail line, so regex silently failed.
     html = re.sub(
-        r'(<div class="label">Avg. Product Subscription Duration</div>\s*<div class="value">)\d+( days</div>\s*<div class="detail">Median: )\d+',
+        r'(<div class="label">Avg. Product Subscription Duration</div>\s*<div class="value">)\d+(</div>\s*<div class="detail">Median: )\d+',
         lambda m: f'{m.group(1)}{data["avg_days"]}{m.group(2)}{data["median_days"]}',
         html
     )
     # KPI 3: Early Cancellations
+    # NOTE: label contains "<br>(&lt;90 days)" — previous [^<]* stopped at
+    # <br> and regex failed. Use .*? (non-greedy up to the label close tag).
     html = re.sub(
-        r'(<div class="label">Early Product Cancellations[^<]*</div>\s*<div class="value">)\d+(</div>\s*<div class="detail">)[^<]+(</div>)',
+        r'(<div class="label">Early Product Cancellations.*?</div>\s*<div class="value">)\d+(</div>\s*<div class="detail">)[^<]+(</div>)',
         lambda m: f'{m.group(1)}{data["early_cancel"]}{m.group(2)}{data["early_pct"]}% of all product cancellations{m.group(3)}',
         html
     )

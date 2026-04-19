@@ -8,12 +8,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    /* Warm Corporate palette */
-    --cozzini-navy: #1b3a4b;
-    --cozzini-blue: #3d7c98;
-    --cozzini-red: #b44d2d;
-    --cozzini-gold: #c78c3a;
-    --cozzini-green: #4a7c59;
+    --cozzini-navy: #1a2744;
+    --cozzini-blue: #7bafd4;
+    --cozzini-red: #d4918b;
+    --cozzini-gold: #d4a45e;
+    --cozzini-green: #8ebf7b;
     --bg: #ffffff;
     --card-bg: #ffffff;
     --text: #0a0a0a;
@@ -83,7 +82,7 @@
   .sentiment-positive { color: var(--cozzini-green); font-weight: 600; }
   .sentiment-negative { color: var(--cozzini-red); font-weight: 600; }
   .sentiment-neutral { color: var(--text-muted); font-weight: 600; }
-  .sentiment-actionable { color: var(--cozzini-gold); font-weight: 600; }
+  .sentiment-actionable { color: #d4cb7b; font-weight: 600; }
   .section-title { font-size: 18px; font-weight: 700; color: var(--cozzini-navy); margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
   thead th.num, tbody td.num { text-align: right; }
 
@@ -106,14 +105,14 @@
 </head>
 <body>
 
-<div id="auth-gate" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1b3a4b;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<div id="auth-gate" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1a2744;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <div style="background:white;border-radius:16px;padding:48px;width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
     <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-Horizontal-Pantone-TK.png" alt="Cozzini Bros" style="height:40px;width:auto;margin-bottom:16px;">
-    <h2 style="color:#1b3a4b;margin-bottom:4px;font-size:20px;">Cozzini Dashboards</h2>
+    <h2 style="color:#1a2744;margin-bottom:4px;font-size:20px;">Cozzini Dashboards</h2>
     <p style="color:#555555;font-size:13px;margin-bottom:24px;">Enter password to continue</p>
-    <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()" style="width:100%;padding:12px 16px;border:2px solid #e5e5e5;border-radius:8px;font-size:15px;outline:none;margin-bottom:12px;transition:border 0.2s;" onfocus="this.style.borderColor='#3d7c98'" onblur="this.style.borderColor='#e5e5e5'">
-    <button onclick="checkAuth()" style="width:100%;padding:12px;background:#1b3a4b;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#3d7c98'" onmouseout="this.style.background='#1b3a4b'">Sign In</button>
-    <p id="auth-error" style="color:#b44d2d;font-size:13px;margin-top:12px;display:none;">Incorrect password</p>
+    <input id="auth-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkAuth()" style="width:100%;padding:12px 16px;border:2px solid #e5e5e5;border-radius:8px;font-size:15px;outline:none;margin-bottom:12px;transition:border 0.2s;" onfocus="this.style.borderColor='#7bafd4'" onblur="this.style.borderColor='#e5e5e5'">
+    <button onclick="checkAuth()" style="width:100%;padding:12px;background:#1a2744;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#7bafd4'" onmouseout="this.style.background='#1a2744'">Sign In</button>
+    <p id="auth-error" style="color:#d4918b;font-size:13px;margin-top:12px;display:none;">Incorrect password</p>
   </div>
 </div>
 <div id="page-content" style="display:none;">
@@ -140,13 +139,13 @@
     </div>
     <div class="kpi-card">
       <div class="label">Avg. Product Subscription Duration</div>
-      <div class="value">441</div>
-      <div class="detail">Median: 182 days before cancellation</div>
+      <div class="value">433</div>
+      <div class="detail">Median: 190 days before cancellation</div>
     </div>
     <div class="kpi-card warn">
       <div class="label">Early Product Cancellations<br>(&lt;90 days)</div>
       <div class="value">10</div>
-      <div class="detail">32% of all product cancellations</div>
+      <div class="detail">29% of all product cancellations</div>
     </div>
     <div class="kpi-card">
       <div class="label">Top Churn Reason</div>
@@ -224,7 +223,7 @@
 </div><!-- end page-content -->
 
 <script>
-const PASS_HASH='8a9b0c1d';
+const PASS_HASH='b2917ac7';
 function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return(h>>>0).toString(16).slice(0,8);}
 function checkAuth(){
   const input=document.getElementById('auth-pass').value;
@@ -234,7 +233,7 @@ function checkAuth(){
     sessionStorage.setItem('cozzini-auth','true');
   } else {
     document.getElementById('auth-error').style.display='block';
-    document.getElementById('auth-pass').style.borderColor='#b44d2d';
+    document.getElementById('auth-pass').style.borderColor='#d4918b';
   }
 }
 if(sessionStorage.getItem('cozzini-auth')==='true'){
@@ -244,7 +243,7 @@ if(sessionStorage.getItem('cozzini-auth')==='true'){
 </script>
 
 <script>
-const PALETTE = ['#3d7c98','#b44d2d','#c78c3a','#4a7c59','#7b6ba1','#c07840','#2c7a7b','#9b5c7a','#6b8a94'];
+const PALETTE = ['#7bafd4','#d4918b','#d4a45e','#8ebf7b','#a99bc4','#d4cb7b','#5a90b5','#b87872','#6da362'];
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 Chart.defaults.font.size = 12;
 Chart.defaults.plugins.legend.display = false;
@@ -252,8 +251,8 @@ Chart.defaults.plugins.legend.display = false;
 new Chart(document.getElementById('reasonChart'), {
   type: 'bar',
   data: {
-    labels: ['No longer\nneeded','Other\n(exclusive)','Never agreed\nto start','Price /\nbudget','Menu /\nequip. changes','Switched\nvendor','Product\nperformance'],
-    datasets: [{ data: [12, 10, 5, 4, 1, 0, 0], backgroundColor: ['#3d7c98','#b44d2d','#c78c3a','#4a7c59','#7b6ba1','#c07840','#2c7a7b'], borderRadius: 6, barPercentage: 0.7 }]
+    labels: ['No longer\nneeded','Never agreed\nto start','Price /\nbudget','Product\nperformance','Menu /\nequip. changes','Switched\nvendor'],
+    datasets: [{ data: [13, 6, 7, 3, 2, 0], backgroundColor: ['#7bafd4','#d4918b','#d4a45e','#8ebf7b','#a99bc4','#d4cb7b'], borderRadius: 6, barPercentage: 0.7 }]
   },
   options: { responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false }, indexAxis: 'y', scales: { x: { grid: { color: '#f5f5f5' }, ticks: { stepSize: 2 } }, y: { grid: { display: false } } }, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} cancellations` } } } }
 });
@@ -271,7 +270,7 @@ new Chart(document.getElementById('productChart'), {
   type: 'doughnut',
   data: {
     labels: ["Slicer Blade", "Food Processor Blade", "Can Opener", "Other", "Sharpening Steel", "Grinder Plate"],
-    datasets: [{ data: [17, 11, 5, 3, 1, 1], backgroundColor: ['#3d7c98','#c78c3a','#4a7c59','#9b5c7a','#6b8a94','#c07840'], borderWidth: 2, borderColor: '#fff' }]
+    datasets: [{ data: [17, 11, 5, 3, 1, 1], backgroundColor: ['#7bafd4','#d4a45e','#8ebf7b','#b87872','#6da362'], borderWidth: 2, borderColor: '#fff' }]
   },
   options: { responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, cutout: '55%', plugins: { legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } }, tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/38*100)}%)` } } } }
 });
@@ -280,7 +279,7 @@ new Chart(document.getElementById('tenureChart'), {
   type: 'bar',
   data: {
     labels: ['0-30 days','31-90 days','91-180 days','181-365 days','1-2 years','2+ years'],
-    datasets: [{ data: [5, 5, 6, 5, 7, 7], backgroundColor: ['#b44d2d','#c07840','#c78c3a','#4a7c59','#3d7c98','#1b3a4b'], borderRadius: 6, barPercentage: 0.7 }]
+    datasets: [{ data: [5, 5, 6, 5, 7, 7], backgroundColor: ['#d4918b','#d4cb7b','#d4a45e','#8ebf7b','#7bafd4','#1a2744'], borderRadius: 6, barPercentage: 0.7 }]
   },
   options: { responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, interaction: { mode: 'index', intersect: false }, scales: { y: { grid: { color: '#f5f5f5' }, ticks: { stepSize: 1 }, beginAtZero: true }, x: { grid: { display: false } } }, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} product cancellations` } } } }
 });
