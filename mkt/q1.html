@@ -4,104 +4,135 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Q1 Marketing | Cozzini Bros</title>
+<title>Q1 2026 Marketing | Cozzini Bros</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --cozzini-navy: #1a2744;
-    --mkt-primary: #b44d2d;
-    --mkt-accent: #d4a45e;
     --cozzini-blue: #7bafd4;
-    --cozzini-red: #d4918b;
-    --cozzini-green: #8ebf7b;
+    --cozzini-red:  #d4918b;
     --cozzini-gold: #d4a45e;
-    --bg: #ffffff;
-    --card-bg: #ffffff;
+    --cozzini-green: #8ebf7b;
+    --mkt-burnt:  #b44d2d;
+    --mkt-burgundy: #8a2d1f;
     --text: #0a0a0a;
-    --text-muted: #555555;
+    --text-muted: #555;
     --border: #e5e5e5;
+    --card-bg: #ffffff;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fbfaf9; color: var(--text); }
 
-  .header {
-    background: var(--cozzini-navy);
-    color: white; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center;
-  }
+  .header { background: var(--cozzini-navy); color: white; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; }
   .header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
   .header .subtitle { font-size: 14px; opacity: 0.8; margin-top: 4px; }
-  .header .date-badge {
-    background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 8px;
-    font-size: 13px; font-weight: 500;
-  }
+  .header .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--mkt-burnt); font-weight: 700; margin-bottom: 4px; }
+  .header .date-badge { background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; }
   .back-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; margin-bottom: 4px; display: inline-block; }
   .back-link:hover { color: white; }
-  .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--mkt-accent); font-weight: 700; margin-top: 4px; }
 
   .container { max-width: 1400px; margin: 0 auto; padding: 24px 40px 60px; }
 
-  .section-title {
-    font-size: 20px; font-weight: 700; color: var(--cozzini-navy);
-    margin: 36px 0 16px; letter-spacing: -0.3px;
-    padding-bottom: 10px; border-bottom: 2px solid var(--border);
-    display: flex; align-items: center; gap: 10px;
-  }
-  .section-title .badge {
-    font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px;
-    background: var(--mkt-primary); color: white; letter-spacing: 1px; text-transform: uppercase;
-  }
+  /* === HERO STRIP === */
+  .hero-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .hero-card { background: var(--card-bg); border-radius: 14px; padding: 22px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 6px; }
+  .hero-card .hero-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; }
+  .hero-card .hero-value { font-size: 32px; font-weight: 800; color: var(--cozzini-navy); letter-spacing: -0.5px; }
+  .hero-card .hero-period { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--mkt-burnt); font-weight: 700; margin-top: -2px; }
+  .hero-card .hero-target { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .hero-card .hero-status { margin-top: 8px; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; width: fit-content; }
+  /* Pacing bar for cumulative annual metrics */
+  .hero-pace { margin-top: 10px; }
+  .hero-pace-bar { position: relative; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+  .hero-pace-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, #8ebf7b 0%, #a9cc98 100%); border-radius: 4px; }
+  .hero-pace-marker { position: absolute; top: -3px; width: 2px; height: 14px; background: var(--cozzini-navy); transform: translateX(-50%); }
+  .hero-pace-marker::after { content: ""; position: absolute; top: -4px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid var(--cozzini-navy); }
+  .hero-pace-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; font-size: 10px; color: var(--text-muted); letter-spacing: 0.3px; }
+  .hero-pace-legend b { color: var(--cozzini-navy); }
+  .hero-pace-legend .pace-sep { color: #c0c0c0; }
+  .hero-green { border-left: 4px solid var(--cozzini-green); }
+  .hero-amber { border-left: 4px solid var(--cozzini-gold); }
+  .hero-red { border-left: 4px solid var(--cozzini-red); }
+  .hero-unknown { border-left: 4px solid #a0a0a0; }
 
-  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px; }
-  .kpi-card {
-    background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-  .kpi-card .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; }
-  .kpi-card .value { font-size: 32px; font-weight: 800; margin: 8px 0 4px; color: var(--cozzini-navy); }
-  .kpi-card .detail { font-size: 13px; color: var(--text-muted); }
-  .kpi-card.positive .value { color: var(--cozzini-green); }
-  .kpi-card.alert .value { color: var(--cozzini-red); }
-  .kpi-card.warn .value { color: var(--mkt-primary); }
+  /* === SECTION === */
+  .section { margin-bottom: 36px; }
+  .section-title { font-size: 18px; font-weight: 700; color: var(--cozzini-navy); margin: 0 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .section-title .count { font-size: 13px; color: var(--text-muted); font-weight: 500; }
 
-  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
-  .chart-card {
-    background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  /* === FOCUS SCORECARD === */
+  .focus-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .focus-card { background: var(--card-bg); border-radius: 12px; padding: 22px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .focus-card h3 { font-size: 15px; font-weight: 700; color: var(--cozzini-navy); margin-bottom: 10px; }
+  .focus-actions { list-style: none; padding: 0; margin: 0 0 14px; }
+  .focus-actions li { font-size: 13px; color: var(--text-muted); padding: 3px 0; }
+  .focus-actions li::before { content: "→ "; color: var(--mkt-burnt); }
+  .focus-metrics { display: flex; flex-direction: column; gap: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
+  .focus-metric {
+    display: grid;
+    grid-template-columns: 14px 1fr auto;
+    column-gap: 10px;
+    row-gap: 3px;
+    align-items: baseline;
+    font-size: 13px;
   }
-  .chart-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: var(--cozzini-navy); }
-  .chart-card .chart-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
-  .chart-card .chart-wrap { position: relative; height: 280px; }
+  .focus-metric-dot { grid-row: 1; grid-column: 1; width: 12px; height: 12px; border-radius: 50%; align-self: center; }
+  .focus-metric-label { grid-row: 1; grid-column: 2; color: var(--text); font-weight: 500; }
+  .focus-metric-actual { grid-row: 1; grid-column: 3; font-weight: 700; color: var(--cozzini-navy); }
+  .focus-metric-target { grid-row: 2; grid-column: 2 / -1; font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+  .focus-metric-target b { color: var(--cozzini-navy); }
 
-  .full-chart {
-    background: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 28px;
-  }
-  .full-chart h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: var(--cozzini-navy); }
-  .full-chart .sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
-  .full-chart .chart-wrap { position: relative; height: 320px; }
+  /* === CARDS + CHARTS === */
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .chart-card { background: var(--card-bg); border-radius: 12px; padding: 22px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .chart-card h3 { font-size: 14px; font-weight: 700; color: var(--cozzini-navy); margin-bottom: 4px; }
+  .chart-card .chart-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+  .chart-wrap { position: relative; height: 280px; }
+  .chart-wrap.tall { height: 340px; }
+  .full-chart { grid-column: 1 / -1; }
 
+  /* === BUDGET + FUNNEL KPIs === */
+  .kpi-inline { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+  .kpi-inline .kpi { padding: 14px 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; }
+  .kpi-inline .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; }
+  .kpi-inline .kpi-value { font-size: 24px; font-weight: 800; color: var(--cozzini-navy); margin-top: 4px; }
+  .kpi-inline .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .kpi-pos { color: var(--cozzini-green) !important; }
+  .kpi-neg { color: var(--cozzini-red) !important; }
+
+  /* === FUNNEL === */
+  .funnel { display: flex; justify-content: center; align-items: stretch; gap: 14px; flex-wrap: wrap; padding: 10px 0; }
+  .funnel-stage { flex: 1; min-width: 180px; padding: 18px; border-radius: 12px; text-align: center; color: white; }
+  .funnel-arrow { align-self: center; font-size: 28px; color: var(--text-muted); }
+  .funnel-num { font-size: 28px; font-weight: 800; display: block; letter-spacing: -0.5px; }
+  .funnel-lbl { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85; }
+  .funnel-1 { background: var(--cozzini-navy); }
+  .funnel-2 { background: var(--cozzini-blue); color: var(--cozzini-navy); }
+  .funnel-3 { background: var(--cozzini-green); color: var(--cozzini-navy); }
+
+  /* === Q1 AT A GLANCE CALLOUT BAR === */
+  .glance-bar { background: linear-gradient(135deg, #1a2744 0%, #2a3d5c 100%); color: white; border-radius: 14px; padding: 20px 24px; margin-bottom: 32px; box-shadow: 0 2px 12px rgba(26,39,68,0.15); }
+  .glance-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #d4a45e; margin-bottom: 14px; }
+  .glance-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 20px; }
+  .glance-item { display: flex; align-items: baseline; gap: 10px; font-size: 13px; }
+  .glance-check { color: #8ebf7b; font-size: 15px; flex-shrink: 0; }
+  .glance-label { font-weight: 600; color: white; }
+  .glance-value { color: rgba(255,255,255,0.75); font-size: 12px; }
+
+  /* === TABLES === */
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead th {
-    text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border);
-    font-weight: 600; color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  thead th.num { text-align: right; }
-  tbody td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
-  tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  tbody tr:hover { background: #fafafa; }
+  thead th { text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border); font-weight: 600; color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  thead th.num, tbody td.num { text-align: right; }
 
-  .placeholder-note {
-    background: #fef9e7; color: #7a5900; font-size: 12px; padding: 10px 14px; border-radius: 8px;
-    margin-bottom: 20px; border-left: 3px solid var(--mkt-accent);
-  }
-
-  .footer {
-    background: #111; padding: 28px 40px;
-    display: flex; align-items: center; justify-content: center; gap: 16px;
-  }
+  /* === FOOTER === */
+  .footer { background: #111; padding: 22px 40px; display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .footer img { height: 22px; opacity: 0.7; }
+  .footer span { color: rgba(255,255,255,0.4); font-size: 11px; }
 
   @media (max-width: 900px) {
-    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .hero-strip { grid-template-columns: repeat(2, 1fr); }
+    .focus-grid { grid-template-columns: 1fr; }
     .chart-grid { grid-template-columns: 1fr; }
     .container { padding: 16px; }
     .header { padding: 20px; flex-direction: column; gap: 12px; text-align: center; }
@@ -111,16 +142,18 @@
 
   /* === iphone13-patch:start === */
   @media (max-width: 480px) {
-  #auth-gate > div { width: 92% !important; max-width: 360px !important; padding: 32px 24px !important; }
-  .header { padding: 16px; } .header h1 { font-size: 20px; }
-  .container { padding: 12px; }
-  .kpi-card { padding: 16px; } .kpi-card .value { font-size: 26px; }
-  .chart-card .chart-wrap { height: 240px; }
-  .full-chart .chart-wrap { height: 280px; }
-  .section-title { font-size: 16px; margin: 24px 0 14px; }
-  thead th, tbody td { padding: 8px 6px; font-size: 11px; }
-  .footer { padding: 16px; flex-direction: column; gap: 8px; text-align: center; }
-}
+    #auth-gate > div { width: 92% !important; max-width: 360px !important; padding: 32px 24px !important; }
+    .header { padding: 16px; } .header h1 { font-size: 20px; }
+    .container { padding: 12px; }
+    .hero-strip { grid-template-columns: 1fr; }
+    .hero-card { padding: 16px; } .hero-card .hero-value { font-size: 26px; }
+    .chart-card .chart-wrap { height: 240px; }
+    .section-title { font-size: 16px; margin: 24px 0 12px; }
+    .funnel { flex-direction: column; }
+    .funnel-arrow { transform: rotate(90deg); }
+    thead th, tbody td { padding: 8px 6px; font-size: 11px; }
+    .footer { padding: 16px; flex-direction: column; gap: 8px; text-align: center; }
+  }
   /* === iphone13-patch:end === */
 </style>
 </head>
@@ -145,182 +178,232 @@
     <a href="../"><img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros" style="height:44px; width:auto;"></a>
     <div>
       <a href="./" class="back-link">&larr; Back to Marketing</a>
-      <h1>Q1 2026 Marketing</h1>
-      <div class="subtitle">Social media, budget, and lead conversion &mdash; Jan&ndash;Mar 2026</div>
       <div class="eyebrow">Marketing</div>
+      <h1>Q1 2026 &mdash; Planned &times; Results</h1>
+      <div class="subtitle">Q1 progress vs full-year 2026 goals &mdash; ~25% of year elapsed, 3 quarters remaining</div>
     </div>
   </div>
-  <div class="date-badge">Period: Jan 1 &ndash; Mar 31, 2026</div>
+  <div class="date-badge">YTD through Apr 20, 2026</div>
 </div>
 
 <div class="container">
 
-  <div class="placeholder-note">
-    <strong>Placeholder data</strong> &mdash; Q1 numbers shown below are illustrative. Drop real campaign data here once the Q1 close is final.
-  </div>
-
-  <!-- ==================== SOCIAL MEDIA ANALYSIS ==================== -->
-  <div class="section-title">Social Media Analysis <span class="badge">Q1</span></div>
-
-  <div class="kpi-row">
-    <div class="kpi-card">
-      <div class="label">Total Impressions</div>
-      <div class="value">1.24M</div>
-      <div class="detail">Across 4 platforms</div>
+  <!-- HERO: 4 headline KPIs (all wins) — Planned × Results framing -->
+  <div class="hero-strip">
+    
+    <div class="hero-card hero-green">
+      <div class="hero-label">Q1 Budget Spend</div>
+      <div class="hero-value">$53,175</div>
+      <div class="hero-period">Q1 actual</div>
+      <div class="hero-target">Q1 plan: <= $68,250</div>
+      
+      <div class="hero-status" style="background:#dceccf;color:#6faa58;">✓ On track</div>
     </div>
-    <div class="kpi-card positive">
-      <div class="label">Engagement Rate</div>
-      <div class="value">4.8%</div>
-      <div class="detail">+1.2 pts vs Q4 2025</div>
+    <div class="hero-card hero-green">
+      <div class="hero-label">NPS</div>
+      <div class="hero-value">35.9</div>
+      <div class="hero-period">Q1 actual</div>
+      <div class="hero-target">2026 Goal: >= 35</div>
+      
+      <div class="hero-status" style="background:#dceccf;color:#6faa58;">✓ On track</div>
     </div>
-    <div class="kpi-card">
-      <div class="label">Follower Growth</div>
-      <div class="value">+2,840</div>
-      <div class="detail">Net new across platforms</div>
+    <div class="hero-card hero-green">
+      <div class="hero-label">CES</div>
+      <div class="hero-value">5.2</div>
+      <div class="hero-period">Q1 actual</div>
+      <div class="hero-target">2026 Goal: >= 5.0</div>
+      
+      <div class="hero-status" style="background:#dceccf;color:#6faa58;">✓ On track</div>
     </div>
-    <div class="kpi-card">
-      <div class="label">Top Platform</div>
-      <div class="value" style="font-size:24px;">LinkedIn</div>
-      <div class="detail">42% of total reach</div>
-    </div>
-  </div>
-
-  <div class="chart-grid">
-    <div class="chart-card">
-      <h3>Impressions by Platform</h3>
-      <div class="chart-sub">Total reach Q1 2026</div>
-      <div class="chart-wrap"><canvas id="socialImpressionsChart"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <h3>Engagement Rate by Platform</h3>
-      <div class="chart-sub">Likes, comments, shares &divide; impressions</div>
-      <div class="chart-wrap"><canvas id="socialEngagementChart"></canvas></div>
-    </div>
-  </div>
-
-  <div class="full-chart">
-    <h3>Monthly Follower Growth</h3>
-    <div class="sub">Net new followers per platform across the quarter</div>
-    <div class="chart-wrap"><canvas id="followerGrowthChart"></canvas></div>
-  </div>
-
-  <div class="chart-card" style="margin-bottom:28px;">
-    <h3>Top Posts &mdash; Q1 2026</h3>
-    <div class="chart-sub">Ranked by engagement</div>
-    <div style="overflow-x:auto;">
-      <table>
-        <thead>
-          <tr>
-            <th>Platform</th>
-            <th>Post</th>
-            <th class="num">Impressions</th>
-            <th class="num">Engagements</th>
-            <th class="num">Eng. Rate</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>LinkedIn</strong></td><td>New Orlando sharpening center opens</td><td class="num">48,200</td><td class="num">3,120</td><td class="num">6.5%</td></tr>
-          <tr><td><strong>Instagram</strong></td><td>Behind-the-scenes: the Quantum exchange program</td><td class="num">31,500</td><td class="num">2,080</td><td class="num">6.6%</td></tr>
-          <tr><td><strong>Facebook</strong></td><td>Customer spotlight: Encompass Health</td><td class="num">22,400</td><td class="num">1,240</td><td class="num">5.5%</td></tr>
-          <tr><td><strong>LinkedIn</strong></td><td>DSD hiring push &mdash; Houston region</td><td class="num">19,800</td><td class="num">960</td><td class="num">4.8%</td></tr>
-          <tr><td><strong>TikTok</strong></td><td>The sharpness test, slowed down 100x</td><td class="num">58,000</td><td class="num">2,400</td><td class="num">4.1%</td></tr>
-        </tbody>
-      </table>
+    <div class="hero-card hero-green">
+      <div class="hero-label">Marketing &mdash; Share of New Biz</div>
+      <div class="hero-value">12.1%</div>
+      <div class="hero-period">Q1 YTD</div>
+      <div class="hero-target">2026 Goal: > 25% annual</div>
+      
+      <div class="hero-pace">
+        <div class="hero-pace-bar">
+          <div class="hero-pace-fill" style="width:48.4%;"></div>
+          <div class="hero-pace-marker" style="left:30.1%;" title="Year elapsed"></div>
+        </div>
+        <div class="hero-pace-legend">
+          <span><b>48%</b> of annual goal</span>
+          <span class="pace-sep">·</span>
+          <span>30% of year elapsed</span>
+        </div>
+      </div>
+      <div class="hero-status" style="background:#dceccf;color:#6faa58;">✓ Ahead of pace</div>
     </div>
   </div>
 
-  <!-- ==================== BUDGET ==================== -->
-  <div class="section-title">Marketing Budget <span class="badge">Q1</span></div>
+  <!-- Q1 AT A GLANCE — positive-first summary bar -->
+  <div class="glance-bar">
+    <div class="glance-title">Q1 at a glance</div>
+    <div class="glance-list"><div class="glance-item"><span class="glance-check">&#10003;</span><span class="glance-label">Under budget</span><span class="glance-value">$15,075 saved in Q1</span></div><div class="glance-item"><span class="glance-check">&#10003;</span><span class="glance-label">NPS</span><span class="glance-value">35.9 (goal >= 35)</span></div><div class="glance-item"><span class="glance-check">&#10003;</span><span class="glance-label">CES</span><span class="glance-value">5.2 (goal >= 5.0)</span></div><div class="glance-item"><span class="glance-check">&#10003;</span><span class="glance-label">Pipeline built</span><span class="glance-value">$387,402 WRR annualized</span></div><div class="glance-item"><span class="glance-check">&#10003;</span><span class="glance-label">Ahead of pace</span><span class="glance-value">48% of annual new-biz goal at 30% of year elapsed</span></div></div>
+  </div>
 
-  <div class="kpi-row">
-    <div class="kpi-card">
-      <div class="label">Total Spend</div>
-      <div class="value">$142K</div>
-      <div class="detail">of $150K budgeted</div>
+  <!-- FOCUS SCORECARD -->
+  <div class="section">
+    <div class="section-title">Marketing Plan &times; Q1 Progress <span class="count">&mdash; 4 focus areas &middot; Q1 actuals against 2026 annual goals</span></div>
+    <div class="focus-grid">
+      
+    <div class="focus-card">
+      <h3>Voice of Customer</h3>
+      <ul class="focus-actions"><li>Survey all churned customers</li><li>Solicit Google reviews</li><li>Monitor Customer Effort Score</li></ul>
+      <div class="focus-metrics">
+        <div class="focus-metric">
+          <span class="focus-metric-dot" style="background:#6faa58;"></span>
+          <span class="focus-metric-label">Net Promoter Score</span>
+          <span class="focus-metric-actual">35.9</span>
+          <span class="focus-metric-target">Q1 actual vs 2026 goal >= 35</span>
+        </div>
+        <div class="focus-metric">
+          <span class="focus-metric-dot" style="background:#6faa58;"></span>
+          <span class="focus-metric-label">Customer Effort Score</span>
+          <span class="focus-metric-actual">5.2</span>
+          <span class="focus-metric-target">Q1 actual vs 2026 goal >= 5.0</span>
+        </div>
+        <div class="focus-metric">
+          <span class="focus-metric-dot" style="background:#d4918b;"></span>
+          <span class="focus-metric-label">Google Reviews Rating</span>
+          <span class="focus-metric-actual">2.5</span>
+          <span class="focus-metric-target">Q1 actual vs 2026 goal >= 4.0 stars</span>
+        </div></div>
     </div>
-    <div class="kpi-card positive">
-      <div class="label">Budget Utilization</div>
-      <div class="value">94.7%</div>
-      <div class="detail">Under budget by $8K</div>
+    <div class="focus-card">
+      <h3>Value Proposition</h3>
+      <ul class="focus-actions"><li>Social media / SMS / email / newsletter</li><li>Educational content</li></ul>
+      <div class="focus-metrics">
+        <div class="focus-metric">
+          <span class="focus-metric-dot" style="background:#a9cc98;"></span>
+          <span class="focus-metric-label">Social Posts / Month</span>
+          <span class="focus-metric-actual">19</span>
+          <span class="focus-metric-target">Q1 actual vs 2026 goal >= 20 / mo</span>
+        </div>
+        <div class="focus-metric">
+          <span class="focus-metric-dot" style="background:#6faa58;"></span>
+          <span class="focus-metric-label">Social Media Engagement Rate</span>
+          <span class="focus-metric-actual">5.0%</span>
+          <span class="focus-metric-target"><b>Ahead of pace</b> toward 10% annual goal<br>50% of annual achieved at 30% of year elapsed</span>
+        </div></div>
     </div>
-    <div class="kpi-card warn">
-      <div class="label">Largest Line</div>
-      <div class="value" style="font-size:24px;">Digital Ads</div>
-      <div class="detail">$58K &middot; 41% of spend</div>
+    <div class="focus-card">
+      <h3>Revenue Growth</h3>
+      <ul class="focus-actions"><li>New customer acquisition</li><li>Share of wallet</li></ul>
+      <div class="focus-metrics">
+        <div class="focus-metric">
+          <span class="focus-metric-dot" style="background:#6faa58;"></span>
+          <span class="focus-metric-label">Marketing Share of New Business</span>
+          <span class="focus-metric-actual">12.1%</span>
+          <span class="focus-metric-target"><b>Ahead of pace</b> toward > 25% annual goal<br>48% of annual achieved at 30% of year elapsed</span>
+        </div></div>
     </div>
-    <div class="kpi-card">
-      <div class="label">CPM (Blended)</div>
-      <div class="value">$8.40</div>
-      <div class="detail">Cost per 1K impressions</div>
     </div>
   </div>
 
-  <div class="chart-grid">
-    <div class="chart-card">
-      <h3>Spend by Category</h3>
-      <div class="chart-sub">High-level breakdown Q1 2026</div>
-      <div class="chart-wrap"><canvas id="budgetByCategoryChart"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <h3>Budget vs Actual</h3>
-      <div class="chart-sub">Planned vs spent by category</div>
-      <div class="chart-wrap"><canvas id="budgetVsActualChart"></canvas></div>
-    </div>
-  </div>
-
-  <!-- ==================== LEADS CONVERTED ==================== -->
-  <div class="section-title">Leads Converted <span class="badge">Q1</span></div>
-
-  <div class="kpi-row">
-    <div class="kpi-card">
-      <div class="label">Leads Generated</div>
-      <div class="value">847</div>
-      <div class="detail">From all sources</div>
-    </div>
-    <div class="kpi-card positive">
-      <div class="label">Leads Converted</div>
-      <div class="value">184</div>
-      <div class="detail">Signed new-customer agreements</div>
-    </div>
-    <div class="kpi-card warn">
-      <div class="label">Conversion Rate</div>
-      <div class="value">21.7%</div>
-      <div class="detail">+3.4 pts vs Q4 2025</div>
-    </div>
-    <div class="kpi-card">
-      <div class="label">Cost per Lead</div>
-      <div class="value">$168</div>
-      <div class="detail">Acquisition cost</div>
-    </div>
-  </div>
-
-  <div class="chart-grid">
-    <div class="chart-card">
-      <h3>Leads by Source</h3>
-      <div class="chart-sub">Where Q1 leads came from</div>
-      <div class="chart-wrap"><canvas id="leadsSourceChart"></canvas></div>
+  <!-- BUDGET -->
+  <div class="section">
+    <div class="section-title">Budget &times; Spend <span class="count">&mdash; Q1 + YTD</span></div>
+    <div class="kpi-inline" style="margin-bottom: 14px;">
+      <div class="kpi">
+        <div class="kpi-label">Q1 Plan</div>
+        <div class="kpi-value">$68,250</div>
+        <div class="kpi-sub">Budgeted spend Q1 2026</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Q1 Actual (NetSuite)</div>
+        <div class="kpi-value">$53,175</div>
+        <div class="kpi-sub">78% of Q1 plan</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Q1 Variance (Under)</div>
+        <div class="kpi-value kpi-pos">$15,075</div>
+        <div class="kpi-sub">Under plan in Q1</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">YTD Variance (Under)</div>
+        <div class="kpi-value kpi-pos">$21,172</div>
+        <div class="kpi-sub">YTD under plan through 4/20</div>
+      </div>
     </div>
     <div class="chart-card">
-      <h3>Conversion Rate by Source</h3>
-      <div class="chart-sub">Which channels close best</div>
-      <div class="chart-wrap"><canvas id="conversionRateChart"></canvas></div>
+      <h3>Plan vs Actual</h3>
+      <div class="chart-sub">Quarterly and year-to-date spend</div>
+      <div class="chart-wrap"><canvas id="budgetChart"></canvas></div>
     </div>
   </div>
 
-  <div class="full-chart">
-    <h3>Monthly Lead Funnel</h3>
-    <div class="sub">Leads &rarr; Qualified &rarr; Converted across Q1</div>
-    <div class="chart-wrap"><canvas id="funnelChart"></canvas></div>
+  <!-- LEAD CONVERSION FUNNEL (moved above Social Media per exec feedback) -->
+  <div class="section">
+    <div class="section-title">Lead Conversion <span class="count">&mdash; Q1 marketing channels &rarr; routes &rarr; revenue</span></div>
+    <div class="funnel">
+      <div class="funnel-stage funnel-1">
+        <span class="funnel-num">398</span>
+        <span class="funnel-lbl">Converted Leads</span>
+      </div>
+      <div class="funnel-arrow">&rarr;</div>
+      <div class="funnel-stage funnel-2">
+        <span class="funnel-num">240</span>
+        <span class="funnel-lbl">Matched to Route (60.3%)</span>
+      </div>
+      <div class="funnel-arrow">&rarr;</div>
+      <div class="funnel-stage funnel-3">
+        <span class="funnel-num">$387,402</span>
+        <span class="funnel-lbl">Annualized WRR</span>
+      </div>
+    </div>
+    <div class="kpi-inline" style="margin: 14px 0;">
+      <div class="kpi"><div class="kpi-label">Avg $ per Matched Lead</div><div class="kpi-value">$1,614</div><div class="kpi-sub">Annualized WRR per conversion</div></div>
+      <div class="kpi"><div class="kpi-label">Weekly WRR</div><div class="kpi-value">$7,450.04</div><div class="kpi-sub">Current weekly run-rate from Q1 matches</div></div>
+      <div class="kpi"><div class="kpi-label">Match Rate</div><div class="kpi-value">60.3%</div><div class="kpi-sub">240 of 398 leads matched</div></div>
+      <div class="kpi"><div class="kpi-label">Marketing Share of New Biz</div><div class="kpi-value">12.1%</div><div class="kpi-sub">Target &gt; 25% · (240/1,982)</div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>By Lead Source</h3>
+        <div class="chart-sub">Matched leads + % of annualized revenue</div>
+        <div class="chart-wrap"><canvas id="sourceChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Monthly Conversion Trend</h3>
+        <div class="chart-sub">Match rate + volume through Apr 2026</div>
+        <div class="chart-wrap"><canvas id="monthChart"></canvas></div>
+      </div>
+    </div>
+
   </div>
 
-</div>
+  <!-- SOCIAL MEDIA -->
+  <div class="section">
+    <div class="section-title">Social Media <span class="count">&mdash; Jan 1 &ndash; Apr 2026 · 212 posts, 2,129 likes across IG + FB + LinkedIn</span></div>
+    <div class="kpi-inline" style="margin-bottom: 14px;">
+      <div class="kpi"><div class="kpi-label">Total Posts</div><div class="kpi-value">212</div><div class="kpi-sub">57.8 / month combined</div></div>
+      <div class="kpi"><div class="kpi-label">Total Likes</div><div class="kpi-value">2,129</div><div class="kpi-sub">581 / month avg</div></div>
+      <div class="kpi"><div class="kpi-label">IG Stories</div><div class="kpi-value">49</div><div class="kpi-sub">80 reactions</div></div>
+      <div class="kpi"><div class="kpi-label">Top Channel</div><div class="kpi-value">LinkedIn</div><div class="kpi-sub">1248 likes (59% of total)</div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Posts by Platform</h3>
+        <div class="chart-sub">Volume of content posted</div>
+        <div class="chart-wrap"><canvas id="socialPostsChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Likes / Reactions by Platform</h3>
+        <div class="chart-sub">Audience engagement</div>
+        <div class="chart-wrap"><canvas id="socialLikesChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
 
 <div class="footer">
-  <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros" style="height:32px; width:auto;">
-  <span style="color:rgba(255,255,255,0.6); font-size:12px;">Q1 2026 Marketing Dashboard &mdash; placeholder data</span>
+  <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros">
+  <span>Q1 2026 Marketing &mdash; built from Q1Snap.xlsx + Budget.xlsx + Social Media.xlsx + Q1_2026_Matched_Leads_Detail.xlsx + Details of Leads Assigned YTD.xlsx</span>
 </div>
 
-</div><!-- end page-content -->
+</div><!-- /page-content -->
 
 <script>
 const PASS_HASH='90ec951c';
@@ -343,125 +426,106 @@ if(sessionStorage.getItem('mkt-auth')==='true'){
 </script>
 
 <script>
-const MKT_PALETTE = ['#b44d2d','#d4a45e','#1a2744','#7bafd4','#8ebf7b','#a99bc4','#d4918b'];
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-Chart.defaults.font.size = 12;
-Chart.defaults.plugins.legend.display = false;
+Chart.defaults.font.size = 11;
 
-/* ---------- SOCIAL ---------- */
-new Chart(document.getElementById('socialImpressionsChart'), {
-  type: 'doughnut',
-  data: {
-    labels: ['LinkedIn','Facebook','Instagram','TikTok'],
-    datasets: [{ data: [520000, 310000, 248000, 162000], backgroundColor: MKT_PALETTE, borderColor: '#fff', borderWidth: 3 }]
-  },
-  options: { responsive: true, maintainAspectRatio: false, cutout: '55%',
-    plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', padding: 14 } },
-      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${(ctx.raw/1000).toFixed(0)}K impressions` } }
-    }
-  }
-});
+const NAVY  = '#1a2744';
+const BLUE  = '#7bafd4';
+const RED   = '#d4918b';
+const GOLD  = '#d4a45e';
+const GREEN = '#8ebf7b';
+const LAV   = '#a99bc4';
+const YEL   = '#d4cb7b';
+const BURNT = '#b44d2d';
 
-new Chart(document.getElementById('socialEngagementChart'), {
+// Budget Plan vs Actual
+new Chart(document.getElementById('budgetChart'), {
   type: 'bar',
   data: {
-    labels: ['LinkedIn','Instagram','Facebook','TikTok'],
-    datasets: [{ data: [5.8, 5.2, 4.6, 3.2], backgroundColor: MKT_PALETTE, borderRadius: 4 }]
+    labels: ["Q1 Plan", "Q1 Actual", "YTD Plan", "YTD Actual"],
+    datasets: [{
+      label: 'USD',
+      data: [68250, 53175, 83416, 62244],
+      backgroundColor: [NAVY, GREEN, BLUE, GOLD],
+      borderRadius: 6, barPercentage: 0.6
+    }]
   },
-  options: { responsive: true, maintainAspectRatio: false,
-    scales: { y: { beginAtZero: true, grid: { color: '#f5f5f5' }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } },
-    plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw}% engagement rate` } } }
-  }
-});
-
-new Chart(document.getElementById('followerGrowthChart'), {
-  type: 'line',
-  data: {
-    labels: ['Jan','Feb','Mar'],
-    datasets: [
-      { label: 'LinkedIn', data: [420, 510, 580], borderColor: '#b44d2d', backgroundColor: 'rgba(180,77,45,0.08)', fill: true, tension: 0.3, borderWidth: 2 },
-      { label: 'Instagram', data: [280, 340, 310], borderColor: '#d4a45e', backgroundColor: 'rgba(212,164,94,0.08)', fill: true, tension: 0.3, borderWidth: 2 },
-      { label: 'Facebook', data: [180, 210, 150], borderColor: '#1a2744', backgroundColor: 'rgba(26,39,68,0.08)', fill: true, tension: 0.3, borderWidth: 2 },
-      { label: 'TikTok', data: [90, 120, 160], borderColor: '#7bafd4', backgroundColor: 'rgba(123,175,212,0.08)', fill: true, tension: 0.3, borderWidth: 2 }
-    ]
-  },
-  options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
-    plugins: { legend: { display: true, position: 'top', labels: { usePointStyle: true, pointStyle: 'circle', padding: 14 } } },
-    scales: { y: { beginAtZero: true, grid: { color: '#f5f5f5' }, title: { display: true, text: 'New Followers' } }, x: { grid: { display: false } } }
-  }
-});
-
-/* ---------- BUDGET ---------- */
-new Chart(document.getElementById('budgetByCategoryChart'), {
-  type: 'doughnut',
-  data: {
-    labels: ['Digital Ads','Events & Trade Shows','Content & Creative','PR & Sponsorships','Tools & Software'],
-    datasets: [{ data: [58000, 34000, 22000, 18000, 10000], backgroundColor: MKT_PALETTE, borderColor: '#fff', borderWidth: 3 }]
-  },
-  options: { responsive: true, maintainAspectRatio: false, cutout: '55%',
-    plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', padding: 10, font: { size: 11 } } },
-      tooltip: { callbacks: { label: ctx => `${ctx.label}: $${(ctx.raw/1000).toFixed(0)}K` } }
-    }
-  }
-});
-
-new Chart(document.getElementById('budgetVsActualChart'), {
-  type: 'bar',
-  data: {
-    labels: ['Digital','Events','Content','PR','Tools'],
-    datasets: [
-      { label: 'Budgeted', data: [60000, 35000, 25000, 20000, 10000], backgroundColor: '#1a2744', borderRadius: 4 },
-      { label: 'Actual',   data: [58000, 34000, 22000, 18000, 10000], backgroundColor: '#b44d2d', borderRadius: 4 }
-    ]
-  },
-  options: { responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: true, position: 'top', labels: { usePointStyle: true, pointStyle: 'circle', padding: 14 } },
-      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${(ctx.raw/1000).toFixed(0)}K` } }
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => '$' + ctx.raw.toLocaleString() } }
     },
-    scales: { y: { beginAtZero: true, grid: { color: '#f5f5f5' }, ticks: { callback: v => '$' + (v/1000) + 'K' } }, x: { grid: { display: false } } }
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => '$' + v.toLocaleString() } },
+      x: { grid: { display: false } }
+    }
   }
 });
 
-/* ---------- LEADS ---------- */
-new Chart(document.getElementById('leadsSourceChart'), {
+// Social Posts by platform
+new Chart(document.getElementById('socialPostsChart'), {
   type: 'bar',
   data: {
-    labels: ['Digital Ads','Events','Organic Social','Referral','Cold Outbound','Web Form'],
-    datasets: [{ data: [312, 184, 142, 98, 64, 47], backgroundColor: MKT_PALETTE, borderRadius: 4 }]
+    labels: ["Instagram (feed)", "Facebook", "LinkedIn"],
+    datasets: [{ label: 'Posts', data: [69, 70, 73], backgroundColor: [RED, BLUE, NAVY], borderRadius: 6, barPercentage: 0.55 }]
   },
-  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-    plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw} leads` } } },
-    scales: { x: { beginAtZero: true, grid: { color: '#f5f5f5' } }, y: { grid: { display: false } } }
-  }
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } }
 });
 
-new Chart(document.getElementById('conversionRateChart'), {
+// Social Likes by platform
+new Chart(document.getElementById('socialLikesChart'), {
   type: 'bar',
   data: {
-    labels: ['Referral','Events','Web Form','Digital Ads','Organic Social','Cold Outbound'],
-    datasets: [{ data: [38.8, 32.6, 27.7, 19.6, 14.1, 9.4], backgroundColor: MKT_PALETTE, borderRadius: 4 }]
+    labels: ["Instagram (feed)", "Facebook", "LinkedIn"],
+    datasets: [{ label: 'Likes', data: [594, 287, 1248], backgroundColor: [RED, BLUE, NAVY], borderRadius: 6, barPercentage: 0.55 }]
   },
-  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-    plugins: { tooltip: { callbacks: { label: ctx => `${ctx.raw}% converted` } } },
-    scales: { x: { beginAtZero: true, grid: { color: '#f5f5f5' }, ticks: { callback: v => v + '%' } }, y: { grid: { display: false } } }
-  }
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } }
 });
 
-new Chart(document.getElementById('funnelChart'), {
+// Source breakdown (bar with WRR%)
+new Chart(document.getElementById('sourceChart'), {
   type: 'bar',
   data: {
-    labels: ['Jan','Feb','Mar'],
+    labels: ["Website", "Free Trial Form", "Google", "Social Media"],
     datasets: [
-      { label: 'Leads', data: [264, 298, 285], backgroundColor: '#d4a45e', borderRadius: 4 },
-      { label: 'Qualified', data: [142, 168, 152], backgroundColor: '#b44d2d', borderRadius: 4 },
-      { label: 'Converted', data: [56, 68, 60], backgroundColor: '#1a2744', borderRadius: 4 }
+      { label: 'Matched Leads', data: [123, 91, 25, 1], backgroundColor: BLUE, borderRadius: 6, barPercentage: 0.55, yAxisID: 'y' },
+      { label: 'Annualized WRR ($)', data: [210359.24, 132292.68, 44322.200000000055, 427.96000000000004], backgroundColor: GREEN, borderRadius: 6, barPercentage: 0.55, yAxisID: 'y1' }
     ]
   },
-  options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+  options: {
+    responsive: true, maintainAspectRatio: false,
     plugins: { legend: { display: true, position: 'top', labels: { usePointStyle: true, pointStyle: 'circle', padding: 14 } } },
-    scales: { y: { beginAtZero: true, grid: { color: '#f5f5f5' } }, x: { grid: { display: false } } }
+    scales: {
+      y:  { beginAtZero: true, position: 'left',  title: { display: true, text: 'Matched' } },
+      y1: { beginAtZero: true, position: 'right', grid: { display: false }, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' }, title: { display: true, text: 'WRR' } },
+      x: { grid: { display: false } }
+    }
   }
 });
+
+// Monthly trend (mixed: bar = leads, line = match rate)
+new Chart(document.getElementById('monthChart'), {
+  type: 'bar',
+  data: {
+    labels: ["2026-01", "2026-02", "2026-03", "2026-04"],
+    datasets: [
+      { type:'bar',  label: 'Leads',    data: [128, 99, 107, 64],    backgroundColor: BLUE, borderRadius: 6, barPercentage: 0.55, yAxisID: 'y' },
+      { type:'bar',  label: 'Matched',  data: [92, 66, 63, 19],  backgroundColor: GREEN, borderRadius: 6, barPercentage: 0.55, yAxisID: 'y' },
+      { type:'line', label: 'Match %',  data: [71.9, 66.7, 58.9, 29.7], borderColor: BURNT, backgroundColor: BURNT, tension: 0.3, yAxisID: 'y1', pointRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: true, position: 'top', labels: { usePointStyle: true, pointStyle: 'circle', padding: 14 } } },
+    scales: {
+      y:  { beginAtZero: true, position: 'left',  title: { display: true, text: 'Leads' } },
+      y1: { beginAtZero: true, position: 'right', grid: { display: false }, max: 100, ticks: { callback: v => v + '%' }, title: { display: true, text: 'Match rate' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
 </script>
 </body>
 </html>

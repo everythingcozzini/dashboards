@@ -1,0 +1,342 @@
+{
+  "snapshot": {
+    "nps": 35.9,
+    "ces": 5.2,
+    "google_rating": 2.5,
+    "social_engagement": 5.0,
+    "new_biz_origin": 12.1,
+    "new_biz_fraction": "(240/1,982)"
+  },
+  "budget": {
+    "annual_plan": 282000,
+    "q1_plan": 68250,
+    "q1_actual": 53175,
+    "q1_variance": 15075,
+    "ytd_plan": 83416,
+    "ytd_actual": 62244,
+    "ytd_variance": 21172
+  },
+  "social": {
+    "platforms": [
+      {
+        "name": "Instagram (feed)",
+        "posts": 69,
+        "likes": 594,
+        "monthly_likes": 161.99852728611557,
+        "posts_per_mo": 18.8
+      },
+      {
+        "name": "Facebook",
+        "posts": 70,
+        "likes": 287,
+        "monthly_likes": 78.2720157089481,
+        "posts_per_mo": 19.1
+      },
+      {
+        "name": "LinkedIn",
+        "posts": 73,
+        "likes": 1248,
+        "monthly_likes": 340.3605421768893,
+        "posts_per_mo": 19.9
+      }
+    ],
+    "total": {
+      "posts": 212,
+      "likes": 2129,
+      "monthly_likes": 580.6310851719529,
+      "posts_per_mo": 57.8
+    },
+    "ig_stories": {
+      "posts": 49,
+      "likes": 80
+    },
+    "fb_extras": {
+      "reach": 9209,
+      "views": 14455
+    },
+    "ig_extras": {
+      "reach": 11434,
+      "views": 19258
+    },
+    "li_extras": {
+      "impressions": 233,
+      "views": 42647,
+      "clicks": 8719
+    }
+  },
+  "matched_leads": {
+    "converted": 398,
+    "matched": 240,
+    "match_pct": 60.3,
+    "weekly_wrr": 7450.04,
+    "annualized_wrr": 387402,
+    "avg_per_match": 1614,
+    "by_source": [
+      {
+        "source": "Website",
+        "leads": 189,
+        "matched": 123,
+        "match_rate": 65.1,
+        "annualized": 210359.24,
+        "pct_of_wrr": 54.3,
+        "avg_per_match": 1710.2377235772358
+      },
+      {
+        "source": "Free Trial Form",
+        "leads": 167,
+        "matched": 91,
+        "match_rate": 54.5,
+        "annualized": 132292.68,
+        "pct_of_wrr": 34.1,
+        "avg_per_match": 1453.7657142857142
+      },
+      {
+        "source": "Google",
+        "leads": 40,
+        "matched": 25,
+        "match_rate": 62.5,
+        "annualized": 44322.200000000055,
+        "pct_of_wrr": 11.4,
+        "avg_per_match": 1772.8880000000022
+      },
+      {
+        "source": "Social Media",
+        "leads": 2,
+        "matched": 1,
+        "match_rate": 50.0,
+        "annualized": 427.96000000000004,
+        "pct_of_wrr": 0.1,
+        "avg_per_match": 427.96000000000004
+      }
+    ],
+    "by_month": [
+      {
+        "month": "2026-01",
+        "leads": 128,
+        "matched": 92,
+        "match_rate": 71.9,
+        "annualized": 143173.16
+      },
+      {
+        "month": "2026-02",
+        "leads": 99,
+        "matched": 66,
+        "match_rate": 66.7,
+        "annualized": 121311.84
+      },
+      {
+        "month": "2026-03",
+        "leads": 107,
+        "matched": 63,
+        "match_rate": 58.9,
+        "annualized": 97438.12
+      },
+      {
+        "month": "2026-04",
+        "leads": 64,
+        "matched": 19,
+        "match_rate": 29.7,
+        "annualized": 25478.96
+      }
+    ],
+    "by_owner": [
+      {
+        "owner": "James Yount",
+        "leads": 363,
+        "matched": 217,
+        "match_rate": 59.8,
+        "annualized": 342573.91999999946
+      },
+      {
+        "owner": "Antonia \"Cappy\" Romero",
+        "leads": 19,
+        "matched": 14,
+        "match_rate": 73.7,
+        "annualized": 28801.76
+      },
+      {
+        "owner": "Erica Rivera",
+        "leads": 13,
+        "matched": 9,
+        "match_rate": 69.2,
+        "annualized": 16026.4
+      },
+      {
+        "owner": "Joe Cummings",
+        "leads": 1,
+        "matched": 0,
+        "match_rate": 0,
+        "annualized": 0
+      },
+      {
+        "owner": "Megan Lange",
+        "leads": 1,
+        "matched": 0,
+        "match_rate": 0,
+        "annualized": 0
+      },
+      {
+        "owner": "Vince McEnaney",
+        "leads": 1,
+        "matched": 0,
+        "match_rate": 0,
+        "annualized": 0
+      }
+    ]
+  },
+  "leads_ytd": {
+    "total": 2365,
+    "sources": [
+      {
+        "source": "Part of a National Agreement",
+        "count": 568,
+        "pct": 24.0
+      },
+      {
+        "source": "Existing Customer Adding Location",
+        "count": 415,
+        "pct": 17.5
+      },
+      {
+        "source": "Driver Referral",
+        "count": 267,
+        "pct": 11.3
+      },
+      {
+        "source": "Used Cozzini Elsewhere",
+        "count": 254,
+        "pct": 10.7
+      },
+      {
+        "source": "Website",
+        "count": 189,
+        "pct": 8.0
+      },
+      {
+        "source": "Free Trial Form",
+        "count": 167,
+        "pct": 7.1
+      },
+      {
+        "source": "Reactivation",
+        "count": 157,
+        "pct": 6.6
+      },
+      {
+        "source": "Change of Ownership",
+        "count": 136,
+        "pct": 5.8
+      },
+      {
+        "source": "Friend Referral/Word of Mouth",
+        "count": 93,
+        "pct": 3.9
+      },
+      {
+        "source": "Google",
+        "count": 40,
+        "pct": 1.7
+      },
+      {
+        "source": "Sales Rep Stopped By",
+        "count": 30,
+        "pct": 1.3
+      },
+      {
+        "source": "BRE 2026",
+        "count": 29,
+        "pct": 1.2
+      },
+      {
+        "source": "Saw a Truck",
+        "count": 4,
+        "pct": 0.2
+      },
+      {
+        "source": "NGA",
+        "count": 4,
+        "pct": 0.2
+      },
+      {
+        "source": "Performance Foodservice",
+        "count": 3,
+        "pct": 0.1
+      },
+      {
+        "source": "Cozzini PFS - Free Trial QR",
+        "count": 3,
+        "pct": 0.1
+      },
+      {
+        "source": "Social Media",
+        "count": 2,
+        "pct": 0.1
+      },
+      {
+        "source": "Customer Referral",
+        "count": 1,
+        "pct": 0.0
+      },
+      {
+        "source": "Phone-In/Email",
+        "count": 1,
+        "pct": 0.0
+      },
+      {
+        "source": "BRE2025",
+        "count": 1,
+        "pct": 0.0
+      },
+      {
+        "source": "Email Marketing",
+        "count": 1,
+        "pct": 0.0
+      }
+    ]
+  },
+  "year_fraction_elapsed": 0.301,
+  "metrics": {
+    "nps": {
+      "actual": 35.9,
+      "status": "green"
+    },
+    "ces": {
+      "actual": 5.2,
+      "status": "green"
+    },
+    "google_rating": {
+      "actual": 2.5,
+      "status": "red"
+    },
+    "social_engagement": {
+      "actual": 5.0,
+      "status": "green",
+      "pacing": {
+        "ratio": 1.659,
+        "expected": 3.01,
+        "year_frac": 0.301,
+        "pct_of_annual": 50.0,
+        "pct_of_year": 30.1
+      }
+    },
+    "posts_per_month": {
+      "actual": 19.3,
+      "status": "green_light"
+    },
+    "new_biz_origin": {
+      "actual": 12.1,
+      "status": "green",
+      "pacing": {
+        "ratio": 1.606,
+        "expected": 7.53,
+        "year_frac": 0.301,
+        "pct_of_annual": 48.4,
+        "pct_of_year": 30.1
+      }
+    },
+    "q1_budget": {
+      "actual": 53175,
+      "status": "green"
+    }
+  }
+}
