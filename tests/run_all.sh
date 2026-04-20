@@ -32,6 +32,7 @@ run "3. Palette integrity"               python3 tests/verify_palette.py
 run "4. Gate configuration"              python3 tests/verify_gates.py
 run "5. Data accuracy (productchurn)"    python3 tests/verify_data.py
 run "6. iPhone 13 responsive"            python3 tests/verify_responsive.py
+run "7. Watcher path integrity"          python3 tests/verify_watcher_paths.py
 
 echo "════════════════════════════════════════════════════════════"
 echo "SUMMARY   passed: $pass    failed: $fail"
