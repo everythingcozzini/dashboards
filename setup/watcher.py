@@ -1525,25 +1525,25 @@ def process_file(filepath):
             data = parse_nps(filepath)
             if data:
                 update_nps_html(data)
-                updated_files.append("nps.html")
+                updated_files.append("voc/nps.html")
 
         elif dash_type == "nps_new":
             data = parse_nps_new_customers(filepath)
             if data:
                 update_nps_new_customers_section(data)
-                updated_files.append("nps.html")
+                updated_files.append("voc/nps.html")
 
         elif dash_type == "customer_churn":
             data = parse_customer_churn(filepath)
             if data:
                 update_customer_churn_html(data)
-                updated_files.append("customerchurn.html")
+                updated_files.append("voc/customerchurn.html")
 
         elif dash_type == "product_churn":
             data = parse_product_churn(filepath)
             if data:
                 update_product_churn_html(data)
-                updated_files.append("productchurn.html")
+                updated_files.append("voc/productchurn.html")
 
         elif dash_type == "ces":
             # CES needs all files together — load existing + new
@@ -1552,7 +1552,7 @@ def process_file(filepath):
             if new_data:
                 ces_data[ces_sub] = new_data
                 update_ces_html(ces_data)
-                updated_files.append("ces.html")
+                updated_files.append("voc/ces.html")
 
         elif dash_type == "am_reference":
             # AM reference file — caches DSD→AM lookup; re-run NPS update if
@@ -1564,7 +1564,7 @@ def process_file(filepath):
                 nps_data = parse_nps(str(nps_src))
                 if nps_data:
                     update_nps_html(nps_data)
-                    updated_files.append("nps.html")
+                    updated_files.append("voc/nps.html")
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
             processed = load_processed()
             processed[filename] = {
