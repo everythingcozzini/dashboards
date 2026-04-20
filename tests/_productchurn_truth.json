@@ -5,8 +5,8 @@
   "median_days": 190,
   "early_cancel": 10,
   "early_pct": 29,
-  "top_reason": "Other (exclusive)",
-  "top_reason_count": 14,
+  "top_reason": "No longer needed",
+  "top_reason_count": 13,
   "reason_counts": {
     "Price / budget": 7,
     "Product performance": 3,
@@ -61,7 +61,7 @@
     7,
     7
   ],
-  "feedback_count": 22,
+  "feedback_count": 27,
   "date_min": "Mar 10",
   "date_max": "Apr 16, 2026"
 }

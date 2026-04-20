@@ -124,6 +124,18 @@
     .quarter-label { font-size: 26px; }
     .footer { padding: 20px; flex-direction: column; gap: 8px; }
   }
+
+  /* === iphone13-patch:start === */
+  @media (max-width: 480px) {
+  .auth-box { width: 92%; max-width: 360px; padding: 32px 24px; }
+  .page-title { padding: 24px 16px 8px; } .page-title h1 { font-size: 22px; }
+  .container { padding: 12px 16px 32px; }
+  .quarter-grid { grid-template-columns: 1fr !important; gap: 12px; }
+  .quarter-tile { min-height: 120px; padding: 20px 18px; }
+  .quarter-label { font-size: 24px; }
+  .topbar { padding: 12px 16px; } .footer { padding: 16px; }
+}
+  /* === iphone13-patch:end === */
 </style>
 </head>
 <body>

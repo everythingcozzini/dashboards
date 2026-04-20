@@ -119,6 +119,22 @@
     .header > div:first-child { flex-direction: column !important; gap: 10px !important; }
     .header img { height: 32px; }
   }
+
+  /* === iphone13-patch:start === */
+  @media (max-width: 480px) {
+  #auth-gate > div { width: 92% !important; max-width: 360px !important; padding: 32px 24px !important; }
+  .header { padding: 16px; } .header h1 { font-size: 20px; }
+  .container { padding: 12px; }
+  .kpi-card { padding: 16px; } .kpi-card .value { font-size: 28px; }
+  .overview-chart .chart-wrap { height: 260px; }
+  .chart-card .chart-wrap { height: 220px; }
+  .center-chart .chart-wrap { height: 280px; }
+  .filter-btn { padding: 10px 14px; min-height: 40px; }
+  .section-title { font-size: 16px; margin: 24px 0 14px; }
+  thead th, tbody td { padding: 8px 6px; font-size: 11px; }
+  .footer { padding: 16px; flex-direction: column; gap: 8px; text-align: center; }
+}
+  /* === iphone13-patch:end === */
 </style>
 </head>
 <body>

@@ -31,6 +31,7 @@ run "2. Structure audit"                 python3 tests/verify_structure.py
 run "3. Palette integrity"               python3 tests/verify_palette.py
 run "4. Gate configuration"              python3 tests/verify_gates.py
 run "5. Data accuracy (productchurn)"    python3 tests/verify_data.py
+run "6. iPhone 13 responsive"            python3 tests/verify_responsive.py
 
 echo "════════════════════════════════════════════════════════════"
 echo "SUMMARY   passed: $pass    failed: $fail"

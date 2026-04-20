@@ -65,6 +65,16 @@
     .empty-state { padding: 48px 24px; }
     .footer { padding: 20px; flex-direction: column; gap: 8px; }
   }
+
+  /* === iphone13-patch:start === */
+  @media (max-width: 480px) {
+  .auth-box { width: 92%; max-width: 360px; padding: 32px 24px; }
+  .header { padding: 16px; } .header h1 { font-size: 20px; }
+  .empty-state { padding: 40px 20px; }
+  .empty-state h2 { font-size: 20px; }
+  .empty-icon { width: 60px; height: 60px; font-size: 26px; }
+}
+  /* === iphone13-patch:end === */
 </style>
 </head>
 <body>

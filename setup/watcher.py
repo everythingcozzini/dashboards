@@ -742,6 +742,25 @@ def parse_product_churn(filepath):
             if not reasons:
                 reasons.append("Other")
 
+        # v2 — additional columns for richer verbatim feedback table
+        area_manager = ws.cell(r, 9).value or ""
+        dsd = ws.cell(r, 10).value or ""
+        driver = ws.cell(r, 11).value or ""
+        route = ws.cell(r, 12).value or ""
+        buying_group = ws.cell(r, 14).value or ""
+        sales_rep = ws.cell(r, 17).value or ""
+        sales_rep_title = ws.cell(r, 18).value or ""
+        # "Other" free-text detail; strip marker "X" and "Other:" prefix
+        other_detail_raw = ws.cell(r, 29).value
+        other_detail = ""
+        if other_detail_raw:
+            s = str(other_detail_raw).strip()
+            if s.upper() != "X":
+                # remove optional leading "Other: " for display
+                if s.lower().startswith("other:"):
+                    s = s[6:].strip()
+                other_detail = s
+
         rows.append({
             "center": str(center).strip(),
             "date": dt,
@@ -750,6 +769,14 @@ def parse_product_churn(filepath):
             "days_active": int(days_active) if days_active else None,
             "reasons": reasons,
             "verbatim": str(verbatim).strip() if verbatim else "",
+            "area_manager": str(area_manager).strip(),
+            "dsd": str(dsd).strip(),
+            "driver": str(driver).strip(),
+            "route": str(route).strip(),
+            "buying_group": str(buying_group).strip(),
+            "rep": str(sales_rep).strip(),
+            "rep_title": str(sales_rep_title).strip(),
+            "other": other_detail,
         })
 
     if not rows:
@@ -823,21 +850,48 @@ def parse_product_churn(filepath):
     early_cancel = sum(1 for d in days_list if d < 90)
     early_pct = round(early_cancel / len(days_list) * 100) if days_list else 0
 
-    # Top reason
-    top_reason = max(reason_counts.items(), key=lambda x: x[1]) if reason_counts else ("N/A", 0)
+    # Top reason — v2 rule: exclude "Other (exclusive)" from the headline KPI.
+    # "Other" is a catch-all and not actionable for the business. If every
+    # reason was Other (impossible in practice), fall back to it.
+    standard_only = {k: v for k, v in reason_counts.items() if k != "Other (exclusive)"}
+    if standard_only:
+        top_reason = max(standard_only.items(), key=lambda x: x[1])
+    elif reason_counts:
+        top_reason = max(reason_counts.items(), key=lambda x: x[1])
+    else:
+        top_reason = ("N/A", 0)
 
-    # Feedback
+    # Feedback — v2 rules:
+    #   * include any row that has an "Other" detail OR an "Is there anything"
+    #     response (previously only filtered on verbatim length)
+    #   * carry through AM / DSD / Driver / Route / Buying Group / Rep /
+    #     Rep Title for leader-level drilldown
+    def _meaningful(text):
+        if not text:
+            return False
+        t = text.strip()
+        return len(t) > 3 and t.lower() not in ("no", "no.", "n/a", "n/a.", "na")
+
     feedback = []
     for r in rows:
-        if r["verbatim"] and len(r["verbatim"]) > 3 and r["verbatim"].lower() not in ("no", "no.", "n/a", "n/a.", "na"):
-            sentiment = classify_sentiment(r["verbatim"])
-            feedback.append({
-                "company": r["company"],
-                "product": r["product"],
-                "center": r["center"],
-                "feedback": r["verbatim"].replace('"', '\\"').replace("\n", " "),
-                "sentiment": sentiment,
-            })
+        if not (_meaningful(r["verbatim"]) or _meaningful(r["other"])):
+            continue
+        sentiment = classify_sentiment(r["verbatim"] or r["other"])
+        feedback.append({
+            "company":      r["company"],
+            "product":      r["product"],
+            "center":       r["center"],
+            "area_manager": r["area_manager"],
+            "dsd":          r["dsd"],
+            "driver":       r["driver"],
+            "route":        r["route"],
+            "buying_group": r["buying_group"],
+            "rep":          r["rep"],
+            "rep_title":    r["rep_title"],
+            "other":        r["other"].replace('"', '\\"').replace("\n", " "),
+            "anything":     r["verbatim"].replace('"', '\\"').replace("\n", " "),
+            "sentiment":    sentiment,
+        })
 
     return {
         "total": total,
