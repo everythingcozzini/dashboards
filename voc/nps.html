@@ -283,19 +283,19 @@
     <div class="sub">Separate survey for recently onboarded customers</div>
     <div class="new-cust-row">
       <div class="new-cust-stat">
-        <div class="val" style="color:var(--cozzini-green);">+57.9</div>
+        <div class="val" style="color:var(--cozzini-green);">+60.0</div>
         <div class="lbl">NPS Score</div>
       </div>
       <div class="new-cust-stat">
-        <div class="val">19</div>
+        <div class="val">20</div>
         <div class="lbl">Responses</div>
       </div>
       <div class="new-cust-stat">
-        <div class="val">73.7%</div>
+        <div class="val">75.0%</div>
         <div class="lbl">Promoters (9&ndash;10)</div>
       </div>
       <div class="new-cust-stat">
-        <div class="val" style="color:var(--cozzini-red);">15.8%</div>
+        <div class="val" style="color:var(--cozzini-red);">15.0%</div>
         <div class="lbl">Detractors (1&ndash;6)</div>
       </div>
     </div>
@@ -505,7 +505,7 @@ new Chart(document.getElementById('newCustDistChart'), {
   type: 'bar',
   data: {
     labels: ['1','2','3','4','5','6','7','8','9','10'],
-    datasets: [{ data: [2, 0, 0, 1, 0, 0, 0, 2, 1, 13], backgroundColor: newCustDistColors, borderRadius: 4, barPercentage: 0.75 }]
+    datasets: [{ data: [2, 0, 0, 1, 0, 0, 0, 2, 1, 14], backgroundColor: newCustDistColors, borderRadius: 4, barPercentage: 0.75 }]
   },
   options: {
     responsive: true, maintainAspectRatio: false, animation: { duration: 600 },
@@ -517,8 +517,8 @@ new Chart(document.getElementById('newCustDistChart'), {
 new Chart(document.getElementById('newCustCenterChart'), {
   type: 'bar',
   data: {
-    labels: ["Houston, TX", "Boardman, OH", "Orlando, FL", "Pineville, NC", "Unassigned", "Elk Grove, IL"],
-    datasets: [{ data: [5, 3, 3, 3, 3, 2], backgroundColor: PALETTE, borderRadius: 4, barPercentage: 0.7 }]
+    labels: ["Houston, TX", "Boardman, OH", "Orlando, FL", "Pineville, NC", "Unassigned", "Elk Grove, IL", "Hopewell Junction, NY"],
+    datasets: [{ data: [5, 3, 3, 3, 3, 2, 1], backgroundColor: PALETTE, borderRadius: 4, barPercentage: 0.7 }]
   },
   options: {
     responsive: true, maintainAspectRatio: false, animation: { duration: 600 },
@@ -527,7 +527,7 @@ new Chart(document.getElementById('newCustCenterChart'), {
   }
 });
 
-const newCustData = [{company: "Grand River brewery", center: "Pineville, NC", dsd: "Mintmire, Mark", score: 8}, {company: "encompass health mid cities", center: "Houston, TX", dsd: "Jakobs, Oliver", score: 10}, {company: "Palmer Place", center: "Elk Grove, IL", dsd: "Cutler, Jake", score: 10}, {company: "Brumidi Catering Co Inc", center: "Unassigned", dsd: "—", score: 10}, {company: "Simply fresh grill", center: "Boardman, OH", dsd: "Holt, Wesley", score: 10}, {company: "Uncle Mick's", center: "Houston, TX", dsd: "Lugo, Servey", score: 1}, {company: "Don & Millie's", center: "Elk Grove, IL", dsd: "Jakobs, Oliver", score: 1}, {company: "Main Event Entertainment", center: "Houston, TX", dsd: "Jakobs, Oliver", score: 4}, {company: "The Caring Place - Miami Rescue Mission", center: "Orlando, FL", dsd: "Mintmire, Mark", score: 8}, {company: "Taco Street", center: "Pineville, NC", dsd: "Mintmire, Mark", score: 9}, {company: "Reformed Presbyterian Home", center: "Boardman, OH", dsd: "Holt, Wesley", score: 10}, {company: "Westwood", center: "Unassigned", dsd: "—", score: 10}, {company: "Hilton conference center", center: "Houston, TX", dsd: "Jakobs, Oliver", score: 10}, {company: "Tres potrillos", center: "Boardman, OH", dsd: "Holt, Wesley", score: 10}, {company: "Menlo Circus Club", center: "Unassigned", dsd: "—", score: 10}, {company: "Resurgence Brewing Company", center: "Orlando, FL", dsd: "Mintmire, Mark", score: 10}, {company: "Tortuga Jacka", center: "Orlando, FL", dsd: "Mintmire, Mark", score: 10}, {company: "Burrito Shak", center: "Pineville, NC", dsd: "Mintmire, Mark", score: 10}, {company: "Atlas Restaurant Group", center: "Houston, TX", dsd: "Lugo, Servey", score: 10}];
+const newCustData = [{company: "Grand River brewery", center: "Pineville, NC", dsd: "Mintmire, Mark", score: 8}, {company: "encompass health mid cities", center: "Houston, TX", dsd: "Jakobs, Oliver", score: 10}, {company: "Palmer Place", center: "Elk Grove, IL", dsd: "Cutler, Jake", score: 10}, {company: "Brumidi Catering Co Inc", center: "Unassigned", dsd: "—", score: 10}, {company: "Simply fresh grill", center: "Boardman, OH", dsd: "Holt, Wesley", score: 10}, {company: "Uncle Mick's", center: "Houston, TX", dsd: "Lugo, Servey", score: 1}, {company: "Don & Millie's", center: "Elk Grove, IL", dsd: "Jakobs, Oliver", score: 1}, {company: "Main Event Entertainment", center: "Houston, TX", dsd: "Jakobs, Oliver", score: 4}, {company: "The Caring Place - Miami Rescue Mission", center: "Orlando, FL", dsd: "Mintmire, Mark", score: 8}, {company: "Taco Street", center: "Pineville, NC", dsd: "Mintmire, Mark", score: 9}, {company: "Reformed Presbyterian Home", center: "Boardman, OH", dsd: "Holt, Wesley", score: 10}, {company: "Westwood", center: "Unassigned", dsd: "—", score: 10}, {company: "Hilton conference center", center: "Houston, TX", dsd: "Jakobs, Oliver", score: 10}, {company: "Tres potrillos", center: "Boardman, OH", dsd: "Holt, Wesley", score: 10}, {company: "Menlo Circus Club", center: "Unassigned", dsd: "—", score: 10}, {company: "Resurgence Brewing Company", center: "Orlando, FL", dsd: "Mintmire, Mark", score: 10}, {company: "Kadima of Pottstown", center: "Hopewell Junction, NY", dsd: "Holt, Wesley", score: 10}, {company: "Tortuga Jacka", center: "Orlando, FL", dsd: "Mintmire, Mark", score: 10}, {company: "Burrito Shak", center: "Pineville, NC", dsd: "Mintmire, Mark", score: 10}, {company: "Atlas Restaurant Group", center: "Houston, TX", dsd: "Lugo, Servey", score: 10}];
 function scoreColor(s) {
   if (s >= 9) return 'color:var(--cozzini-green);font-weight:700;';
   if (s >= 7) return 'color:var(--cozzini-gold);font-weight:600;';
