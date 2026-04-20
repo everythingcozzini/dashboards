@@ -766,7 +766,7 @@ def build_html(truth):
 
 <div class="footer">
   <img src="https://www.cozzinibros.com/wp-content/uploads/2026/03/Cozzini-Logo-White-Letters-Hor-TK.png" alt="Cozzini Bros">
-  <span>Q1 2026 Marketing &mdash; built from Q1Snap.xlsx + Budget.xlsx + Social Media.xlsx + Q1_2026_Matched_Leads_Detail.xlsx + Details of Leads Assigned YTD.xlsx</span>
+  <span>Q1 2026 Marketing Dashboard</span>
 </div>
 
 </div><!-- /page-content -->
