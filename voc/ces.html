@@ -340,7 +340,7 @@ const scoreColors = ['#d4918b','#d4cb7b','#d4a45e','#d4a45e','#8ebf7b','#8ebf7b'
 // 1=red, 2=copper, 3-4=gold, 5-6=green, 7=navy  (lower=worse, higher=better)
 
 /* --- Overview: Mean CES by Survey (horizontal bar) --- */
-const surveys = [{name: "Driver Service", mean: 7.0, n: 7}, {name: "Knife Sharpness", mean: 5.8, n: 10}, {name: "Onboarding Ease", mean: 5.75, n: 28}, {name: "Pricing Satisfaction", mean: 4.61, n: 36}, {name: "Invoice Payment", mean: 1.0, n: 3}, {name: "Invoice Understanding", mean: 1.0, n: 2}];
+const surveys = [{name: "Driver Service", mean: 7.0, n: 7}, {name: "Invoice Payment", mean: 7.0, n: 3}, {name: "Knife Sharpness", mean: 5.8, n: 10}, {name: "Onboarding Ease", mean: 5.75, n: 28}, {name: "Pricing Satisfaction", mean: 4.61, n: 36}, {name: "Invoice Understanding", mean: 1.0, n: 2}];
 function cesColor(v) {
   if (v >= 6) return '#8ebf7b';
   if (v >= 5) return '#d4a45e';
@@ -393,7 +393,7 @@ buildDistChart('chart_driver',    [0, 0, 0, 0, 0, 0, 7]);
 buildDistChart('chart_understand',    [2, 0, 0, 0, 0, 0, 0]);
 
 /* --- CES by Sharpening Center --- */
-const centers = [{name: "Orlando, FL", avg: 6.75, n: 4}, {name: "Boardman, OH", avg: 5.8, n: 5}, {name: "Elk Grove, IL", avg: 5.78, n: 18}, {name: "Houston, TX", avg: 5.38, n: 13}, {name: "Cerritos, CA", avg: 4.82, n: 11}, {name: "Stockton, CA", avg: 4.8, n: 10}, {name: "Pineville, NC", avg: 4.5, n: 6}, {name: "Tukwila, WA", avg: 4.0, n: 4}, {name: "Hopewell Junction, NY", avg: 3.75, n: 12}];
+const centers = [{name: "Orlando, FL", avg: 6.75, n: 4}, {name: "Elk Grove, IL", avg: 6.11, n: 18}, {name: "Boardman, OH", avg: 5.8, n: 5}, {name: "Tukwila, WA", avg: 5.5, n: 4}, {name: "Houston, TX", avg: 5.38, n: 13}, {name: "Cerritos, CA", avg: 4.82, n: 11}, {name: "Stockton, CA", avg: 4.8, n: 10}, {name: "Pineville, NC", avg: 4.5, n: 6}, {name: "Hopewell Junction, NY", avg: 4.25, n: 12}];
 new Chart(document.getElementById('centerChart'), {
   type: 'bar',
   data: {
@@ -414,7 +414,7 @@ new Chart(document.getElementById('centerChart'), {
 });
 
 /* --- CES by DSD --- */
-const dsds = [{name: "Cutler, Jake", avg: 6.0, n: 13}, {name: "Mintmire, Mark", avg: 5.75, n: 8}, {name: "Lugo, Servey", avg: 5.13, n: 15}, {name: "Jakobs, Oliver", avg: 5.06, n: 16}, {name: "Smith, John", avg: 4.59, n: 17}, {name: "Holt, Wesley", avg: 4.43, n: 7}, {name: "Mulvey, Kevin", avg: 4.0, n: 7}];
+const dsds = [{name: "Cutler, Jake", avg: 6.46, n: 13}, {name: "Mintmire, Mark", avg: 5.75, n: 8}, {name: "Holt, Wesley", avg: 5.29, n: 7}, {name: "Lugo, Servey", avg: 5.13, n: 15}, {name: "Jakobs, Oliver", avg: 5.06, n: 16}, {name: "Smith, John", avg: 4.94, n: 17}, {name: "Mulvey, Kevin", avg: 4.0, n: 7}];
 new Chart(document.getElementById('dsdChart'), {
   type: 'bar',
   data: {
