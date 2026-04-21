@@ -1047,9 +1047,13 @@ def update_nps_html(data):
     )
 
     # KPI 2: Total Responses
+    # Detail line intentionally blank — the previous text ("Existing customers
+    # surveyed") was misleading because only ~50% of the customer base is
+    # surveyed each quarter, not the full base. Kept the div so KPI cards
+    # stay vertically aligned; &nbsp; is a visual non-entity.
     html = re.sub(
         r'(<div class="label">Total Responses</div>\s*<div class="value">)\d+(</div>\s*<div class="detail">)[^<]+(</div>)',
-        f'\\g<1>{data["total"]}\\2Existing customers surveyed\\3',
+        f'\\g<1>{data["total"]}\\2&nbsp;\\3',
         html
     )
 
